@@ -1,6 +1,5 @@
 package io.github.jan.einkaufszettel.ui.screen.auth
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -22,6 +21,8 @@ import cafe.adriel.voyager.core.screen.Screen
 import io.github.jan.einkaufszettel.Res
 import io.github.jan.supabase.annotations.SupabaseExperimental
 import io.github.jan.supabase.compose.auth.ComposeAuth
+import io.github.jan.supabase.compose.auth.composable.NativeSignInResult
+import io.github.jan.supabase.compose.auth.composable.NativeSignInState
 import io.github.jan.supabase.compose.auth.composable.rememberLoginWithGoogle
 import io.github.jan.supabase.compose.auth.ui.AuthForm
 import io.github.jan.supabase.compose.auth.ui.LocalAuthState
@@ -37,7 +38,7 @@ object AuthScreen: Screen {
     @Composable
     override fun Content() {
         val composeAuth = koinInject<ComposeAuth>()
-        val googleLogin = composeAuth.rememberLoginWithGoogle()
+        val googleLogin = loginWithGoogle(composeAuth)
         AuthForm {
             var email by remember { mutableStateOf("") }
             var password by remember { mutableStateOf("") }
@@ -67,7 +68,7 @@ object AuthScreen: Screen {
                         Text(if (signUp) Res.string.sign_up else Res.string.sign_in)
                     }
                     Button(
-                        onClick = { googleLogin.startFlow() }
+                        onClick = { /*googleLogin.startFlow()*/ }
                     ) {
                         ProviderIcon(Google, null)
                         Spacer(Modifier.width(4.dp))
@@ -89,3 +90,6 @@ object AuthScreen: Screen {
     }
 
 }
+
+@Composable
+internal expect fun loginWithGoogle(composeAuth: ComposeAuth, onResult: (NativeSignInResult) -> Unit = {}): NativeSignInState
