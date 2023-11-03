@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="email">E-Mail</string>
+    <string name="password">Password</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_up">Sign up</string>
+    <string name="sign_in_with_google">Sign in with Google</string>
+    <string name="sign_up_with_google">Sign up with Google</string>
+    <string name="already_have_an_account">Already have an account? Sign in</string>
+    <string name="dont_have_an_account">Don't have an account? Sign up</string>
+    <string name="sign_out">Sign out</string>
+</resources>

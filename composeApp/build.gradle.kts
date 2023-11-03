@@ -50,7 +50,8 @@ kotlin {
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.kotlinx.datetime)
-            implementation(libs.koin.core)
+            implementation(libs.bundles.koin)
+            implementation(libs.bundles.voyager)
             implementation(libs.bundles.supabase)
         }
 
@@ -61,9 +62,11 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.androidx.appcompat)
             implementation(libs.androidx.activityCompose)
+            implementation(libs.androidx.lifecycle.compose)
             implementation(libs.compose.uitooling)
             implementation(libs.kotlinx.coroutines.android)
             implementation(libs.sqlDelight.driver.android)
+            implementation(libs.koin.android)
         }
 
         jsMain.dependencies {
