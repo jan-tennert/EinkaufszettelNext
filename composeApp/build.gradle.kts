@@ -11,7 +11,10 @@ plugins {
 }
 
 val localProperties = Properties()
-localProperties.load(project.rootProject.file("local.properties").inputStream())
+val localPropertiesFile = project.rootProject.file("local.properties")
+if(localPropertiesFile.exists()) {
+    localProperties.load(localPropertiesFile.inputStream())
+}
 
 val keystoreFile = File("/home/runner/work/EinkaufszettelNext/EinkaufszettelNext/app/keystore/android_keystore.keystore")
 val isCI = keystoreFile.exists()
@@ -32,12 +35,10 @@ kotlin {
             }
         }
     }
-
-    js {
+    js(IR) {
         browser()
         binaries.executable()
     }
-
     sourceSets {
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -50,6 +51,7 @@ kotlin {
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.kotlinx.datetime)
             implementation(libs.koin.core)
+            implementation(libs.bundles.supabase)
         }
 
         commonTest.dependencies {

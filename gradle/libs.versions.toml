@@ -15,6 +15,7 @@ kotlinx-serialization = "1.6.0"
 kotlinx-datetime = "0.4.0"
 koin = "3.5.0"
 sqlDelight = "2.0.0"
+supabase = "1.4.6"
 
 [libraries]
 
@@ -33,6 +34,11 @@ sqlDelight-driver-sqlite = { module = "app.cash.sqldelight:sqlite-driver", versi
 sqlDelight-driver-android = { module = "app.cash.sqldelight:android-driver", version.ref = "sqlDelight" }
 sqlDelight-driver-native = { module = "app.cash.sqldelight:native-driver", version.ref = "sqlDelight" }
 sqlDelight-driver-js = { module = "app.cash.sqldelight:web-worker-driver", version.ref = "sqlDelight" }
+gotrue-kt = { module = "io.github.jan-tennert.supabase:gotrue-kt", version.ref = "supabase" }
+storage-kt = { module = "io.github.jan-tennert.supabase:storage-kt", version.ref = "supabase" }
+postgrest-kt = { module = "io.github.jan-tennert.supabase:postgrest-kt", version.ref = "supabase" }
+compose-auth = { module = "io.github.jan-tennert.supabase:compose-auth", version.ref = "supabase" }
+compose-auth-ui = { module = "io.github.jan-tennert.supabase:compose-auth-ui", version.ref = "supabase" }
 
 [plugins]
 
@@ -43,3 +49,12 @@ libres = { id = "io.github.skeptick.libres", version.ref = "libres" }
 buildConfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildConfig" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 sqlDelight = { id = "app.cash.sqldelight", version.ref = "sqlDelight" }
+
+[bundles]
+supabase = [
+    "gotrue-kt",
+    "storage-kt",
+    "postgrest-kt",
+    "compose-auth",
+    "compose-auth-ui"
+]
