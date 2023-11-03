@@ -1,3 +1,5 @@
+import java.util.*
+
 plugins {
     alias(libs.plugins.multiplatform)
     alias(libs.plugins.compose)
@@ -7,6 +9,20 @@ plugins {
     alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.sqlDelight)
 }
+
+val localProperties = Properties()
+localProperties.load(project.rootProject.file("local.properties").inputStream())
+
+val keystoreFile = File("/home/runner/work/EinkaufszettelNext/EinkaufszettelNext/app/keystore/android_keystore.keystore")
+val isCI = keystoreFile.exists()
+val appVersionName = project.properties["app.versionName"] as String
+val appVersionCode = (project.properties["app.versionCode"] as String).toInt()
+val supabaseUrl = "\"${localProperties["supabase.url"] ?: System.getenv("SUPABASE_URL")}\""
+val supabaseKey = "\"${localProperties["supabase.key"] ?: System.getenv("SUPABASE_KEY")}\""
+val googleClientId = "\"${localProperties["google.clientId"] ?: System.getenv("GOOGLE_CLIENT_ID")}\""
+val appNamespace = "io.github.jan.einkaufszettel"
+
+version = appVersionName
 
 kotlin {
     androidTarget {
@@ -49,7 +65,6 @@ kotlin {
         }
 
         jsMain.dependencies {
-            implementation(compose.html.core)
             implementation(libs.sqlDelight.driver.js)
         }
 
@@ -57,7 +72,7 @@ kotlin {
 }
 
 android {
-    namespace = "io.github.jan.einkaufszettel"
+    namespace = appNamespace
     compileSdk = 34
 
     defaultConfig {
@@ -65,8 +80,8 @@ android {
         targetSdk = 34
 
         applicationId = "io.github.jan.einkaufszettel.androidApp"
-        versionCode = 1
-        versionName = "1.0.0"
+        versionCode = appVersionCode
+        versionName = appVersionName
     }
     sourceSets["main"].apply {
         manifest.srcFile("src/androidMain/AndroidManifest.xml")
@@ -75,6 +90,26 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+    }
+    signingConfigs {
+        create("release") {
+            storeFile = if(isCI) keystoreFile else rootProject.file("einkaufszettel.keystore")
+            storePassword = localProperties.getProperty("SIGNING_STORE_PASSWORD") ?: System.getenv("SIGNING_STORE_PASSWORD")
+            keyAlias = localProperties.getProperty("SIGNING_KEY_ALIAS") ?: System.getenv("SIGNING_KEY_ALIAS")
+            keyPassword = localProperties.getProperty("SIGNING_KEY_PASSWORD") ?: System.getenv("SIGNING_KEY_PASSWORD")
+        }
+    }
+    buildTypes {
+        release {
+            isMinifyEnabled = true
+            /*proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro")*/
+            signingConfig = signingConfigs.getByName("release")
+        }
+        named("debug") {
+            signingConfig = signingConfigs.getByName("release")
+        }
     }
 }
 
@@ -91,13 +126,15 @@ tasks.getByPath("jsProcessResources").dependsOn("libresGenerateResources")
 buildConfig {
     // BuildConfig configuration here.
     // https://github.com/gmazzo/gradle-buildconfig-plugin#usage-in-kts
+    packageName = appNamespace
+    buildConfigField("String", "SUPABASE_URL", supabaseUrl)
+    buildConfigField("String", "SUPABASE_KEY", supabaseKey)
+    buildConfigField("String", "GOOGLE_CLIENT_ID", googleClientId)
 }
 
 sqldelight {
     databases {
-        create("MyDatabase") {
-            // Database configuration here.
-            // https://cashapp.github.io/sqldelight
+        create("Einkaufszettel") {
             packageName.set("io.github.jan.einkaufszettel.db")
         }
     }

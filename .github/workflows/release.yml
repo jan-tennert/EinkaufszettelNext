@@ -1,0 +1,113 @@
+name: Release Android Release Apk
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Tag name for release'
+        required: false
+        default: prerelease
+  push:
+    branches:
+      - master
+    tags:
+      - 'v*'
+
+jobs:
+  test:
+    name: Run Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            ~/.konan
+          key: ${{ runner.os }}-gradle-v3-${{ hashFiles('gradle.properties', 'gradle/libs.versions.toml', 'gradle/wrapper/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-v3-
+      - name: Run Tests
+        run: bash ./gradlew test --stacktrace
+  apk:
+    name: Generate APK
+    needs: test
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            ~/.konan
+          key: ${{ runner.os }}-gradle-v3-${{ hashFiles('gradle.properties', 'gradle/libs.versions.toml', 'gradle/wrapper/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-v3-
+      - name: Decode Keystore
+        id: decode_keystore
+        uses: timheuer/base64-to-file@v1.2
+        with:
+          fileName: 'android_keystore.keystore'
+          fileDir: '/home/runner/work/EinkaufszettelNext/EinkaufszettelNext/app/keystore/'
+          encodedString: ${{ secrets.KEYSTORE }}
+      - name: Build APK
+        run: bash ./gradlew :composeApp:assembleRelease --stacktrace
+        env:
+          SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+          SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
+          SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+      - name: Verify Signature
+        run: $ANDROID_SDK_ROOT/build-tools/33.0.1/apksigner verify --print-certs app/build/outputs/apk/release/composeApp-release.apk
+      - name: Upload APK
+        uses: actions/upload-artifact@v1
+        with:
+          name: apk
+          path: app/build/outputs/apk/release/composeApp-release.apk
+  release:
+    name: Publish
+    needs: apk
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+      - name: Download APK from build
+        uses: actions/download-artifact@v1
+        with:
+          name: apk
+      - if: github.event_name == 'workflow_dispatch'
+        run: echo "TAG_NAME=${{ github.event.inputs.tag_name }}" >> $GITHUB_ENV
+      - if: github.event_name == 'push'
+        run: echo 'TAG_NAME=prerelease' >> $GITHUB_ENV
+      - if: env.TAG_NAME == 'prerelease'
+        run: |
+          (echo 'SUBJECT=Einkaufszettel prerelease'; 
+           echo 'PRERELEASE=--prerelease') >> $GITHUB_ENV 
+          gh release delete prerelease --yes || true 
+          git push origin :prerelease || true
+      - name: Upload Debug APK
+        id: upload_debug_asset
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create $TAG_NAME $PRERELEASE --title "$TAG_NAME" --target $GITHUB_SHA apk/composeApp-release.apk#Einkaufszettel.apk
