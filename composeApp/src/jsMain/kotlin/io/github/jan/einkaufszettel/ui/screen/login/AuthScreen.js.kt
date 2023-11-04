@@ -6,11 +6,12 @@ import io.github.jan.supabase.compose.auth.composable.NativeSignInResult
 import io.github.jan.supabase.compose.auth.composable.defaultLoginBehavior
 import io.github.jan.supabase.gotrue.gotrue
 import io.github.jan.supabase.gotrue.providers.Google
+import kotlinx.browser.document
 
 @Composable
 internal actual fun loginWithGoogle(
     composeAuth: ComposeAuth,
     onResult: (NativeSignInResult) -> Unit
 ) = defaultLoginBehavior {
-    composeAuth.supabaseClient.gotrue.loginWith(Google)
+    composeAuth.supabaseClient.gotrue.loginWith(Google, redirectUrl = document.URL)
 }
