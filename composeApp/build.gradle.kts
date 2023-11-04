@@ -72,7 +72,7 @@ kotlin {
 
         jsMain.dependencies {
             implementation(libs.sqlDelight.driver.js)
-            implementation(devNpm("copy-webpack-plugin", "9.1.0"))
+            implementation(devNpm("copy-webpack-plugin", "11.0.0"))
             implementation(npm("@cashapp/sqldelight-sqljs-worker", "2.0.0"))
             implementation(npm("sql.js", "1.8.0"))
         }
