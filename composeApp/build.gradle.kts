@@ -31,7 +31,7 @@ kotlin {
     androidTarget {
         compilations.all {
             kotlinOptions {
-                jvmTarget = "17"
+                jvmTarget = "11"
             }
         }
     }
@@ -53,6 +53,7 @@ kotlin {
             implementation(libs.bundles.koin)
             implementation(libs.bundles.voyager)
             implementation(libs.bundles.supabase)
+            implementation(libs.sqlDelight.coroutines)
         }
 
         commonTest.dependencies {
@@ -71,6 +72,9 @@ kotlin {
 
         jsMain.dependencies {
             implementation(libs.sqlDelight.driver.js)
+            implementation(devNpm("copy-webpack-plugin", "9.1.0"))
+            implementation(npm("@cashapp/sqldelight-sqljs-worker", "2.0.0"))
+            implementation(npm("sql.js", "1.8.0"))
         }
 
     }
@@ -93,8 +97,8 @@ android {
         res.srcDirs("src/androidMain/resources")
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     signingConfigs {
         create("release") {
@@ -141,6 +145,7 @@ sqldelight {
     databases {
         create("Einkaufszettel") {
             packageName.set("io.github.jan.einkaufszettel.db")
+            generateAsync.set(true)
         }
     }
 }

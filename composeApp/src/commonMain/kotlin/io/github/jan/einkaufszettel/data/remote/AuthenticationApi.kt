@@ -10,6 +10,11 @@ interface AuthenticationApi {
         password: String
     )
 
+    suspend fun signUp(
+        email: String,
+        password: String
+    ): Email.Result?
+
     suspend fun logout()
 
 }
@@ -20,6 +25,13 @@ internal class AuthenticationApiImpl(
 
     override suspend fun login(email: String, password: String) {
         goTrue.loginWith(Email) {
+            this.email = email
+            this.password = password
+        }
+    }
+
+    override suspend fun signUp(email: String, password: String): Email.Result? {
+        return goTrue.signUpWith(Email) {
             this.email = email
             this.password = password
         }

@@ -1,0 +1,21 @@
+CREATE TABLE profileTable (
+    id TEXT NOT NULL PRIMARY KEY,
+    username TEXT NOT NULL
+);
+
+insertProfile:
+INSERT OR REPLACE
+INTO profileTable
+VALUES (?, ?);
+
+getProfiles:
+SELECT * FROM profileTable;
+
+getProfileById:
+SELECT * FROM profileTable WHERE id = ?;
+
+clearProfiles:
+DELETE FROM profileTable;
+
+deleteProfilesById:
+DELETE FROM profileTable WHERE id = ?;

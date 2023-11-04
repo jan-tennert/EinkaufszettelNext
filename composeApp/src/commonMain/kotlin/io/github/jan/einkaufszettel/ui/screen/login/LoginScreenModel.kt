@@ -12,35 +12,57 @@ import kotlinx.coroutines.launch
 
 class LoginScreenModel(
     private val authenticationApiImpl: AuthenticationApi
-) : ScreenModel {
+) : StateScreenModel<LoginScreenModel.State>(State.Idle) {
 
-    val isLoading = MutableStateFlow(false)
-    val error = MutableStateFlow<String?>(null)
+    sealed interface State {
+        data object Idle : State
+        data object Loading : State
+        data class Error(val message: String) : State
+        data object SignUpSuccess : State
+    }
 
     fun login(email: String, password: String) {
         screenModelScope.launch {
-            isLoading.value = true
+            mutableState.value = State.Loading
             runCatching {
                 authenticationApiImpl.login(email, password)
-            }.onFailure {
-                when(it) {
-                    is RestException -> {
-                        error.value = Res.string.invalid_credentials
-                    }
-                    is HttpRequestException -> {
-                        error.value = Res.string.network_error
-                    }
-                    else -> {
-                        error.value = Res.string.unknown_error.format(it.message ?: "")
-                    }
-                }
-            }
-            isLoading.value = false
+            }.onSuccess {
+                mutableState.value = State.Idle
+            }.onFailure(::handleError)
         }
     }
 
-    fun resetError() {
-        error.value = null
+    fun signUp(email: String, password: String) {
+        screenModelScope.launch {
+            mutableState.value = State.Loading
+            runCatching {
+                authenticationApiImpl.signUp(email, password)
+            }.onSuccess {
+                mutableState.value = State.SignUpSuccess
+            }.onFailure(::handleError)
+        }
+    }
+
+    fun resetState() {
+        mutableState.value = State.Idle
+    }
+
+    fun setLoading() {
+        mutableState.value = State.Loading
+    }
+
+    private fun handleError(error: Throwable) {
+        when(error) {
+            is RestException -> {
+                mutableState.value = State.Error(Res.string.invalid_credentials)
+            }
+            is HttpRequestException -> {
+                mutableState.value = State.Error(Res.string.network_error)
+            }
+            else -> {
+                mutableState.value = State.Error(Res.string.unknown_error.format(error.message ?: ""))
+            }
+        }
     }
 
 }

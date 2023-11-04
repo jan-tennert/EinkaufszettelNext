@@ -8,13 +8,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -24,6 +25,8 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import io.github.jan.einkaufszettel.Res
 import io.github.jan.einkaufszettel.collectAsStateWithLifecycle
+import io.github.jan.einkaufszettel.ui.dialog.ErrorDialog
+import io.github.jan.einkaufszettel.ui.dialog.LoadingDialog
 import io.github.jan.supabase.annotations.SupabaseExperimental
 import io.github.jan.supabase.compose.auth.ComposeAuth
 import io.github.jan.supabase.compose.auth.composable.NativeSignInResult
@@ -42,23 +45,19 @@ object LoginScreen : Screen {
     @Composable
     override fun Content() {
         val composeAuth = koinInject<ComposeAuth>()
-        val googleLogin = loginWithGoogle(composeAuth)
+        var nativeSignInResult by remember { mutableStateOf<NativeSignInResult?>(null) }
         val screenModel = getScreenModel<LoginScreenModel>()
-        val isLoading by screenModel.isLoading.collectAsStateWithLifecycle()
-        val error by screenModel.error.collectAsStateWithLifecycle()
+        val googleLogin = loginWithGoogle(
+            composeAuth = composeAuth,
+            onResult = {
+                nativeSignInResult = it
+                screenModel.resetState()
+            }
+        )
+        val screenState by screenModel.state.collectAsStateWithLifecycle()
         var email by rememberSaveable { mutableStateOf("") }
         var password by rememberSaveable { mutableStateOf("") }
         var signUp by rememberSaveable { mutableStateOf(false) }
-
-        if (isLoading) {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
-            return
-        }
 
         AuthForm {
             val state = LocalAuthState.current
@@ -80,14 +79,14 @@ object LoginScreen : Screen {
                         label = { Text(Res.string.password) }
                     )
                     Button(
-                        onClick = { screenModel.login(email, password) },
+                        onClick = { if(signUp) screenModel.signUp(email, password) else screenModel.login(email, password) },
                         enabled = state.validForm
                     ) {
                         Text(if (signUp) Res.string.sign_up else Res.string.sign_in)
                     }
                     Spacer(Modifier.height(8.dp))
-                    Button(
-                        onClick = { googleLogin.startFlow() }
+                    OutlinedButton(
+                        onClick = { googleLogin.startFlow(); screenModel.setLoading() }
                     ) {
                         ProviderIcon(Google, null)
                         Spacer(Modifier.width(4.dp))
@@ -108,24 +107,44 @@ object LoginScreen : Screen {
             }
         }
 
-        if (error != null) {
-            ErrorDialog(
-                error = error!!,
-                onDismiss = { screenModel.resetError() }
-            )
+
+        when(screenState) {
+            is LoginScreenModel.State.Error -> {
+                ErrorDialog(
+                    error = (screenState as LoginScreenModel.State.Error).message,
+                    onDismiss = { screenModel.resetState() }
+                )
+            }
+            LoginScreenModel.State.Loading -> {
+                LoadingDialog()
+            }
+            LoginScreenModel.State.SignUpSuccess -> {
+                SignUpSuccessDialog {
+                    screenModel.resetState()
+                }
+            }
+            else -> {}
         }
 
+        if(nativeSignInResult != null && nativeSignInResult !in listOf(NativeSignInResult.Success, NativeSignInResult.ClosedByUser)) {
+            val message = when(nativeSignInResult) {
+                is NativeSignInResult.Error -> Res.string.unknown_error.format((nativeSignInResult as NativeSignInResult.Error).message)
+                is NativeSignInResult.NetworkError -> Res.string.network_error
+                else -> ""
+            }
+            ErrorDialog(
+                error = message,
+                onDismiss = { nativeSignInResult = null }
+            )
+        }
     }
 
     @Composable
-    private fun ErrorDialog(
-        error: String,
-        onDismiss: () -> Unit
-    ) {
+    private fun SignUpSuccessDialog(onDismiss: () -> Unit) {
         AlertDialog(
             onDismissRequest = onDismiss,
-            title = { Text(Res.string.error) },
-            text = { Text(error) },
+            title = { Text(Res.string.sign_up) },
+            text = { Text(Res.string.sign_up_success) },
             confirmButton = {
                 Button(
                     onClick = onDismiss
@@ -135,6 +154,8 @@ object LoginScreen : Screen {
             }
         )
     }
+
+
 
 }
 
