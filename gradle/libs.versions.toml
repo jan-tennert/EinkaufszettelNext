@@ -16,7 +16,7 @@ kotlinx-datetime = "0.4.0"
 koin = "3.5.0"
 koin-compose = "1.1.0"
 sqlDelight = "2.0.0"
-supabase = "1.4.7-local-1"
+supabase = "1.4.6"
 lifecycle = "2.6.2"
 
 [libraries]

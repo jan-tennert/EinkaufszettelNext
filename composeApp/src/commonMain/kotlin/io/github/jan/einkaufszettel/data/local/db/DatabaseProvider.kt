@@ -2,6 +2,8 @@ package io.github.jan.einkaufszettel.data.local.db
 
 import app.cash.sqldelight.async.coroutines.awaitCreate
 import io.github.jan.einkaufszettel.db.Einkaufszettel
+import io.github.jan.supabase.CurrentPlatformTarget
+import io.github.jan.supabase.PlatformTarget
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
@@ -22,7 +24,9 @@ internal class DatabaseProviderImpl(
 
     override suspend fun initDatabase(): Einkaufszettel {
         val driver = driverFactory.createDriver()
-        Einkaufszettel.Schema.awaitCreate(driver)
+        if(CurrentPlatformTarget == PlatformTarget.JS) {
+            Einkaufszettel.Schema.awaitCreate(driver)
+        }
         mutex.withLock {
             database = Einkaufszettel(driver)
         }
