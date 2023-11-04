@@ -11,7 +11,7 @@ import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import io.github.jan.einkaufszettel.Res
 
-object RecipesTab: Tab {
+data object RecipesTab: Tab {
 
     override val options: TabOptions
         @Composable
