@@ -9,4 +9,10 @@
     <string name="already_have_an_account">Already have an account? Sign in</string>
     <string name="dont_have_an_account">Don't have an account? Sign up</string>
     <string name="sign_out">Sign out</string>
+    <string name="invalid_credentials">Invalid login credentials</string>
+
+    <string name="error">Error</string>
+
+    <string name="unknown_error">Unknown error: ${message}</string>
+    <string name="network_error">Network error. Please check your internet connection.</string>
 </resources>

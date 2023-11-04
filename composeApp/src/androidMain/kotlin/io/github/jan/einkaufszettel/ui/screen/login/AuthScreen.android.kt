@@ -1,4 +1,4 @@
-package io.github.jan.einkaufszettel.ui.screen.auth
+package io.github.jan.einkaufszettel.ui.screen.login
 
 import androidx.compose.runtime.Composable
 import io.github.jan.supabase.compose.auth.ComposeAuth

@@ -7,7 +7,7 @@ object HomeScreen: Screen {
 
     @Composable
     override fun Content() {
-        TODO("Not yet implemented")
+
     }
 
 }
