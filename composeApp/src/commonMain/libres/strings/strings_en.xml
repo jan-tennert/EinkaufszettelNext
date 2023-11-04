@@ -16,6 +16,11 @@
     <string name="name">Username</string>
     <string name="create">Create</string>
 
+    <string name="home">Home</string>
+    <string name="shops">Shops</string>
+    <string name="recipes">Recipes</string>
+    <string name="settings">Settings</string>
+
     <string name="error">Error</string>
     <string name="unknown_error">Unknown error: ${message}</string>
     <string name="network_error">Network error. Please check your internet connection.</string>

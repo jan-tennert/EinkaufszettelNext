@@ -26,7 +26,7 @@ import io.github.jan.einkaufszettel.Res
 import io.github.jan.einkaufszettel.collectAsStateWithLifecycle
 import io.github.jan.einkaufszettel.ui.dialog.ErrorDialog
 import io.github.jan.einkaufszettel.ui.dialog.LoadingDialog
-import io.github.jan.einkaufszettel.ui.screen.home.HomeScreen
+import io.github.jan.einkaufszettel.ui.screen.app.AppScreen
 
 object ProfileCreateScreen: Screen {
 
@@ -39,7 +39,7 @@ object ProfileCreateScreen: Screen {
 
         LaunchedEffect(screenState) {
             if(screenState is ProfileCreateScreenModel.State.Success) {
-                navigator.push(HomeScreen)
+                navigator.push(AppScreen)
             }
         }
 

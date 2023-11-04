@@ -1,7 +1,5 @@
 package io.github.jan.einkaufszettel.ui.screen.authenticated
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -11,7 +9,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import io.github.jan.einkaufszettel.collectAsStateWithLifecycle
 import io.github.jan.einkaufszettel.ui.component.LoadingCircle
-import io.github.jan.einkaufszettel.ui.screen.home.HomeScreen
+import io.github.jan.einkaufszettel.ui.screen.app.AppScreen
 import io.github.jan.einkaufszettel.ui.screen.profile.ProfileCreateScreen
 
 object AuthenticatedScreen: Screen {
@@ -32,10 +30,10 @@ object AuthenticatedScreen: Screen {
                 LoadingCircle()
             }
             AuthenticatedScreenModel.State.NetworkError -> {
-                navigator.push(HomeScreen)
+                navigator.push(AppScreen)
             }
             AuthenticatedScreenModel.State.UserFound -> {
-                navigator.push(HomeScreen)
+                navigator.push(AppScreen)
             }
             AuthenticatedScreenModel.State.UserNotFound -> {
                 navigator.push(ProfileCreateScreen)

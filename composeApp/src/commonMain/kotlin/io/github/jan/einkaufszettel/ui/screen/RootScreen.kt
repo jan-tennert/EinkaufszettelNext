@@ -8,7 +8,7 @@ import cafe.adriel.voyager.navigator.CurrentScreen
 import cafe.adriel.voyager.navigator.Navigator
 import io.github.jan.einkaufszettel.collectAsStateWithLifecycle
 import io.github.jan.einkaufszettel.ui.screen.authenticated.AuthenticatedScreen
-import io.github.jan.einkaufszettel.ui.screen.home.HomeScreen
+import io.github.jan.einkaufszettel.ui.screen.app.AppScreen
 import io.github.jan.einkaufszettel.ui.screen.login.LoginScreen
 import io.github.jan.supabase.gotrue.GoTrue
 import io.github.jan.supabase.gotrue.SessionStatus
@@ -24,7 +24,7 @@ object RootScreen: Screen {
             LaunchedEffect(sessionStatus) {
                 when(sessionStatus) {
                     is SessionStatus.Authenticated -> navigator.push(AuthenticatedScreen)
-                    SessionStatus.NetworkError -> navigator.push(HomeScreen)
+                    SessionStatus.NetworkError -> navigator.push(AppScreen)
                     SessionStatus.NotAuthenticated -> navigator.push(LoginScreen)
                     else -> {}
                 }

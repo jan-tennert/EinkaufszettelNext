@@ -54,6 +54,7 @@ kotlin {
             implementation(libs.bundles.voyager)
             implementation(libs.bundles.supabase)
             implementation(libs.sqlDelight.coroutines)
+            implementation(libs.windowsizeclass)
         }
 
         commonTest.dependencies {
