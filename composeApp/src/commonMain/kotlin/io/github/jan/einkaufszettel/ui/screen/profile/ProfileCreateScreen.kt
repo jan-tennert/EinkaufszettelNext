@@ -2,7 +2,9 @@ package io.github.jan.einkaufszettel.ui.screen.profile
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -15,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -52,6 +55,7 @@ object ProfileCreateScreen: Screen {
                 label = { Text(Res.string.name) },
                 singleLine = true,
             )
+            Spacer(Modifier.height(4.dp))
             Button(
                 onClick = { screenModel.createProfile(name) },
                 enabled = name.isNotBlank()

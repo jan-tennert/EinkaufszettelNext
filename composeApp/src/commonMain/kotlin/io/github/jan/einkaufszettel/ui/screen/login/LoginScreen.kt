@@ -86,7 +86,10 @@ object LoginScreen : Screen {
                     }
                     Spacer(Modifier.height(8.dp))
                     OutlinedButton(
-                        onClick = { googleLogin.startFlow(); screenModel.setLoading() }
+                        onClick = {
+                            googleLogin.startFlow()
+                            screenModel.setLoading()
+                        }
                     ) {
                         ProviderIcon(Google, null)
                         Spacer(Modifier.width(4.dp))

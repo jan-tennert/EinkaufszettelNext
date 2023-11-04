@@ -13,5 +13,5 @@ internal actual fun loginWithGoogle(
     composeAuth: ComposeAuth,
     onResult: (NativeSignInResult) -> Unit
 ) = defaultLoginBehavior {
-    composeAuth.supabaseClient.gotrue.loginWith(Google, redirectUrl = document.URL)
+    composeAuth.supabaseClient.gotrue.loginWith(Google, redirectUrl = document.location?.href)
 }

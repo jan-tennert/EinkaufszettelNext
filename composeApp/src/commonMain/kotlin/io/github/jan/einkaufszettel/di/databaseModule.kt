@@ -1,14 +1,18 @@
 package io.github.jan.einkaufszettel.di
 
-import app.cash.sqldelight.db.SqlDriver
-import io.github.jan.einkaufszettel.db.Einkaufszettel
+import io.github.jan.einkaufszettel.data.local.db.DatabaseDriverFactory
+import io.github.jan.einkaufszettel.data.local.db.DatabaseProvider
+import io.github.jan.einkaufszettel.data.local.db.DatabaseProviderImpl
 import org.koin.core.scope.Scope
 import org.koin.dsl.module
 
-expect fun Scope.createDriver(): SqlDriver
+expect fun Scope.createDriverFactory(): DatabaseDriverFactory
 
 val databaseModule = module {
     single {
-        Einkaufszettel(createDriver())
+        createDriverFactory()
+    }
+    single<DatabaseProvider> {
+        DatabaseProviderImpl(get())
     }
 }

@@ -30,9 +30,12 @@ class AuthenticatedScreenModel(
             runCatching {
                 profileApi.retrieveOwnProfile()
             }.onSuccess {
-                println("checkUserInApi success")
-                mutableState.value = State.UserFound
-                profileDataSource.insertProfile(it)
+                if (it != null) {
+                    mutableState.value = State.UserFound
+                    profileDataSource.insertProfile(it)
+                } else {
+                    mutableState.value = State.UserNotFound
+                }
             }.onFailure {
                 it.printStackTrace()
                 when(it) {
