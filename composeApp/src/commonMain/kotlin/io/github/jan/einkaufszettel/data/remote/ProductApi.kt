@@ -11,8 +11,8 @@ data class ProductDto(
     val createdAt: Instant,
     val content: String,
     val shopId: Long,
-    val doneById: String?,
-    val creatorId: String,
+    val userId: String,
+    val doneBy: String?,
     val doneSince: Instant?
 )
 
@@ -87,7 +87,7 @@ internal class ProductApiImpl(
 
     override suspend fun markAsDone(id: Long, doneById: String): ProductDto {
         return table.update({
-            ProductDto::doneById setTo doneById
+            ProductDto::doneBy setTo doneById
             ProductDto::doneSince setTo Clock.System.now()
         }) {
             ProductDto::id eq id
@@ -96,7 +96,7 @@ internal class ProductApiImpl(
 
     override suspend fun markAsUndone(id: Long): ProductDto {
         return table.update({
-            ProductDto::doneById setTo null
+            ProductDto::doneBy setTo null
             ProductDto::doneSince setTo null
         }) {
             ProductDto::id eq id

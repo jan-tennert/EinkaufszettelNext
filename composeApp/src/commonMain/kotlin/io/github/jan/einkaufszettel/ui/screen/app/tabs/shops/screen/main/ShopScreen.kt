@@ -1,7 +1,9 @@
 package io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.screen.main
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -34,8 +36,8 @@ object ShopScreen: Screen {
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
         val screenModel = navigator.getNavigatorScreenModel<ShopScreenModel>()
-        val shops by screenModel.shops.collectAsStateWithLifecycle()
-        var sideBar by remember { mutableStateOf<Long?>(null) }
+        val shops by screenModel.shopFlow.collectAsStateWithLifecycle()
+        var sideBar by remember { mutableStateOf<Screen?>(null) }
 
         LaunchedEffect(Unit) {
             screenModel.refreshShops(true)
@@ -54,12 +56,17 @@ object ShopScreen: Screen {
                             if(CurrentPlatformTarget == PlatformTarget.ANDROID) {
                                 navigator.push(ShopDetailScreen(it.id))
                             } else {
-                                sideBar = it.id
+                                sideBar = ShopDetailScreen(it.id)
                             }
                         },
                         onEdit = {},
                         onDelete = {}
                     )
+                }
+            }
+            sideBar?.let {
+                Box(Modifier.fillMaxHeight().fillMaxWidth(0.3f)) {
+                    sideBar!!.Content()
                 }
             }
         }

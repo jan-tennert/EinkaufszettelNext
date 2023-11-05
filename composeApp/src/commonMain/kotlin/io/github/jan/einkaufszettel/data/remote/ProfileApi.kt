@@ -16,6 +16,8 @@ interface ProfileApi {
 
     suspend fun retrieveProfile(uid: String): ProfileDto?
 
+    suspend fun retrieveProfiles(ids: List<String>): List<ProfileDto>
+
     suspend fun createProfileForUser(uid: String, name: String): ProfileDto
 
     suspend fun createProfileForCurrentUser(name: String): ProfileDto
@@ -47,6 +49,12 @@ internal class ProfileApiImpl(
     override suspend fun createProfileForCurrentUser(name: String): ProfileDto {
         val uid = goTrue.currentUserOrNull()?.id ?: error("No user logged in")
         return createProfileForUser(uid, name)
+    }
+
+    override suspend fun retrieveProfiles(ids: List<String>): List<ProfileDto> {
+        return profileTable.select {
+            ProfileDto::id isIn ids
+        }.decodeList()
     }
 
 }

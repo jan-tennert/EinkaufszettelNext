@@ -1,5 +1,6 @@
 package io.github.jan.einkaufszettel.data.local
 
+import app.cash.sqldelight.async.coroutines.awaitAsList
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import einkaufszettel.GetAllProducts
@@ -14,7 +15,11 @@ interface ProductDataSource {
 
     fun getAllProducts(): Flow<List<GetAllProducts>>
 
+    suspend fun retrieveAllProducts(): List<GetAllProducts>
+
     suspend fun deleteProductById(id: Long)
+
+    suspend fun deleteAll(ids: List<Long>)
 
     suspend fun clearProducts()
 
@@ -42,6 +47,10 @@ internal class ProductDataSourceImpl(
         return queries.getAllProducts().asFlow().mapToList(Dispatchers.Default)
     }
 
+    override suspend fun retrieveAllProducts(): List<GetAllProducts> {
+        return queries.getAllProducts().awaitAsList()
+    }
+
     override suspend fun deleteProductById(id: Long) {
         queries.deleteProductById(id)
     }
@@ -64,8 +73,9 @@ internal class ProductDataSourceImpl(
             createdAt = product.createdAt,
             content = product.content,
             shopId = product.shopId,
-            doneById = product.doneById,
-            creatorId = product.creatorId,
+            doneById = product.doneBy,
+            creatorId = product.userId,
+            doneSince = product.doneSince,
         )
     }
 
@@ -75,6 +85,14 @@ internal class ProductDataSourceImpl(
 
     override suspend fun markAsUndone(id: Long) {
         queries.markProductAsUndone(id)
+    }
+
+    override suspend fun deleteAll(ids: List<Long>) {
+        queries.transaction {
+            ids.forEach { id ->
+                deleteProductById(id)
+            }
+        }
     }
 
 }

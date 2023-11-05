@@ -1,5 +1,6 @@
 package io.github.jan.einkaufszettel.data.local
 
+import app.cash.sqldelight.async.coroutines.awaitAsList
 import app.cash.sqldelight.async.coroutines.awaitAsOneOrNull
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
@@ -14,6 +15,8 @@ import kotlinx.coroutines.flow.map
 interface ProfileDataSource {
 
     suspend fun getProfiles(): Flow<List<ProfileDto>>
+
+    suspend fun retrieveAllProfiles(): List<ProfileDto>
 
     suspend fun insertProfile(profile: ProfileDto) = insertProfiles(listOf(profile))
 
@@ -35,6 +38,10 @@ internal class ProfileDataSourceImpl(
     private val queries get() = databaseProvider.getDatabase().profileTableQueries
 
     override suspend fun getProfiles(): Flow<List<ProfileDto>> = queries.getProfiles().asFlow().mapToList(Dispatchers.Default).map { it.map(ProfileTable::toProfile) }
+
+    override suspend fun retrieveAllProfiles(): List<ProfileDto> {
+        return queries.getProfiles().awaitAsList().map(ProfileTable::toProfile)
+    }
 
     override suspend fun insertProfiles(profiles: List<ProfileDto>) {
         queries.transaction {

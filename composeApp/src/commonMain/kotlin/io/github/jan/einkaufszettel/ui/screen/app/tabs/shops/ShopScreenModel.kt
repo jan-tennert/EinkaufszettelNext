@@ -1,6 +1,5 @@
 package io.github.jan.einkaufszettel.ui.screen.app.tabs.shops
 
-import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import io.github.jan.einkaufszettel.data.local.ShopDataSource
@@ -22,7 +21,7 @@ class ShopScreenModel(
         data class Error(val message: String) : State
     }
 
-    val shops = shopDataSource.getAllShops().stateIn(screenModelScope, SharingStarted.Eagerly, emptyList())
+    val shopFlow = shopDataSource.getAllShops().stateIn(screenModelScope, SharingStarted.Eagerly, emptyList())
 
     fun refreshShops(silent: Boolean) {
         screenModelScope.launch {

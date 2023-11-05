@@ -14,6 +14,8 @@
 
     <string name="create_user_profile">Create User Profile</string>
     <string name="name">Username</string>
+    <string name="unknown">Unknown</string>
+    <string name="by">by</string>
     <string name="create">Create</string>
 
     <string name="home">Home</string>

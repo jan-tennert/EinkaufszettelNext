@@ -62,6 +62,7 @@ object ShopCardDefaults {
     val ICON_SIZE = 64.dp
     val PADDING = 8.dp
     val CONTENT_PADDING = 4.dp
+    val IMAGE_SIZE = 256f
 
 }
 
@@ -124,7 +125,7 @@ fun ShopCard(
                 ImageRequest(shop.iconUrl) {
                     scale(Scale.FIT)
                     size(SizeResolver {
-                        Size(256f, 256f)
+                        Size(ShopCardDefaults.IMAGE_SIZE, ShopCardDefaults.IMAGE_SIZE)
                     })
                 }
             }

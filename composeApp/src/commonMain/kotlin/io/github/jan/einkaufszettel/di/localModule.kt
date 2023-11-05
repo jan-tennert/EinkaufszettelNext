@@ -1,5 +1,7 @@
 package io.github.jan.einkaufszettel.di
 
+import io.github.jan.einkaufszettel.data.local.ProductDataSource
+import io.github.jan.einkaufszettel.data.local.ProductDataSourceImpl
 import io.github.jan.einkaufszettel.data.local.ProfileDataSource
 import io.github.jan.einkaufszettel.data.local.ProfileDataSourceImpl
 import io.github.jan.einkaufszettel.data.local.RecipeDataSource
@@ -12,8 +14,8 @@ val localModule = module {
     single<ProfileDataSource> {
         ProfileDataSourceImpl(get(), get())
     }
-    single<ProfileDataSource> {
-        ProfileDataSourceImpl(get(), get())
+    single<ProductDataSource> {
+        ProductDataSourceImpl(get())
     }
     single<ShopDataSource> {
         ShopDataSourceImpl(get())

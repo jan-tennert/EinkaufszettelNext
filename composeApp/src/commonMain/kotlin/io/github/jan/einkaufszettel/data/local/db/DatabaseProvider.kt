@@ -32,7 +32,7 @@ internal class DatabaseProviderImpl(
             Einkaufszettel.Schema.awaitCreate(driver)
         }
         mutex.withLock {
-            database = Einkaufszettel(driver, ProductTable.Adapter(InstantAdapter), ShopTable.Adapter(InstantAdapter, ListToStringAdapter))
+            database = Einkaufszettel(driver, ProductTable.Adapter(InstantAdapter, InstantAdapter), ShopTable.Adapter(InstantAdapter, ListToStringAdapter))
         }
         return database
     }
