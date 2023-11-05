@@ -5,20 +5,20 @@ import io.github.jan.supabase.postgrest.Postgrest
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Profile(
+data class ProfileDto(
     val id: String,
     val username: String
 )
 
 interface ProfileApi {
 
-    suspend fun retrieveOwnProfile(): Profile?
+    suspend fun retrieveOwnProfile(): ProfileDto?
 
-    suspend fun retrieveProfile(uid: String): Profile?
+    suspend fun retrieveProfile(uid: String): ProfileDto?
 
-    suspend fun createProfileForUser(uid: String, name: String): Profile
+    suspend fun createProfileForUser(uid: String, name: String): ProfileDto
 
-    suspend fun createProfileForCurrentUser(name: String): Profile
+    suspend fun createProfileForCurrentUser(name: String): ProfileDto
 
 }
 
@@ -30,21 +30,21 @@ internal class ProfileApiImpl(
 
     private val profileTable = postgrest["profiles"]
 
-    override suspend fun retrieveProfile(uid: String): Profile? {
+    override suspend fun retrieveProfile(uid: String): ProfileDto? {
         val result = profileTable.select {
-            Profile::id eq uid
+            ProfileDto::id eq uid
         }
         return result.decodeSingleOrNull()
     }
 
-    override suspend fun retrieveOwnProfile(): Profile? = retrieveProfile(goTrue.currentUserOrNull()?.id ?: error("No user logged in"))
+    override suspend fun retrieveOwnProfile(): ProfileDto? = retrieveProfile(goTrue.currentUserOrNull()?.id ?: error("No user logged in"))
 
-    override suspend fun createProfileForUser(uid: String, name: String): Profile {
-        val result = profileTable.insert(Profile(uid, name))
+    override suspend fun createProfileForUser(uid: String, name: String): ProfileDto {
+        val result = profileTable.insert(ProfileDto(uid, name))
         return result.decodeSingle()
     }
 
-    override suspend fun createProfileForCurrentUser(name: String): Profile {
+    override suspend fun createProfileForCurrentUser(name: String): ProfileDto {
         val uid = goTrue.currentUserOrNull()?.id ?: error("No user logged in")
         return createProfileForUser(uid, name)
     }

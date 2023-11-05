@@ -15,14 +15,17 @@ import io.github.jan.supabase.postgrest.postgrest
 import io.github.jan.supabase.serializer.KotlinXSerializer
 import io.github.jan.supabase.storage.Storage
 import io.github.jan.supabase.storage.storage
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonNamingStrategy
 import org.koin.dsl.module
 
-@OptIn(SupabaseExperimental::class)
+@OptIn(SupabaseExperimental::class, ExperimentalSerializationApi::class)
 val supabaseModule = module {
     single<Json> {
         Json {
             ignoreUnknownKeys = true
+            namingStrategy = JsonNamingStrategy.SnakeCase
         }
     }
     single<SupabaseClient> {

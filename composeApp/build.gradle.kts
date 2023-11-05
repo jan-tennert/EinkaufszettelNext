@@ -55,6 +55,7 @@ kotlin {
             implementation(libs.bundles.supabase)
             implementation(libs.sqlDelight.coroutines)
             implementation(libs.windowsizeclass)
+            implementation(libs.okio)
         }
 
         commonTest.dependencies {
@@ -69,6 +70,7 @@ kotlin {
             implementation(libs.kotlinx.coroutines.android)
             implementation(libs.sqlDelight.driver.android)
             implementation(libs.koin.android)
+            implementation(libs.ktor.client.okhttp)
         }
 
         jsMain.dependencies {
@@ -76,6 +78,7 @@ kotlin {
             implementation(devNpm("copy-webpack-plugin", "11.0.0"))
             implementation(npm("@cashapp/sqldelight-sqljs-worker", "2.0.0"))
             implementation(npm("sql.js", "1.8.0"))
+            implementation(libs.ktor.client.js)
         }
 
     }

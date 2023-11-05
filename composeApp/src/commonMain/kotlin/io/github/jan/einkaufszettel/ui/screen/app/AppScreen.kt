@@ -9,17 +9,21 @@ import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSiz
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.tab.CurrentTab
 import cafe.adriel.voyager.navigator.tab.TabNavigator
+import com.seiko.imageloader.ImageLoader
+import com.seiko.imageloader.LocalImageLoader
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.home.HomeTab
 import io.github.jan.einkaufszettel.ui.screen.app.navigation.AppNavigationBar
 import io.github.jan.einkaufszettel.ui.screen.app.navigation.AppNavigationRail
 import io.github.jan.einkaufszettel.ui.screen.app.navigation.AppNavigationTopBar
 import io.github.jan.supabase.CurrentPlatformTarget
 import io.github.jan.supabase.PlatformTarget
+import org.koin.compose.koinInject
 
 object AppScreen: Screen {
 
@@ -28,6 +32,7 @@ object AppScreen: Screen {
     override fun Content() {
         val screenModel = getScreenModel<AppScreenModel>()
         val windowSizeClass = calculateWindowSizeClass()
+        val imageLoader = koinInject<ImageLoader>()
         TabNavigator(HomeTab) { navigator ->
             Scaffold(
                 topBar = {
@@ -44,14 +49,13 @@ object AppScreen: Screen {
                         AppNavigationRail()
                     }
                     Box {
-                        CurrentTab()
+                        CompositionLocalProvider(LocalImageLoader provides imageLoader) {
+                            CurrentTab()
+                        }
                     }
                 }
             }
         }
     }
-
-
-
 
 }

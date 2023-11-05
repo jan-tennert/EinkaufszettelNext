@@ -1,12 +1,11 @@
 package io.github.jan.einkaufszettel.data.local
 
-import app.cash.sqldelight.async.coroutines.awaitAsOne
 import app.cash.sqldelight.async.coroutines.awaitAsOneOrNull
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import einkaufszettel.ProfileTable
 import io.github.jan.einkaufszettel.data.local.db.DatabaseProvider
-import io.github.jan.einkaufszettel.data.remote.Profile
+import io.github.jan.einkaufszettel.data.remote.ProfileDto
 import io.github.jan.supabase.gotrue.GoTrue
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -14,15 +13,15 @@ import kotlinx.coroutines.flow.map
 
 interface ProfileDataSource {
 
-    suspend fun getProfiles(): Flow<List<Profile>>
+    suspend fun getProfiles(): Flow<List<ProfileDto>>
 
-    suspend fun insertProfile(profile: Profile) = insertProfiles(listOf(profile))
+    suspend fun insertProfile(profile: ProfileDto) = insertProfiles(listOf(profile))
 
-    suspend fun insertProfiles(profiles: List<Profile>)
+    suspend fun insertProfiles(profiles: List<ProfileDto>)
 
-    suspend fun retrieveProfile(uid: String): Profile?
+    suspend fun retrieveProfile(uid: String): ProfileDto?
 
-    suspend fun retrieveOwnProfile(): Profile?
+    suspend fun retrieveOwnProfile(): ProfileDto?
 
     suspend fun clear()
 
@@ -35,9 +34,9 @@ internal class ProfileDataSourceImpl(
 
     private val queries get() = databaseProvider.getDatabase().profileTableQueries
 
-    override suspend fun getProfiles(): Flow<List<Profile>> = queries.getProfiles().asFlow().mapToList(Dispatchers.Default).map { it.map { p -> p.toProfile() } }
+    override suspend fun getProfiles(): Flow<List<ProfileDto>> = queries.getProfiles().asFlow().mapToList(Dispatchers.Default).map { it.map(ProfileTable::toProfile) }
 
-    override suspend fun insertProfiles(profiles: List<Profile>) {
+    override suspend fun insertProfiles(profiles: List<ProfileDto>) {
         queries.transaction {
             profiles.forEach { profile ->
                 queries.insertProfile(
@@ -48,9 +47,9 @@ internal class ProfileDataSourceImpl(
         }
     }
 
-    override suspend fun retrieveProfile(uid: String): Profile? = queries.getProfileById(uid).awaitAsOneOrNull()?.toProfile()
+    override suspend fun retrieveProfile(uid: String): ProfileDto? = queries.getProfileById(uid).awaitAsOneOrNull()?.toProfile()
 
-    override suspend fun retrieveOwnProfile(): Profile? = goTrue.currentUserOrNull()?.id?.let { retrieveProfile(it) }
+    override suspend fun retrieveOwnProfile(): ProfileDto? = goTrue.currentUserOrNull()?.id?.let { retrieveProfile(it) }
 
     override suspend fun clear() {
         queries.clearProfiles()
@@ -58,7 +57,7 @@ internal class ProfileDataSourceImpl(
 
 }
 
-private fun ProfileTable.toProfile() = Profile(
+private fun ProfileTable.toProfile() = ProfileDto(
     id = id,
     username = username
 )

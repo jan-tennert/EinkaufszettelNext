@@ -8,17 +8,19 @@ androidx-activityCompose = "1.8.0"
 compose-uitooling = "1.5.4"
 libres = "1.2.0"
 voyager = "1.0.0-rc08"
-composeImageLoader = "1.6.8"
+composeImageLoader = "1.7.0"
 buildConfig = "4.1.1"
 kotlinx-coroutines = "1.7.3"
 kotlinx-serialization = "1.6.0"
 kotlinx-datetime = "0.4.0"
 koin = "3.5.0"
 koin-compose = "1.1.0"
+ktor = "2.3.5"
 sqlDelight = "2.0.0"
 supabase = "1.4.6"
 lifecycle = "2.6.2"
 windowsizeclass = "0.3.1"
+okio = "3.6.0"
 
 [libraries]
 
@@ -50,6 +52,9 @@ postgrest-kt = { module = "io.github.jan-tennert.supabase:postgrest-kt", version
 compose-auth = { module = "io.github.jan-tennert.supabase:compose-auth", version.ref = "supabase" }
 compose-auth-ui = { module = "io.github.jan-tennert.supabase:compose-auth-ui", version.ref = "supabase" }
 windowsizeclass = { module = "dev.chrisbanes.material3:material3-window-size-class-multiplatform", version.ref = "windowsizeclass" }
+ktor-client-js = { module = "io.ktor:ktor-client-js", version.ref = "ktor" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
+okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
 
 [plugins]
 

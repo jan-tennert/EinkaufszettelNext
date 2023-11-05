@@ -1,0 +1,30 @@
+import kotlin.String;
+import kotlin.collections.List;
+import kotlinx.datetime.Instant;
+
+CREATE TABLE shopTable (
+    id INTEGER NOT NULL PRIMARY KEY,
+    createdAt INTEGER AS Instant NOT NULL,
+    name TEXT NOT NULL,
+    iconUrl TEXT NOT NULL,
+    ownerId TEXT NOT NULL,
+    authorizedUsers TEXT AS List<String> NOT NULL,
+    FOREIGN KEY (ownerId) REFERENCES profileTable(id)
+);
+
+getAllShops:
+SELECT * FROM shopTable;
+
+insertShop:
+INSERT OR REPLACE
+INTO shopTable
+VALUES(?, ?, ?, ?, ?, ?);
+
+deleteShopById:
+DELETE
+FROM shopTable
+WHERE id = :id;
+
+clearShops:
+DELETE
+FROM shopTable;
