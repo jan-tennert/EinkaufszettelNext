@@ -51,11 +51,11 @@ object ShopScreen: Screen {
                             shop = it,
                             modifier = Modifier.size(ShopCardDefaults.SIZE).padding(ShopCardDefaults.PADDING),
                             onClick = {
-                                if (CurrentPlatformTarget == PlatformTarget.ANDROID) {
+                            //    if (CurrentPlatformTarget == PlatformTarget.ANDROID) {
                                     navigator.push(ShopDetailScreen(it.id))
-                                } else {
-                                    sideBar = ShopDetailScreen(it.id)
-                                }
+                            //    } else {
+                         //           sideBar = ShopDetailScreen(it.id)
+                         //       }
                             },
                             onEdit = {},
                             onDelete = {}

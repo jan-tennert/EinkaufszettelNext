@@ -44,6 +44,7 @@ class ShopDetailScreen(val id: Long): Screen {
     override fun Content() {
         val screenModel = getScreenModel<ShopDetailScreenModel>(parameters = { parametersOf(id) })
         val products by screenModel.productFlow.collectAsStateWithLifecycle()
+        println(products.size)
         val screenModelState by screenModel.state.collectAsStateWithLifecycle()
         var showCreateDialog by remember { mutableStateOf(false) }
         val listState = rememberLazyListState()
