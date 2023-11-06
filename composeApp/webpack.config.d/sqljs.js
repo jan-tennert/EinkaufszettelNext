@@ -1,3 +1,5 @@
+const ASSET_PATH = process.env.ASSET_PATH || '/';
+
 config.resolve = {
     fallback: {
         fs: false,
@@ -6,6 +8,8 @@ config.resolve = {
         os: false
     }
 };
+
+config.output.publicPath = ASSET_PATH;
 
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 config.plugins.push(

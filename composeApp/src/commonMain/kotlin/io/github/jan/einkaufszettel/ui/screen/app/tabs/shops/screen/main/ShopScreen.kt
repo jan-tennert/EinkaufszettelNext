@@ -22,6 +22,7 @@ import cafe.adriel.voyager.koin.getNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import io.github.jan.einkaufszettel.collectAsStateWithLifecycle
+import io.github.jan.einkaufszettel.ui.screen.app.pullrefresh.RefreshScope
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.ShopScreenModel
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.components.ShopCard
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.components.ShopCardDefaults
@@ -39,34 +40,32 @@ object ShopScreen: Screen {
         val shops by screenModel.shopFlow.collectAsStateWithLifecycle()
         var sideBar by remember { mutableStateOf<Screen?>(null) }
 
-        LaunchedEffect(Unit) {
-            screenModel.refreshShops(true)
-        }
-
-        Row {
-            LazyVerticalGrid(
-                columns = GridCells.Adaptive(ShopCardDefaults.SIZE),
-                modifier = Modifier.fillMaxHeight().weight(1f)
-            ) {
-                items(shops, { it.id }) {
-                    ShopCard(
-                        shop = it,
-                        modifier = Modifier.size(ShopCardDefaults.SIZE).padding(ShopCardDefaults.PADDING),
-                        onClick = {
-                            if(CurrentPlatformTarget == PlatformTarget.ANDROID) {
-                                navigator.push(ShopDetailScreen(it.id))
-                            } else {
-                                sideBar = ShopDetailScreen(it.id)
-                            }
-                        },
-                        onEdit = {},
-                        onDelete = {}
-                    )
+        RefreshScope(navigator) {
+            Row {
+                LazyVerticalGrid(
+                    columns = GridCells.Adaptive(ShopCardDefaults.SIZE),
+                    modifier = Modifier.fillMaxHeight().weight(1f)
+                ) {
+                    items(shops, { it.id }) {
+                        ShopCard(
+                            shop = it,
+                            modifier = Modifier.size(ShopCardDefaults.SIZE).padding(ShopCardDefaults.PADDING),
+                            onClick = {
+                                if (CurrentPlatformTarget == PlatformTarget.ANDROID) {
+                                    navigator.push(ShopDetailScreen(it.id))
+                                } else {
+                                    sideBar = ShopDetailScreen(it.id)
+                                }
+                            },
+                            onEdit = {},
+                            onDelete = {}
+                        )
+                    }
                 }
-            }
-            sideBar?.let {
-                Box(Modifier.fillMaxHeight().fillMaxWidth(0.3f)) {
-                    sideBar!!.Content()
+                sideBar?.let {
+                    Box(Modifier.fillMaxHeight().fillMaxWidth(0.3f)) {
+                        sideBar!!.Content()
+                    }
                 }
             }
         }

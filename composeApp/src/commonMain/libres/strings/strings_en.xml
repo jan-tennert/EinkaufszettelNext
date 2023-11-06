@@ -17,6 +17,11 @@
     <string name="unknown">Unknown</string>
     <string name="by">by</string>
     <string name="create">Create</string>
+    <string name="save">Speichern</string>
+
+    <string name="create_product">Create Product</string>
+    <string name="edit_product">Edit Product</string>
+    <string name="product">Product</string>
 
     <string name="home">Home</string>
     <string name="shops">Lists</string>

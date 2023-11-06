@@ -5,7 +5,7 @@ import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.screen.detail.ShopD
 import org.koin.dsl.module
 
 val shopModels = module {
-    single {
+    factory {
         ShopScreenModel(get(), get())
     }
     factory { parameters ->
@@ -13,8 +13,7 @@ val shopModels = module {
             shopId = parameters.get(),
             productApi = get(),
             productDataSource = get(),
-            profileDataSource = get(),
-            profileApi = get()
+            goTrue = get()
         )
     }
 }

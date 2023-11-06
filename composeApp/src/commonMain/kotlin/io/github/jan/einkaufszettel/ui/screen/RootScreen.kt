@@ -24,7 +24,11 @@ object RootScreen: Screen {
             LaunchedEffect(sessionStatus) {
                 when(sessionStatus) {
                     is SessionStatus.Authenticated -> navigator.push(AuthenticatedScreen)
-                    SessionStatus.NetworkError -> navigator.push(AppScreen)
+                    SessionStatus.NetworkError -> {
+                        if(navigator.lastItem !is AppScreen) {
+                            navigator.push(AppScreen)
+                        }
+                    }
                     SessionStatus.NotAuthenticated -> navigator.push(LoginScreen)
                     else -> {}
                 }

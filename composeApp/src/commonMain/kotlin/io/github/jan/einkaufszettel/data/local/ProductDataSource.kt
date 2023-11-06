@@ -8,6 +8,7 @@ import io.github.jan.einkaufszettel.data.local.db.DatabaseProvider
 import io.github.jan.einkaufszettel.data.remote.ProductDto
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.datetime.Instant
 
 interface ProductDataSource {
 
@@ -25,11 +26,11 @@ interface ProductDataSource {
 
     suspend fun insertAll(products: List<ProductDto>)
 
-    suspend fun markAsDone(id: Long, doneById: String)
-
-    suspend fun markAsUndone(id: Long)
+    suspend fun changeDoneStatus(id: Long, doneById: String?, doneSince: Instant?)
 
     suspend fun editContent(id: Long, content: String)
+
+    suspend fun setLoading(id: Long, loading: Boolean)
 
 }
 
@@ -76,15 +77,12 @@ internal class ProductDataSourceImpl(
             doneById = product.doneBy,
             creatorId = product.userId,
             doneSince = product.doneSince,
+            loading = false
         )
     }
 
-    override suspend fun markAsDone(id: Long, doneById: String) {
-        queries.markProductAsDone(doneById, id)
-    }
-
-    override suspend fun markAsUndone(id: Long) {
-        queries.markProductAsUndone(id)
+    override suspend fun changeDoneStatus(id: Long, doneById: String?, doneSince: Instant?) {
+        queries.changeDoneStatus(doneSince, doneById, id)
     }
 
     override suspend fun deleteAll(ids: List<Long>) {
@@ -93,6 +91,10 @@ internal class ProductDataSourceImpl(
                 deleteProductById(id)
             }
         }
+    }
+
+    override suspend fun setLoading(id: Long, loading: Boolean) {
+        queries.updateLoading(loading, id)
     }
 
 }

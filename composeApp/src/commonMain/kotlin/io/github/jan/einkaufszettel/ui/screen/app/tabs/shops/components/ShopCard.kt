@@ -100,11 +100,13 @@ fun ShopCard(
                             pressOffset = DpOffset(it.x.toDp(), it.y.toDp())
                         },
                         onPress = {
-                            onClick()
                             val press = PressInteraction.Press(it)
                             interactionSource.emit(press)
                             tryAwaitRelease()
                             interactionSource.emit(PressInteraction.Release(press))
+                        },
+                        onTap = {
+                            onClick()
                         }
                     )
                 }

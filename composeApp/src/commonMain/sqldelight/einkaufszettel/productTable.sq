@@ -1,3 +1,4 @@
+import kotlin.Boolean;
 import kotlinx.datetime.Instant;
 
 CREATE TABLE productTable (
@@ -8,12 +9,13 @@ CREATE TABLE productTable (
     doneSince INTEGER AS Instant,
     doneById TEXT,
     creatorId TEXT NOT NULL,
+    loading INTEGER AS Boolean DEFAULT 0,
     FOREIGN KEY (creatorId) REFERENCES profileTable(id),
     FOREIGN KEY(doneById) REFERENCES profileTable(id)
 );
 
 getAllProducts:
-SELECT productEntry.id, content, createdAt, shopId, doneSince, doneBy.username AS doneBy, creator.username AS creator
+SELECT productEntry.id, content, loading, createdAt, shopId, doneSince, doneBy.username AS doneBy, creator.username AS creator
 FROM productTable AS productEntry
 LEFT JOIN profileTable doneBy
 ON productEntry.doneById = doneBy.id
@@ -24,7 +26,7 @@ ORDER BY doneBy IS NULL DESC;
 insertProduct:
 INSERT OR REPLACE
 INTO productTable
-VALUES(?, ?, ?, ?, ?, ?, ?);
+VALUES(?, ?, ?, ?, ?, ?, ?, ?);
 
 deleteProductById:
 DELETE
@@ -34,17 +36,17 @@ WHERE id = :id;
 clear:
 DELETE FROM productTable;
 
-markProductAsDone:
+changeDoneStatus:
 UPDATE productTable
-SET doneById = :doneById
-WHERE id = :id;
-
-markProductAsUndone:
-UPDATE productTable
-SET doneById = NULL
+SET doneSince = :doneSince, doneById = :doneById
 WHERE id = :id;
 
 editProductContent:
 UPDATE productTable
 SET content = :content
+WHERE id = :id;
+
+updateLoading:
+UPDATE productTable
+SET loading = :loading
 WHERE id = :id;

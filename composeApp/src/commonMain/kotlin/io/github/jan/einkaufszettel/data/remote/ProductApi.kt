@@ -20,7 +20,7 @@ data class ProductDto(
 data class ProductCreationDto(
     val content: String,
     val shopId: Long,
-    val creatorId: String
+    val userId: String
 )
 
 interface ProductApi {
@@ -33,13 +33,9 @@ interface ProductApi {
         creatorId: String
     ): ProductDto
 
-    suspend fun markAsDone(
+    suspend fun changeDoneStatus(
         id: Long,
-        doneById: String
-    ): ProductDto
-
-    suspend fun markAsUndone(
-        id: Long
+        doneById: String?
     ): ProductDto
 
     suspend fun editContent(
@@ -67,7 +63,7 @@ internal class ProductApiImpl(
         return table.insert(ProductCreationDto(
             content = content,
             shopId = shopId,
-            creatorId = creatorId
+            userId = creatorId
         )).decodeSingle()
     }
 
@@ -85,19 +81,10 @@ internal class ProductApiImpl(
         }.decodeSingle()
     }
 
-    override suspend fun markAsDone(id: Long, doneById: String): ProductDto {
+    override suspend fun changeDoneStatus(id: Long, doneById: String?): ProductDto {
         return table.update({
             ProductDto::doneBy setTo doneById
-            ProductDto::doneSince setTo Clock.System.now()
-        }) {
-            ProductDto::id eq id
-        }.decodeSingle()
-    }
-
-    override suspend fun markAsUndone(id: Long): ProductDto {
-        return table.update({
-            ProductDto::doneBy setTo null
-            ProductDto::doneSince setTo null
+            ProductDto::doneSince setTo if(doneById != null) Clock.System.now() else null
         }) {
             ProductDto::id eq id
         }.decodeSingle()

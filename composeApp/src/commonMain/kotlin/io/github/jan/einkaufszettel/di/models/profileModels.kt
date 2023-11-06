@@ -4,7 +4,7 @@ import io.github.jan.einkaufszettel.ui.screen.profile.ProfileCreateScreenModel
 import org.koin.dsl.module
 
 val profileModels = module {
-    single<ProfileCreateScreenModel> {
+    factory {
         ProfileCreateScreenModel(get(), get())
     }
 }

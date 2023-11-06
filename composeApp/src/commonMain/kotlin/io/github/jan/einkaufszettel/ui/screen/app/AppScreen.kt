@@ -10,13 +10,16 @@ import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import cafe.adriel.voyager.core.lifecycle.LifecycleEffect
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.tab.CurrentTab
 import cafe.adriel.voyager.navigator.tab.TabNavigator
 import com.seiko.imageloader.ImageLoader
 import com.seiko.imageloader.LocalImageLoader
+import io.github.jan.einkaufszettel.collectAsStateWithLifecycle
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.home.HomeTab
 import io.github.jan.einkaufszettel.ui.screen.app.navigation.AppNavigationBar
 import io.github.jan.einkaufszettel.ui.screen.app.navigation.AppNavigationRail
@@ -33,6 +36,14 @@ object AppScreen: Screen {
         val screenModel = getScreenModel<AppScreenModel>()
         val windowSizeClass = calculateWindowSizeClass()
         val imageLoader = koinInject<ImageLoader>()
+       // val screenState by screenModel.state.collectAsStateWithLifecycle()
+
+        LifecycleEffect(
+            onStarted = {
+                screenModel.refresh(silent = true)
+            }
+        )
+
         TabNavigator(HomeTab) { navigator ->
             Scaffold(
                 topBar = {
