@@ -77,7 +77,7 @@ internal class ProductDataSourceImpl(
             doneById = product.doneBy,
             creatorId = product.userId,
             doneSince = product.doneSince,
-            loading = false
+            loading = 0L
         )
     }
 
@@ -94,7 +94,7 @@ internal class ProductDataSourceImpl(
     }
 
     override suspend fun setLoading(id: Long, loading: Boolean) {
-        queries.updateLoading(loading, id)
+        queries.updateLoading(if(loading) 1L else 0L, id)
     }
 
 }

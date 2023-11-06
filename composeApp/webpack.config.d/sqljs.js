@@ -9,8 +9,6 @@ config.resolve = {
     }
 };
 
-config.output.publicPath = "/EinkaufszettelNext/";
-
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 config.plugins.push(
     new CopyWebpackPlugin({

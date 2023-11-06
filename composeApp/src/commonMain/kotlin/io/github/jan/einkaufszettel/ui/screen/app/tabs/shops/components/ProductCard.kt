@@ -49,13 +49,14 @@ fun ProductCard(
         ) {
             val isDone = product.doneSince != null || product.doneBy != null
             Box(contentAlignment = Alignment.Center, modifier = Modifier.size(24.dp)) {
-                CircularProgressIndicator(
-                    Modifier
-                        .alpha(if (product.loading == true) 1f else 0f)
-                        .matchParentSize())
-                Checkbox(checked = isDone, modifier = Modifier
-                    .alpha(if (product.loading == false) 1f else 0f)
-                    .matchParentSize(), onCheckedChange = onDoneChange)
+                if(product.loading == 1L) {
+                    CircularProgressIndicator(
+                        Modifier
+                            .matchParentSize())
+                } else {
+                    Checkbox(checked = isDone, modifier = Modifier
+                        .matchParentSize(), onCheckedChange = onDoneChange)
+                }
             }
             Spacer(Modifier.width(8.dp))
             Column(Modifier.weight(1f)) {
@@ -64,11 +65,11 @@ fun ProductCard(
                 Text("$date ${Res.string.by} ${(product.doneBy ?: product.creator) ?: Res.string.unknown}", fontSize = 10.sp)
             }
             if(isDone) {
-                IconButton(onDelete, enabled = product.loading != true) {
+                IconButton(onDelete, enabled = product.loading != 1L) {
                     Icon(Icons.Filled.Delete, null)
                 }
             } else {
-                IconButton({ showEditDialog = true }, enabled = product.loading != true) {
+                IconButton({ showEditDialog = true }, enabled = product.loading != 1L) {
                     Icon(Icons.Filled.Edit, null)
                 }
             }

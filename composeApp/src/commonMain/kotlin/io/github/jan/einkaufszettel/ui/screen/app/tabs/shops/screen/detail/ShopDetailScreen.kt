@@ -9,7 +9,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Create
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -28,23 +27,22 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import io.github.jan.einkaufszettel.Res
 import io.github.jan.einkaufszettel.collectAsStateWithLifecycle
+import io.github.jan.einkaufszettel.getScreenModel
 import io.github.jan.einkaufszettel.ui.dialog.ErrorDialog
-import io.github.jan.einkaufszettel.ui.screen.app.AppScreenModel
 import io.github.jan.einkaufszettel.ui.screen.app.pullrefresh.RefreshScope
-import io.github.jan.einkaufszettel.ui.screen.app.pullrefresh.pullRefresh
-import io.github.jan.einkaufszettel.ui.screen.app.pullrefresh.rememberPullRefreshState
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.components.ProductCard
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.dialog.ProductDialog
 import org.koin.core.parameter.parametersOf
+import org.koin.core.qualifier.Qualifier
+import org.koin.core.qualifier.named
 
-class ShopDetailScreen(val id: Long): Screen {
+data class ShopDetailScreen(val id: Long): Screen {
 
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
     override fun Content() {
-        val screenModel = getScreenModel<ShopDetailScreenModel>(parameters = { parametersOf(id) })
+        val screenModel = getScreenModel<ShopDetailScreenModel>(parameters = { parametersOf(id) }, tag = id.toString())
         val products by screenModel.productFlow.collectAsStateWithLifecycle()
-        println(products.size)
         val screenModelState by screenModel.state.collectAsStateWithLifecycle()
         var showCreateDialog by remember { mutableStateOf(false) }
         val listState = rememberLazyListState()

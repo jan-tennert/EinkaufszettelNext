@@ -9,7 +9,7 @@ CREATE TABLE productTable (
     doneSince INTEGER AS Instant,
     doneById TEXT,
     creatorId TEXT NOT NULL,
-    loading INTEGER AS Boolean DEFAULT 0,
+    loading INTEGER DEFAULT 0, -- Booleans are broken on Web for some reason
     FOREIGN KEY (creatorId) REFERENCES profileTable(id),
     FOREIGN KEY(doneById) REFERENCES profileTable(id)
 );
