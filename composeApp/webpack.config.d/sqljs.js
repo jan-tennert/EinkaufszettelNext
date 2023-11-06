@@ -9,7 +9,7 @@ config.resolve = {
     }
 };
 
-config.output.publicPath = "auto";
+config.output.publicPath = "/EinkaufszettelNext/";
 
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 config.plugins.push(
