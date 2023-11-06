@@ -29,6 +29,7 @@ import io.github.jan.einkaufszettel.Res
 import io.github.jan.einkaufszettel.collectAsStateWithLifecycle
 import io.github.jan.einkaufszettel.getScreenModel
 import io.github.jan.einkaufszettel.ui.dialog.ErrorDialog
+import io.github.jan.einkaufszettel.ui.screen.app.AppScreenModel
 import io.github.jan.einkaufszettel.ui.screen.app.pullrefresh.RefreshScope
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.components.ProductCard
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.dialog.ProductDialog
@@ -46,7 +47,7 @@ data class ShopDetailScreen(val id: Long): Screen {
         val screenModelState by screenModel.state.collectAsStateWithLifecycle()
         var showCreateDialog by remember { mutableStateOf(false) }
         val listState = rememberLazyListState()
-        RefreshScope(LocalNavigator.currentOrThrow.parent!!) {
+        RefreshScope(LocalNavigator.currentOrThrow.parent!!, AppScreenModel.RefreshType.PRODUCTS) {
             Scaffold(
                 floatingActionButton = {
                     CreateButton(

@@ -4,7 +4,7 @@ import io.github.jan.einkaufszettel.ui.screen.app.AppScreenModel
 import org.koin.dsl.module
 
 val homeModels = module {
-    factory {
+    single {
         AppScreenModel(get(), get(), get(), get(), get(), get())
     }
 }

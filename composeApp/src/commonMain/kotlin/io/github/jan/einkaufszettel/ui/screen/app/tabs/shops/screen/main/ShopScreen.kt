@@ -1,8 +1,15 @@
 package io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.screen.main
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.slideIn
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -20,6 +27,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import io.github.jan.einkaufszettel.collectAsStateWithLifecycle
+import io.github.jan.einkaufszettel.ui.screen.app.AppScreenModel
 import io.github.jan.einkaufszettel.ui.screen.app.pullrefresh.RefreshScope
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.ShopScreenModel
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.components.ShopCard
@@ -31,7 +39,7 @@ import io.github.jan.supabase.PlatformTarget
 
 object ShopScreen: Screen {
 
-    @OptIn(ExperimentalVoyagerApi::class)
+    @OptIn(ExperimentalVoyagerApi::class, ExperimentalFoundationApi::class)
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
@@ -39,7 +47,7 @@ object ShopScreen: Screen {
         val shops by screenModel.shopFlow.collectAsStateWithLifecycle()
 
         Navigator(BlankScreen) { navigator ->
-            RefreshScope(navigator.parent!!) {
+            RefreshScope(navigator.parent!!, AppScreenModel.RefreshType.SHOPS) {
                 Row {
                     LazyVerticalGrid(
                         columns = GridCells.Adaptive(ShopCardDefaults.SIZE),
@@ -48,7 +56,7 @@ object ShopScreen: Screen {
                         items(shops, { it.id }) {
                             ShopCard(
                                 shop = it,
-                                modifier = Modifier.size(ShopCardDefaults.SIZE).padding(ShopCardDefaults.PADDING),
+                                modifier = Modifier.size(ShopCardDefaults.SIZE).padding(ShopCardDefaults.PADDING).animateItemPlacement(),
                                 onClick = {
                                     if (CurrentPlatformTarget == PlatformTarget.ANDROID) {
                                         navigator.parent!!.push(ShopDetailScreen(it.id))
@@ -56,9 +64,9 @@ object ShopScreen: Screen {
                                         if(navigator.lastItem is BlankScreen) {
                                             navigator.push(ShopDetailScreen(it.id))
                                         } else if (navigator.lastItem is ShopDetailScreen && (navigator.lastItem as ShopDetailScreen).id == it.id) {
-                                            navigator.replace(BlankScreen)
+                                            navigator.push(BlankScreen)
                                         } else if (navigator.lastItem is ShopDetailScreen) {
-                                            navigator.replace(ShopDetailScreen(it.id))
+                                            navigator.push(ShopDetailScreen(it.id))
                                         }
                                     }
                                 },
@@ -68,17 +76,27 @@ object ShopScreen: Screen {
                         }
                     }
 
-                    if(navigator.lastItem !is BlankScreen) {
-                        VerticalDivider(Modifier.fillMaxHeight())
-                        Box(
-                            modifier = Modifier.fillMaxHeight().fillMaxWidth(0.3f),
+                    AnimatedVisibility(
+                        visible = navigator.lastItem !is BlankScreen,
+                        enter = slideInHorizontally { it },
+                        exit = slideOutHorizontally { it },
+                    ) {
+                        Row(
+                            Modifier.fillMaxHeight().fillMaxWidth(0.3f)
                         ) {
-                            CurrentScreen()
+                            VerticalDivider(Modifier.fillMaxHeight())
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                            ) {
+                                CurrentScreen()
+                            }
                         }
                     }
                 }
             }
         }
     }
+
+
 
 }

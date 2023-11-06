@@ -6,7 +6,9 @@ import androidx.compose.runtime.collectAsState
 import io.github.jan.supabase.gotrue.GoTrue
 import io.ktor.http.*
 import kotlinx.browser.window
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.StateFlow
+import kotlin.coroutines.CoroutineContext
 
 @Composable
 actual fun <T> StateFlow<T>.collectAsStateWithLifecycle(): State<T> = collectAsState()
@@ -20,3 +22,5 @@ actual suspend fun GoTrue.checkForCode() {
         }.buildString()
     }
 }
+
+actual val PlatformNetworkContext: CoroutineContext = Dispatchers.Default

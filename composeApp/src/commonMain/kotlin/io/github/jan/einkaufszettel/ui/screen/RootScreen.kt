@@ -25,7 +25,7 @@ object RootScreen: Screen {
                 when(sessionStatus) {
                     is SessionStatus.Authenticated -> navigator.push(AuthenticatedScreen)
                     SessionStatus.NetworkError -> {
-                        if(navigator.lastItem !is AppScreen) {
+                        if(navigator.lastItem is LoadingScreen) {
                             navigator.push(AppScreen)
                         }
                     }

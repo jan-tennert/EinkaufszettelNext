@@ -10,9 +10,12 @@ import kotlinx.coroutines.flow.StateFlow
 import org.koin.compose.getKoin
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.qualifier.Qualifier
+import kotlin.coroutines.CoroutineContext
 
 @Composable
 expect fun <T> StateFlow<T>.collectAsStateWithLifecycle(): State<T>
+
+expect val PlatformNetworkContext: CoroutineContext
 
 expect suspend fun GoTrue.checkForCode()
 

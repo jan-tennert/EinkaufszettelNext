@@ -2,6 +2,7 @@ package io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.screen.detail
 
 import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
+import io.github.jan.einkaufszettel.PlatformNetworkContext
 import io.github.jan.einkaufszettel.data.local.ProductDataSource
 import io.github.jan.einkaufszettel.data.local.ProfileDataSource
 import io.github.jan.einkaufszettel.data.remote.ProductApi
@@ -9,6 +10,7 @@ import io.github.jan.einkaufszettel.data.remote.ProfileApi
 import io.github.jan.einkaufszettel.ui.screen.app.AppScreenModel
 import io.github.jan.supabase.exceptions.RestException
 import io.github.jan.supabase.gotrue.GoTrue
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -33,7 +35,7 @@ class ShopDetailScreenModel(
         .stateIn(screenModelScope, SharingStarted.Eagerly, emptyList())
 
     fun changeDoneStatus(productId: Long, done: Boolean) {
-        screenModelScope.launch {
+        screenModelScope.launch(PlatformNetworkContext) {
             mutableState.value = State.Loading
             productDataSource.setLoading(productId, true)
             runCatching {
@@ -53,7 +55,7 @@ class ShopDetailScreenModel(
     }
 
     fun deleteProduct(productId: Long) {
-        screenModelScope.launch {
+        screenModelScope.launch(PlatformNetworkContext) {
             mutableState.value = State.Loading
             runCatching {
                 productApi.deleteProduct(productId)
@@ -71,7 +73,7 @@ class ShopDetailScreenModel(
     }
 
     fun editContent(productId: Long, content: String) {
-        screenModelScope.launch {
+        screenModelScope.launch(PlatformNetworkContext) {
             mutableState.value = State.Loading
             productDataSource.setLoading(productId, true)
             runCatching {
@@ -91,7 +93,7 @@ class ShopDetailScreenModel(
     }
 
     fun createProduct(content: String) {
-        screenModelScope.launch {
+        screenModelScope.launch(PlatformNetworkContext) {
             mutableState.value = State.Loading
             runCatching {
                 productApi.createProduct(shopId, content, goTrue.currentUserOrNull()?.id ?: error("User not logged in"))
