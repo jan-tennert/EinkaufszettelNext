@@ -9,7 +9,7 @@ config.resolve = {
     }
 };
 
-config.output.publicPath = ASSET_PATH;
+config.output.publicPath = "auto";
 
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 config.plugins.push(
