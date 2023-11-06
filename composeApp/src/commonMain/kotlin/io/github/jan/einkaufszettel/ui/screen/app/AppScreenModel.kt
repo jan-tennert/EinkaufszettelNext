@@ -85,7 +85,12 @@ class AppScreenModel(
 
     private suspend fun refreshShops() {
         val oldShops = shopDataSource.retrieveAllShops()
-        val newShops = shopApi.retrieveShops()
+        val newShops = shopApi.retrieveShops().map {
+            val old = oldShops.find { oldShop -> oldShop.id == it.id }
+            val collapsed = old?.collapsed ?: false
+            val pinned = old?.pinned ?: false
+            it.copy(collapsed = collapsed, pinned = pinned)
+        }
         val shopsToDelete = oldShops.filter { oldShop ->
             newShops.none { newShop ->
                 newShop.id == oldShop.id

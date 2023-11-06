@@ -22,7 +22,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import io.github.jan.einkaufszettel.Res
@@ -31,11 +30,10 @@ import io.github.jan.einkaufszettel.getScreenModel
 import io.github.jan.einkaufszettel.ui.dialog.ErrorDialog
 import io.github.jan.einkaufszettel.ui.screen.app.AppScreenModel
 import io.github.jan.einkaufszettel.ui.screen.app.pullrefresh.RefreshScope
-import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.components.ProductCard
+import io.github.jan.einkaufszettel.ui.screen.app.tabs.components.ProductCard
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.dialog.ProductDialog
+import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.screen.ShopProductScreenModel
 import org.koin.core.parameter.parametersOf
-import org.koin.core.qualifier.Qualifier
-import org.koin.core.qualifier.named
 
 data class ShopDetailScreen(val id: Long): Screen {
 
@@ -82,10 +80,10 @@ data class ShopDetailScreen(val id: Long): Screen {
         }
 
         when(screenModelState) {
-            is ShopDetailScreenModel.State.Error -> {
-                ErrorDialog((screenModelState as ShopDetailScreenModel.State.Error).message, screenModel::resetState)
+            is ShopProductScreenModel.State.Error -> {
+                ErrorDialog((screenModelState as ShopProductScreenModel.State.Error).message, screenModel::resetState)
             }
-            ShopDetailScreenModel.State.NetworkError -> {
+            ShopProductScreenModel.State.NetworkError -> {
                 ErrorDialog(Res.string.network_error, screenModel::resetState)
             }
             else -> {}

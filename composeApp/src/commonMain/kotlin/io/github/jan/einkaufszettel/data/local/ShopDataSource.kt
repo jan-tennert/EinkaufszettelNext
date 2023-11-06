@@ -26,6 +26,10 @@ interface ShopDataSource {
 
     suspend fun insertAll(shops: List<ShopDto>)
 
+    suspend fun changeCollapsed(id: Long, collapsed: Boolean)
+
+    suspend fun changePinned(id: Long, pinned: Boolean)
+
 }
 
 internal class ShopDataSourceImpl(
@@ -61,7 +65,9 @@ internal class ShopDataSourceImpl(
             name = shop.name,
             iconUrl = shop.iconUrl,
             ownerId = shop.ownerId,
-            authorizedUsers = shop.authorizedUsers
+            authorizedUsers = shop.authorizedUsers,
+            collapsed = if (shop.collapsed) 1L else 0L,
+            pinned = if (shop.pinned) 1L else 0L
         )
     }
 
@@ -77,6 +83,14 @@ internal class ShopDataSourceImpl(
         }
     }
 
+    override suspend fun changeCollapsed(id: Long, collapsed: Boolean) {
+        queries.changeCollapsed(id, if (collapsed) 1L else 0L)
+    }
+
+    override suspend fun changePinned(id: Long, pinned: Boolean) {
+        queries.changePinned(id, if (pinned) 1L else 0L)
+    }
+
 }
 
 private fun ShopTable.toShopDto(): ShopDto {
@@ -86,6 +100,8 @@ private fun ShopTable.toShopDto(): ShopDto {
         name = name,
         iconUrl = iconUrl,
         ownerId = ownerId,
-        authorizedUsers = authorizedUsers
+        authorizedUsers = authorizedUsers,
+        collapsed = collapsed == 1L,
+        pinned = pinned == 1L
     )
 }

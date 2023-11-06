@@ -3,6 +3,7 @@ package io.github.jan.einkaufszettel.data.remote
 import io.github.jan.supabase.postgrest.Postgrest
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
 @Serializable
 data class ShopDto(
@@ -11,7 +12,9 @@ data class ShopDto(
     val name: String,
     val iconUrl: String,
     val ownerId: String,
-    val authorizedUsers: List<String>
+    val authorizedUsers: List<String>,
+    @Transient val collapsed: Boolean = false,
+    @Transient val pinned: Boolean = false
 )
 
 @Serializable

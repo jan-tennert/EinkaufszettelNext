@@ -1,4 +1,4 @@
-package io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.components
+package io.github.jan.einkaufszettel.ui.screen.app.tabs.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
