@@ -47,6 +47,7 @@ open class ShopProductScreenModel(
     fun deleteProduct(productId: Long) {
         screenModelScope.launch(PlatformNetworkContext) {
             mutableState.value = State.Loading
+            productDataSource.setLoading(productId, true)
             runCatching {
                 productApi.deleteProduct(productId)
             }.onSuccess {
@@ -56,6 +57,7 @@ open class ShopProductScreenModel(
                     is RestException -> mutableState.value = State.Error(it.message ?: "")
                     else -> mutableState.value = State.NetworkError
                 }
+                productDataSource.setLoading(productId, false)
             }.onSuccess {
                 mutableState.value = State.Idle
             }
