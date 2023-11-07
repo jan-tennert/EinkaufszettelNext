@@ -1,13 +1,18 @@
 package io.github.jan.einkaufszettel.ui.screen.app.tabs.home
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
@@ -51,8 +56,8 @@ data object HomeTab: Tab {
         val screenModelState by screenModel.state.collectAsStateWithLifecycle()
         val shopAndProducts by screenModel.shopAndProductFlow.collectAsStateWithLifecycle()
         when(windowSizeClass.widthSizeClass) {
-            WindowWidthSizeClass.Compact -> CompactContent(shopAndProducts, screenModel)
-            WindowWidthSizeClass.Expanded -> ExpandedContent()
+            WindowWidthSizeClass.Compact, WindowWidthSizeClass.Medium -> CompactContent(shopAndProducts, screenModel)
+            WindowWidthSizeClass.Expanded -> ExpandedContent(shopAndProducts, screenModel)
         }
 
         when(screenModelState) {
@@ -76,14 +81,11 @@ data object HomeTab: Tab {
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            items(shopAndProducts, { it.first.id }) { (shop, products) ->
-                Box(
-                    modifier = Modifier.fillMaxWidth().clickable { screenModel.changeShopCollapse(shop.id, !shop.collapsed) },
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(shop.name, style = MaterialTheme.typography.headlineSmall)
+            shopAndProducts.forEach { (shop, products) ->
+                stickyHeader {
+                    ListHeader(shop.name, Modifier.clickable { screenModel.changeShopCollapse(shop.id, !shop.collapsed) }.animateItemPlacement())
                 }
-                products.forEach {
+                items(products, { it.id }) {
                     ProductCard(
                         product = it,
                         modifier = Modifier.fillMaxWidth().padding(8.dp).animateItemPlacement(),
@@ -97,8 +99,44 @@ data object HomeTab: Tab {
     }
 
     @Composable
-    private fun ExpandedContent() {
-        Text("Expanded")
+    private fun ExpandedContent(
+        shopAndProducts: List<ShopAndProduct>,
+        screenModel: HomeScreenModel
+    ) {
+        Row {
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(3),
+                modifier = Modifier.fillMaxSize(),
+            ) {
+                items(shopAndProducts, { it.first.id }) { (shop, products) ->
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        ListHeader(shop.name)
+                        products.forEach {
+                            ProductCard(
+                                product = it,
+                                modifier = Modifier.fillMaxWidth().padding(8.dp),
+                                onDoneChange = { done -> screenModel.changeDoneStatus(it.id, done) },
+                                onDelete = { screenModel.deleteProduct(it.id) },
+                                onEdit = { content -> screenModel.editContent(it.id, content) }
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @Composable
+    private fun ListHeader(name: String, modifier: Modifier = Modifier) {
+        Box(
+            modifier = Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.background).then(modifier),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(name, style = MaterialTheme.typography.headlineSmall)
+        }
     }
 
 }

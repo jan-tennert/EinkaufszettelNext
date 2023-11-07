@@ -1,0 +1,28 @@
+import kotlin.String;
+import kotlin.collections.List;
+import kotlinx.datetime.Instant;
+
+CREATE TABLE recipeTable (
+    id INTEGER NOT NULL PRIMARY KEY,
+    createdAt INTEGER AS Instant NOT NULL,
+    name TEXT NOT NULL,
+    creatorId TEXT NOT NULL,
+    imagePath TEXT,
+    ingredients TEXT AS List<String> NOT NULL,
+    steps TEXT,
+    isPrivate INTEGER NOT NULL,
+    FOREIGN KEY (creatorId) REFERENCES profileTable(id)
+);
+
+getAllRecipes:
+SELECT recipe.id, recipe.createdAt, recipe.name, recipe.imagePath, recipe.ingredients, recipe.steps, recipe.isPrivate, creator.username AS creator, recipe.creatorId AS creatorId
+FROM recipeTable AS recipe
+LEFT JOIN profileTable creator
+ON recipe.creatorId = creator.id;
+
+insertRecipe:
+INSERT OR REPLACE
+INTO recipeTable VALUES(?, ?, ?, ?, ?, ?, ?, ?);
+
+deleteRecipeById:
+DELETE FROM recipeTable WHERE id = ?;

@@ -6,7 +6,7 @@ import org.koin.dsl.module
 
 val homeModels = module {
     single {
-        AppScreenModel(get(), get(), get(), get(), get(), get())
+        AppScreenModel(get(), get(), get(), get(), get(), get(), get(), get())
     }
     single {
         HomeScreenModel(get(), get(), get(), get())

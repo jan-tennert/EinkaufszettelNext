@@ -100,4 +100,8 @@ open class ShopProductScreenModel(
         }
     }
 
+    open fun resetState() {
+        mutableState.value = State.Idle
+    }
+
 }

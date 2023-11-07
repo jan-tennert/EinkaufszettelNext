@@ -56,6 +56,7 @@ kotlin {
             implementation(libs.sqlDelight.coroutines)
             implementation(libs.windowsizeclass)
             implementation(libs.okio)
+            implementation(libs.richeditor)
         }
 
         commonTest.dependencies {

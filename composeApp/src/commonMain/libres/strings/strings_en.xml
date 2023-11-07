@@ -23,6 +23,9 @@
     <string name="edit_product">Edit Product</string>
     <string name="product">Product</string>
 
+    <string name="steps">Instructions</string>
+    <string name="ingredients">Ingredients</string>
+
     <string name="home">Home</string>
     <string name="shops">Lists</string>
     <string name="recipes">Recipes</string>

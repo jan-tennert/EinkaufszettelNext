@@ -17,10 +17,11 @@ koin = "3.5.0"
 koin-compose = "1.1.0"
 ktor = "2.3.5"
 sqlDelight = "2.0.0"
-supabase = "1.4.6"
+supabase = "1.5.0-local-3"
 lifecycle = "2.6.2"
 windowsizeclass = "0.3.1"
 okio = "3.6.0"
+richeditor = "1.0.0-beta03"
 
 [libraries]
 
@@ -51,10 +52,12 @@ storage-kt = { module = "io.github.jan-tennert.supabase:storage-kt", version.ref
 postgrest-kt = { module = "io.github.jan-tennert.supabase:postgrest-kt", version.ref = "supabase" }
 compose-auth = { module = "io.github.jan-tennert.supabase:compose-auth", version.ref = "supabase" }
 compose-auth-ui = { module = "io.github.jan-tennert.supabase:compose-auth-ui", version.ref = "supabase" }
+imageloader-integration = { module = "io.github.jan-tennert.supabase:imageloader-integration", version.ref = "supabase" }
 windowsizeclass = { module = "dev.chrisbanes.material3:material3-window-size-class-multiplatform", version.ref = "windowsizeclass" }
 ktor-client-js = { module = "io.ktor:ktor-client-js", version.ref = "ktor" }
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
 okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
+richeditor = { module = "com.mohamedrejeb.richeditor:richeditor-compose", version.ref = "richeditor" }
 
 [plugins]
 
@@ -72,7 +75,8 @@ supabase = [
     "storage-kt",
     "postgrest-kt",
     "compose-auth",
-    "compose-auth-ui"
+    "compose-auth-ui",
+    "imageloader-integration"
 ]
 koin = [
     "koin-core",

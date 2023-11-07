@@ -21,6 +21,6 @@ val localModule = module {
         ShopDataSourceImpl(get())
     }
     single<RecipeDataSource> {
-        RecipeDataSourceImpl()
+        RecipeDataSourceImpl(get())
     }
 }

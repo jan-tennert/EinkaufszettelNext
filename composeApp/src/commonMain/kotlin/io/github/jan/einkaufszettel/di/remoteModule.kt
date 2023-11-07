@@ -6,6 +6,8 @@ import io.github.jan.einkaufszettel.data.remote.ProductApi
 import io.github.jan.einkaufszettel.data.remote.ProductApiImpl
 import io.github.jan.einkaufszettel.data.remote.ProfileApi
 import io.github.jan.einkaufszettel.data.remote.ProfileApiImpl
+import io.github.jan.einkaufszettel.data.remote.RecipeApi
+import io.github.jan.einkaufszettel.data.remote.RecipeApiImpl
 import io.github.jan.einkaufszettel.data.remote.ShopApi
 import io.github.jan.einkaufszettel.data.remote.ShopApiImpl
 import org.koin.dsl.module
@@ -22,5 +24,8 @@ val remoteModule = module {
     }
     single<ShopApi> {
         ShopApiImpl(get())
+    }
+    single<RecipeApi> {
+        RecipeApiImpl(get())
     }
 }

@@ -41,6 +41,8 @@ class HomeScreenModel(
         screenModelScope.launch {
             runCatching {
                 shopDataSource.changeCollapsed(shopId, collapse)
+            }.onFailure {
+                it.printStackTrace()
             }
         }
     }
@@ -49,11 +51,13 @@ class HomeScreenModel(
         screenModelScope.launch {
             runCatching {
                 shopDataSource.changePinned(shopId, pin)
+            }.onFailure {
+                it.printStackTrace()
             }
         }
     }
 
-    fun resetState() {
+    override fun resetState() {
         mutableState.value = State.Idle
     }
 

@@ -10,6 +10,8 @@ import io.github.jan.supabase.createSupabaseClient
 import io.github.jan.supabase.gotrue.FlowType
 import io.github.jan.supabase.gotrue.GoTrue
 import io.github.jan.supabase.gotrue.gotrue
+import io.github.jan.supabase.imageloader.ImageLoaderIntegration
+import io.github.jan.supabase.imageloader.imageLoader
 import io.github.jan.supabase.postgrest.Postgrest
 import io.github.jan.supabase.postgrest.postgrest
 import io.github.jan.supabase.serializer.KotlinXSerializer
@@ -39,6 +41,7 @@ val supabaseModule = module {
             install(ComposeAuth) {
                 googleNativeLogin(BuildConfig.GOOGLE_CLIENT_ID)
             }
+            install(ImageLoaderIntegration)
         }
     }
     single<GoTrue> {
@@ -52,5 +55,8 @@ val supabaseModule = module {
     }
     single<ComposeAuth> {
         get<SupabaseClient>().composeAuth
+    }
+    single<ImageLoaderIntegration> {
+        get<SupabaseClient>().imageLoader
     }
 }

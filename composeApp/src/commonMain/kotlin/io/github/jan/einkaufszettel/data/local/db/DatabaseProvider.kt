@@ -2,6 +2,7 @@ package io.github.jan.einkaufszettel.data.local.db
 
 import app.cash.sqldelight.async.coroutines.awaitCreate
 import einkaufszettel.ProductTable
+import einkaufszettel.RecipeTable
 import einkaufszettel.ShopTable
 import io.github.jan.einkaufszettel.data.local.db.adapters.InstantAdapter
 import io.github.jan.einkaufszettel.data.local.db.adapters.ListToStringAdapter
@@ -32,7 +33,7 @@ internal class DatabaseProviderImpl(
             Einkaufszettel.Schema.awaitCreate(driver)
         }
         mutex.withLock {
-            database = Einkaufszettel(driver, ProductTable.Adapter(InstantAdapter, InstantAdapter), ShopTable.Adapter(InstantAdapter, ListToStringAdapter))
+            database = Einkaufszettel(driver, ProductTable.Adapter(InstantAdapter, InstantAdapter), RecipeTable.Adapter(InstantAdapter, ListToStringAdapter), ShopTable.Adapter(InstantAdapter, ListToStringAdapter))
         }
         return database
     }

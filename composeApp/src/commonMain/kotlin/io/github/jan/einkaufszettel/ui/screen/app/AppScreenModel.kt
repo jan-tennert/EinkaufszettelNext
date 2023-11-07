@@ -5,12 +5,13 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import io.github.jan.einkaufszettel.PlatformNetworkContext
 import io.github.jan.einkaufszettel.data.local.ProductDataSource
 import io.github.jan.einkaufszettel.data.local.ProfileDataSource
+import io.github.jan.einkaufszettel.data.local.RecipeDataSource
 import io.github.jan.einkaufszettel.data.local.ShopDataSource
 import io.github.jan.einkaufszettel.data.remote.ProductApi
 import io.github.jan.einkaufszettel.data.remote.ProfileApi
+import io.github.jan.einkaufszettel.data.remote.RecipeApi
 import io.github.jan.einkaufszettel.data.remote.ShopApi
 import io.github.jan.supabase.exceptions.RestException
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -19,6 +20,8 @@ class AppScreenModel(
     private val productApi: ProductApi,
     private val productDataSource: ProductDataSource,
     private val shopDataSource: ShopDataSource,
+    private val recipeDataSource: RecipeDataSource,
+    private val recipeApi: RecipeApi,
     private val profileApi: ProfileApi,
     private val shopApi: ShopApi
 ): StateScreenModel<AppScreenModel.State>(State.Idle) {
@@ -35,6 +38,7 @@ class AppScreenModel(
     enum class RefreshType{
         PRODUCTS,
         SHOPS,
+        RECIPES,
         ALL
     }
 
@@ -47,6 +51,8 @@ class AppScreenModel(
                         refreshProducts()
                     if(type in listOf(RefreshType.SHOPS, RefreshType.ALL))
                         refreshShops()
+                    if(type in listOf(RefreshType.RECIPES, RefreshType.ALL))
+                        refreshRecipes()
                 }.onFailure {
                     it.printStackTrace()
                     if (!silent) {
@@ -98,6 +104,18 @@ class AppScreenModel(
         }
         shopDataSource.deleteAll(shopsToDelete.map { it.id })
         shopDataSource.insertAll(newShops)
+    }
+
+    private suspend fun refreshRecipes() {
+        val oldRecipes = recipeDataSource.retrieveAllRecipes()
+        val newRecipes = recipeApi.retrieveRecipes()
+        val recipesToDelete = oldRecipes.filter { oldRecipe ->
+            newRecipes.none { newRecipe ->
+                newRecipe.id == oldRecipe.id
+            }
+        }
+        recipeDataSource.deleteAll(recipesToDelete.map { it.id })
+        recipeDataSource.insertAll(newRecipes)
     }
 
     private fun fetchUserProfiles(ids: List<String>) {

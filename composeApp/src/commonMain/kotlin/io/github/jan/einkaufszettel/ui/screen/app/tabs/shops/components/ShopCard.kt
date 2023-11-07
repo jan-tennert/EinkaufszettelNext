@@ -55,6 +55,7 @@ import com.seiko.imageloader.ui.AutoSizeImage
 import io.github.jan.einkaufszettel.Res
 import io.github.jan.einkaufszettel.data.remote.ShopDto
 import io.github.jan.einkaufszettel.ui.component.LoadingCircle
+import io.github.jan.einkaufszettel.ui.screen.app.tabs.components.ContextMenuScope
 
 object ShopCardDefaults {
 
@@ -75,83 +76,10 @@ fun ShopCard(
     onEdit: () -> Unit,
     onDelete: () -> Unit
 ) {
-    var isContextMenuVisible by remember { mutableStateOf(false) }
-    var pressOffset by remember { mutableStateOf(DpOffset.Zero) }
-    var itemHeight by remember { mutableStateOf(0.dp) }
-    val density = LocalDensity.current
-    val interactionSource = remember {
-        MutableInteractionSource()
-    }
-    ElevatedCard(
-        modifier
-            .onSizeChanged {
-                itemHeight = with(density) { it.height.toDp()}
-            }
-            .indication(interactionSource, LocalIndication.current)
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(ShopCardDefaults.CONTENT_PADDING)
-                .pointerInput(Unit) {
-                    detectTapGestures(
-                        onLongPress = {
-                            isContextMenuVisible = true
-                            pressOffset = DpOffset(it.x.toDp(), it.y.toDp())
-                        },
-                        onPress = {
-                            val press = PressInteraction.Press(it)
-                            interactionSource.emit(press)
-                            tryAwaitRelease()
-                            interactionSource.emit(PressInteraction.Release(press))
-                        },
-                        onTap = {
-                            onClick()
-                        }
-                    )
-                }
-                .pointerInput(Unit) {
-                    awaitPointerEventScope {
-                        val event = awaitPointerEvent()
-                        if (event.type == PointerEventType.Press &&
-                            event.buttons.isSecondaryPressed) {
-                            event.changes.forEach { e -> e.consume() }
-                            //broken currently
-                        }
-                    }
-                },
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            val request = remember {
-                ImageRequest(shop.iconUrl) {
-                    scale(Scale.FIT)
-                    size(SizeResolver {
-                        Size(ShopCardDefaults.IMAGE_SIZE, ShopCardDefaults.IMAGE_SIZE)
-                    })
-                }
-            }
-            AutoSizeBox(request, modifier = Modifier.size(ShopCardDefaults.ICON_SIZE)) { action ->
-                when(action) {
-                    is ImageAction.Loading -> {
-                        LoadingCircle()
-                    }
-                    is ImageAction.Failure -> {
-                        Icon(Icons.Filled.Error, null)
-                    }
-                    is ImageAction.Success -> {
-                        Image(rememberImageSuccessPainter(action), null)
-                    }
-                }
-            }
-            Spacer(Modifier.height(ShopCardDefaults.PADDING))
-            Text(shop.name)
-        }
-        DropdownMenu(
-            expanded = isContextMenuVisible,
-            onDismissRequest = { isContextMenuVisible = false },
-            offset = pressOffset.copy(y = pressOffset.y - itemHeight),
-        ) {
+    ContextMenuScope(
+        onItemClicked = onClick,
+        modifier = modifier,
+        items = {
             DropdownMenuItem(
                 text = { Text(Res.string.edit) },
                 onClick = onEdit
@@ -160,6 +88,45 @@ fun ShopCard(
                 text = { Text(Res.string.delete) },
                 onClick = onDelete
             )
+        },
+        content = {
+            ElevatedCard(
+                modifier = Modifier
+                    .fillMaxSize()
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(ShopCardDefaults.CONTENT_PADDING)
+                        .indication(it, LocalIndication.current),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    val request = remember {
+                        ImageRequest(shop.iconUrl) {
+                            scale(Scale.FIT)
+                            size(SizeResolver {
+                                Size(ShopCardDefaults.IMAGE_SIZE, ShopCardDefaults.IMAGE_SIZE)
+                            })
+                        }
+                    }
+                    AutoSizeBox(request, modifier = Modifier.size(ShopCardDefaults.ICON_SIZE)) { action ->
+                        when(action) {
+                            is ImageAction.Loading -> {
+                                LoadingCircle()
+                            }
+                            is ImageAction.Failure -> {
+                                Icon(Icons.Filled.Error, null)
+                            }
+                            is ImageAction.Success -> {
+                                Image(rememberImageSuccessPainter(action), null)
+                            }
+                        }
+                    }
+                    Spacer(Modifier.height(ShopCardDefaults.PADDING))
+                    Text(shop.name)
+                }
+            }
         }
-    }
+    )
 }
