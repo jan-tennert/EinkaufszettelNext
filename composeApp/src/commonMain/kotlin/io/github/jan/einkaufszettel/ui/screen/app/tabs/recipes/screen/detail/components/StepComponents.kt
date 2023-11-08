@@ -24,6 +24,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -42,9 +43,9 @@ fun LazyListScope.StepDetailContent(
     }
 
     item {
-        val stepState = rememberSaveable(saver = RichTextState.Saver) {
+        val stepState = rememberSaveable(saver = RichTextState.Saver, inputs = arrayOf(steps)) {
             RichTextState().apply {
-                setHtml(steps)
+                setHtml(steps.ifBlank { Res.string.empty_steps })
             }
         }
         StepCard(
@@ -58,11 +59,11 @@ fun LazyListScope.StepDetailContent(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun StepCard(
+fun StepCard(
     steps: RichTextState,
     modifier: Modifier = Modifier,
 ) {
     ElevatedCard(modifier) {
-        RichText(steps, overflow = TextOverflow.Ellipsis, modifier = Modifier.fillMaxSize().padding(8.dp))
+        RichText(steps, overflow = TextOverflow.Ellipsis, modifier = Modifier.padding(8.dp), fontStyle = if(steps.annotatedString.text.isBlank()) FontStyle.Italic else FontStyle.Normal)
     }
 }

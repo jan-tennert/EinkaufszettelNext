@@ -23,6 +23,8 @@ interface RecipeDataSource {
 
     suspend fun deleteAll(ids: List<Long>)
 
+    suspend fun clearRecipes()
+
 }
 
 internal class RecipeDataSourceImpl(
@@ -70,6 +72,10 @@ internal class RecipeDataSourceImpl(
                 deleteRecipe(id)
             }
         }
+    }
+
+    override suspend fun clearRecipes() {
+        queries.clearRecipes()
     }
 
 }

@@ -26,3 +26,6 @@ INTO recipeTable VALUES(?, ?, ?, ?, ?, ?, ?, ?);
 
 deleteRecipeById:
 DELETE FROM recipeTable WHERE id = ?;
+
+clearRecipes:
+DELETE FROM recipeTable;

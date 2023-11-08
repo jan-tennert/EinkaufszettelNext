@@ -47,32 +47,48 @@ fun LazyListScope.IngredientDetailContent(
         }
     }
     items(ingredients, { it }) { ingredient ->
-        var expandShops by rememberSaveable(key = ingredient) { mutableStateOf(false) }
-        ExposedDropdownMenuBox(
-            expanded = expandShops,
-            onExpandedChange = { expandShops = it },
-            content = {
-                ElevatedCard(
-                    modifier = Modifier.fillMaxWidth().padding(8.dp).menuAnchor().animateItemPlacement()
-                ) {
-                    ListItem(
-                        headlineContent = { Text(ingredient) },
-                        trailingContent = {
-                            IconButton({ expandShops = true }) {
-                                Icon(Icons.Filled.AddShoppingCart, null)
-                            }
-                        },
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
-                ShopDropDown(
-                    expandShops = expandShops,
-                    onExpandChange = { expandShops = it },
-                    onSelect = { shop -> onAdd(shop.id, ingredient) },
-                    shops = shops
-                )
-            })
+        IngredientContent(
+            ingredient = ingredient,
+            onAdd = onAdd,
+            shops = shops,
+            modifier = Modifier.animateItemPlacement()
+        )
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun IngredientContent(
+    ingredient: String,
+    modifier: Modifier = Modifier,
+    onAdd: (shop: Long, content: String) -> Unit,
+    shops: List<ShopDto>
+) {
+    var expandShops by rememberSaveable(key = ingredient) { mutableStateOf(false) }
+    ExposedDropdownMenuBox(
+        expanded = expandShops,
+        onExpandedChange = { expandShops = it },
+        content = {
+            ElevatedCard(
+                modifier = Modifier.fillMaxWidth().padding(8.dp).menuAnchor().then(modifier)
+            ) {
+                ListItem(
+                    headlineContent = { Text(ingredient) },
+                    trailingContent = {
+                        IconButton({ expandShops = true }) {
+                            Icon(Icons.Filled.AddShoppingCart, null)
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+            ShopDropDown(
+                expandShops = expandShops,
+                onExpandChange = { expandShops = it },
+                onSelect = { shop -> onAdd(shop.id, ingredient) },
+                shops = shops
+            )
+        })
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

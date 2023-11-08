@@ -32,6 +32,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import io.github.jan.einkaufszettel.Res
 import io.github.jan.einkaufszettel.collectAsStateWithLifecycle
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.recipes.components.RecipeCard
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.recipes.components.RecipeCardDefaults
@@ -59,6 +60,7 @@ object RecipeScreen : Screen {
                 query = searchQuery,
                 onQueryChange = screenModel::onSearchQueryChanged,
                 leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+                placeholder = { Text(Res.string.search) },
                 modifier = Modifier.fillMaxWidth()
             ) { }
             LazyVerticalGrid(

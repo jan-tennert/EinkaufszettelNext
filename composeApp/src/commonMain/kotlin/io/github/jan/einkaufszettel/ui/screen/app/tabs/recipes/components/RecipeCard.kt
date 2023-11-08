@@ -83,6 +83,9 @@ private fun RecipeCardImage(imagePath: String?, modifier: Modifier) {
             AutoSizeBox(
                 request = remember { ImageRequest(authenticatedStorageItem("recipes", imagePath)) {
                     scale(Scale.FIT)
+                    size(SizeResolver {
+                        Size(100f, 100f)
+                    })
                 } },
                 modifier = modifier
             ) { action ->
