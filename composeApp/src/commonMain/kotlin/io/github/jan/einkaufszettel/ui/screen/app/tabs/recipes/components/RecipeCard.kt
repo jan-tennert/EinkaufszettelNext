@@ -31,6 +31,8 @@ import einkaufszettel.GetAllRecipes
 import io.github.jan.einkaufszettel.Res
 import io.github.jan.einkaufszettel.ui.component.LoadingCircle
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.components.ContextMenuScope
+import io.github.jan.supabase.CurrentPlatformTarget
+import io.github.jan.supabase.PlatformTarget
 import io.github.jan.supabase.storage.authenticatedStorageItem
 
 object RecipeCardDefaults {
@@ -70,7 +72,9 @@ fun RecipeCard(
             ) {
                 Text(recipe.name, maxLines = 2, overflow = TextOverflow.Ellipsis)
                 Spacer(Modifier.height(4.dp))
-                RecipeCardImage(recipe.imagePath, Modifier.weight(1f))
+                if(CurrentPlatformTarget != PlatformTarget.JS) {
+                    RecipeCardImage(recipe.imagePath, Modifier.weight(1f))
+                }
             }
         }
     }
