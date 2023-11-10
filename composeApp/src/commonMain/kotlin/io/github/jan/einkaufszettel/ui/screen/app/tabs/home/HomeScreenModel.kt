@@ -7,7 +7,7 @@ import io.github.jan.einkaufszettel.data.local.ShopDataSource
 import io.github.jan.einkaufszettel.data.remote.ProductApi
 import io.github.jan.einkaufszettel.data.remote.ShopDto
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.screen.ShopProductScreenModel
-import io.github.jan.supabase.gotrue.GoTrue
+import io.github.jan.supabase.gotrue.Auth
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -20,8 +20,8 @@ class HomeScreenModel(
     productDataSource: ProductDataSource,
     private val shopDataSource: ShopDataSource,
     productApi: ProductApi,
-    goTrue: GoTrue
-): ShopProductScreenModel(goTrue, productApi, productDataSource) {
+    auth: Auth
+): ShopProductScreenModel(auth, productApi, productDataSource) {
 
     val shopAndProductFlow: StateFlow<List<ShopAndProduct>> = productDataSource.getAllProducts().combine(shopDataSource.getAllShops()) { products, shops ->
         products

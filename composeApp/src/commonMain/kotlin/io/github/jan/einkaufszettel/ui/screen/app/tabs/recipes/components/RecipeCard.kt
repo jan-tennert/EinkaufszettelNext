@@ -88,7 +88,7 @@ private fun RecipeCardImage(imagePath: String?, modifier: Modifier) {
                 request = remember { ImageRequest(authenticatedStorageItem("recipes", imagePath)) {
                     scale(Scale.FIT)
                     size(SizeResolver {
-                        Size(100f, 100f)
+                        Size(200f, 200f)
                     })
                 } },
                 modifier = modifier

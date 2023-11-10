@@ -13,7 +13,7 @@
     <string name="sign_up_success">You successfully signed up, please check your inbox for a verification link!</string>
 
     <string name="create_user_profile">Create User Profile</string>
-    <string name="name">Username</string>
+    <string name="username">Username</string>
     <string name="unknown">Unknown</string>
     <string name="by">by</string>
     <string name="create">Create</string>
@@ -22,6 +22,12 @@
     <string name="create_product">Create Product</string>
     <string name="edit_product">Edit Product</string>
     <string name="product">Product</string>
+
+    <string name="authorized_users">Authorized Users</string>
+    <string name="create_list">Create New List</string>
+    <string name="delete_list">Delete List</string>
+    <string name="delete_list_text">Are you sure you want to delete this list? This will also delete all associated products.</string>
+    <string name="name">Name</string>
 
     <string name="steps">Instructions</string>
     <string name="empty_steps">No instructions given</string>
@@ -35,6 +41,7 @@
 
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
 
     <string name="error">Error</string>
     <string name="unknown_error">Unknown error: ${message}</string>

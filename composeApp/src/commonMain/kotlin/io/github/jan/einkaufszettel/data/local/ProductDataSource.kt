@@ -22,6 +22,8 @@ interface ProductDataSource {
 
     suspend fun deleteAll(ids: List<Long>)
 
+    suspend fun deleteAllInShop(shopId: Long)
+
     suspend fun clearProducts()
 
     suspend fun insertAll(products: List<ProductDto>)
@@ -95,6 +97,10 @@ internal class ProductDataSourceImpl(
 
     override suspend fun setLoading(id: Long, loading: Boolean) {
         queries.updateLoading(if(loading) 1L else 0L, id)
+    }
+
+    override suspend fun deleteAllInShop(shopId: Long) {
+        queries.deleteAllInShop(shopId)
     }
 
 }

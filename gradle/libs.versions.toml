@@ -17,11 +17,12 @@ koin = "3.5.0"
 koin-compose = "1.1.0"
 ktor = "2.3.5"
 sqlDelight = "2.0.0"
-supabase = "1.5.0-dev-1"
+supabase = "1.5.0-alpha-1"
 lifecycle = "2.6.2"
 windowsizeclass = "0.3.1"
 okio = "3.6.0"
 richeditor = "1.0.0-beta03"
+file-picker = "3.0.0"
 
 [libraries]
 
@@ -58,6 +59,7 @@ ktor-client-js = { module = "io.ktor:ktor-client-js", version.ref = "ktor" }
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
 okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
 richeditor = { module = "com.mohamedrejeb.richeditor:richeditor-compose", version.ref = "richeditor" }
+filepicker = { module = "com.darkrockstudios:mpfilepicker", version.ref = "file-picker" }
 
 [plugins]
 

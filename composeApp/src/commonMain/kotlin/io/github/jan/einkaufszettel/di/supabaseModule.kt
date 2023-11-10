@@ -7,9 +7,9 @@ import io.github.jan.supabase.compose.auth.ComposeAuth
 import io.github.jan.supabase.compose.auth.composeAuth
 import io.github.jan.supabase.compose.auth.googleNativeLogin
 import io.github.jan.supabase.createSupabaseClient
+import io.github.jan.supabase.gotrue.Auth
 import io.github.jan.supabase.gotrue.FlowType
-import io.github.jan.supabase.gotrue.GoTrue
-import io.github.jan.supabase.gotrue.gotrue
+import io.github.jan.supabase.gotrue.auth
 import io.github.jan.supabase.imageloader.ImageLoaderIntegration
 import io.github.jan.supabase.imageloader.imageLoader
 import io.github.jan.supabase.postgrest.Postgrest
@@ -33,7 +33,7 @@ val supabaseModule = module {
     single<SupabaseClient> {
         createSupabaseClient(BuildConfig.SUPABASE_URL, BuildConfig.SUPABASE_KEY) {
             defaultSerializer = KotlinXSerializer(get())
-            install(GoTrue) {
+            install(Auth) {
                 flowType = FlowType.PKCE
             }
             install(Storage)
@@ -44,8 +44,8 @@ val supabaseModule = module {
             install(ImageLoaderIntegration)
         }
     }
-    single<GoTrue> {
-        get<SupabaseClient>().gotrue
+    single<Auth> {
+        get<SupabaseClient>().auth
     }
     single<Storage> {
         get<SupabaseClient>().storage

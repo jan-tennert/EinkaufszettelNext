@@ -2,15 +2,16 @@ package io.github.jan.einkaufszettel.ui.screen.app.tabs.shops
 
 import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
+import io.github.jan.einkaufszettel.data.local.ProductDataSource
 import io.github.jan.einkaufszettel.data.local.ShopDataSource
 import io.github.jan.einkaufszettel.data.remote.ShopApi
-import io.github.jan.supabase.exceptions.RestException
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class ShopScreenModel(
     private val shopDataSource: ShopDataSource,
+    private val productDataSource: ProductDataSource,
     private val shopApi: ShopApi
 ): StateScreenModel<ShopScreenModel.State>(State.Idle) {
 
@@ -28,7 +29,10 @@ class ShopScreenModel(
             runCatching {
                 shopApi.deleteShop(shopId)
             }.onSuccess {
+                productDataSource.deleteAllInShop(shopId)
                 shopDataSource.deleteById(shopId)
+            }.onFailure {
+                it.printStackTrace()
             }
         }
     }

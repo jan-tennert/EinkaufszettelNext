@@ -57,6 +57,7 @@ kotlin {
             implementation(libs.windowsizeclass)
             implementation(libs.okio)
             implementation(libs.richeditor)
+            implementation(libs.filepicker)
         }
 
         commonTest.dependencies {

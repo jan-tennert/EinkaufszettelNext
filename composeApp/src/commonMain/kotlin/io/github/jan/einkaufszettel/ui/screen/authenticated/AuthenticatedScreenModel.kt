@@ -25,7 +25,6 @@ class AuthenticatedScreenModel(
     }
 
     private fun checkUserInApi() {
-        println("checkUserInApi")
         screenModelScope.launch {
             runCatching {
                 profileApi.retrieveOwnProfile()

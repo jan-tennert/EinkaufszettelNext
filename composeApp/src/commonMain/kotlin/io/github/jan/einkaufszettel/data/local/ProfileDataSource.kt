@@ -7,14 +7,14 @@ import app.cash.sqldelight.coroutines.mapToList
 import einkaufszettel.ProfileTable
 import io.github.jan.einkaufszettel.data.local.db.DatabaseProvider
 import io.github.jan.einkaufszettel.data.remote.ProfileDto
-import io.github.jan.supabase.gotrue.GoTrue
+import io.github.jan.supabase.gotrue.Auth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 interface ProfileDataSource {
 
-    suspend fun getProfiles(): Flow<List<ProfileDto>>
+    fun getProfiles(): Flow<List<ProfileDto>>
 
     suspend fun retrieveAllProfiles(): List<ProfileDto>
 
@@ -32,12 +32,12 @@ interface ProfileDataSource {
 
 internal class ProfileDataSourceImpl(
     private val databaseProvider: DatabaseProvider,
-    private val goTrue: GoTrue
+    private val auth: Auth
 ) : ProfileDataSource {
 
     private val queries get() = databaseProvider.getDatabase().profileTableQueries
 
-    override suspend fun getProfiles(): Flow<List<ProfileDto>> = queries.getProfiles().asFlow().mapToList(Dispatchers.Default).map { it.map(ProfileTable::toProfile) }
+    override fun getProfiles(): Flow<List<ProfileDto>> = queries.getProfiles().asFlow().mapToList(Dispatchers.Default).map { it.map(ProfileTable::toProfile) }
 
     override suspend fun retrieveAllProfiles(): List<ProfileDto> {
         return queries.getProfiles().awaitAsList().map(ProfileTable::toProfile)
@@ -56,7 +56,7 @@ internal class ProfileDataSourceImpl(
 
     override suspend fun retrieveProfile(uid: String): ProfileDto? = queries.getProfileById(uid).awaitAsOneOrNull()?.toProfile()
 
-    override suspend fun retrieveOwnProfile(): ProfileDto? = goTrue.currentUserOrNull()?.id?.let { retrieveProfile(it) }
+    override suspend fun retrieveOwnProfile(): ProfileDto? = auth.currentUserOrNull()?.id?.let { retrieveProfile(it) }
 
     override suspend fun clear() {
         queries.clearProfiles()

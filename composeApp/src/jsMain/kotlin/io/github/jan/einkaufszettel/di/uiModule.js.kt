@@ -10,8 +10,7 @@ actual fun Scope.createImageLoader(): ImageLoader {
     return ImageLoader {
         components {
             setupDefaultComponents()
-            add(fetcherFactory = get<ImageLoaderIntegration>())
-            add(keyer = get<ImageLoaderIntegration>())
+            commonComponents(this)
         }
         interceptor {
             memoryCacheConfig {

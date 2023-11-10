@@ -4,7 +4,7 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import io.github.jan.einkaufszettel.data.local.ProductDataSource
 import io.github.jan.einkaufszettel.data.remote.ProductApi
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.screen.ShopProductScreenModel
-import io.github.jan.supabase.gotrue.GoTrue
+import io.github.jan.supabase.gotrue.Auth
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -13,8 +13,8 @@ class ShopDetailScreenModel(
     private val shopId: Long,
     productApi: ProductApi,
     productDataSource: ProductDataSource,
-    goTrue: GoTrue
-): ShopProductScreenModel(goTrue, productApi, productDataSource) {
+    auth: Auth
+): ShopProductScreenModel(auth, productApi, productDataSource) {
 
     val productFlow = productDataSource.getAllProducts()
         .map { it.filter { product -> product.shopId == shopId } }

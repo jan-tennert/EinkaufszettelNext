@@ -1,5 +1,6 @@
 package io.github.jan.einkaufszettel.di
 
+import io.github.jan.einkaufszettel.data.local.image.LocalImageReader
 import io.github.jan.einkaufszettel.data.local.ProductDataSource
 import io.github.jan.einkaufszettel.data.local.ProductDataSourceImpl
 import io.github.jan.einkaufszettel.data.local.ProfileDataSource
@@ -8,6 +9,7 @@ import io.github.jan.einkaufszettel.data.local.RecipeDataSource
 import io.github.jan.einkaufszettel.data.local.RecipeDataSourceImpl
 import io.github.jan.einkaufszettel.data.local.ShopDataSource
 import io.github.jan.einkaufszettel.data.local.ShopDataSourceImpl
+import org.koin.core.scope.Scope
 import org.koin.dsl.module
 
 val localModule = module {
@@ -23,4 +25,9 @@ val localModule = module {
     single<RecipeDataSource> {
         RecipeDataSourceImpl(get())
     }
+    single<LocalImageReader> {
+        createLocalImageReader()
+    }
 }
+
+expect fun Scope.createLocalImageReader(): LocalImageReader

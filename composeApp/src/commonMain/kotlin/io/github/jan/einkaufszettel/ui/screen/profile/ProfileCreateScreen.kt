@@ -52,7 +52,7 @@ object ProfileCreateScreen: Screen {
             OutlinedTextField(
                 value = name,
                 onValueChange = { name = it },
-                label = { Text(Res.string.name) },
+                label = { Text(Res.string.username) },
                 singleLine = true,
             )
             Spacer(Modifier.height(4.dp))

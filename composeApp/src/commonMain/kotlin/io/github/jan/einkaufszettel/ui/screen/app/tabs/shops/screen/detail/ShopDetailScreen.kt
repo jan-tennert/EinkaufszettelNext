@@ -7,12 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -30,6 +25,7 @@ import io.github.jan.einkaufszettel.getScreenModel
 import io.github.jan.einkaufszettel.ui.dialog.ErrorDialog
 import io.github.jan.einkaufszettel.ui.screen.app.AppScreenModel
 import io.github.jan.einkaufszettel.ui.screen.app.pullrefresh.RefreshScope
+import io.github.jan.einkaufszettel.ui.screen.app.tabs.components.CreateButton
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.components.ProductCard
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.dialog.ProductDialog
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.screen.ShopProductScreenModel
@@ -88,16 +84,6 @@ data class ShopDetailScreen(val id: Long): Screen {
             }
             else -> {}
         }
-    }
-
-    @Composable
-    private fun CreateButton(extended: Boolean, onClick: () -> Unit) {
-        ExtendedFloatingActionButton(
-            expanded = extended,
-            text = { Text(Res.string.create) },
-            icon = { Icon(Icons.Filled.Add, null) },
-            onClick = onClick
-        )
     }
 
 }

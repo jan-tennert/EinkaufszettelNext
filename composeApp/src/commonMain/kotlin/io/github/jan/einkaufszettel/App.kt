@@ -18,7 +18,7 @@ import io.github.jan.einkaufszettel.data.local.db.DatabaseProvider
 import io.github.jan.einkaufszettel.theme.AppTheme
 import io.github.jan.einkaufszettel.ui.component.LoadingCircle
 import io.github.jan.einkaufszettel.ui.screen.RootScreen
-import io.github.jan.supabase.gotrue.GoTrue
+import io.github.jan.supabase.gotrue.Auth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
@@ -31,7 +31,7 @@ internal fun App() = AppTheme {
     ) {
         var dbInitialized by rememberSaveable { mutableStateOf(false) }
         val databaseProvider = koinInject<DatabaseProvider>()
-        val gotrue = koinInject<GoTrue>()
+        val auth = koinInject<Auth>()
 
         LaunchedEffect(Unit) {
             launch(Dispatchers.Default) {
@@ -39,7 +39,7 @@ internal fun App() = AppTheme {
                 dbInitialized = true
             }
             launch(Dispatchers.Default) {
-                gotrue.checkForCode()
+                auth.checkForCode()
             }
         }
 

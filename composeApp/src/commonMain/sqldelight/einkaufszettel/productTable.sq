@@ -50,3 +50,8 @@ updateLoading:
 UPDATE productTable
 SET loading = :loading
 WHERE id = :id;
+
+deleteAllInShop:
+DELETE
+FROM productTable
+WHERE shopId = :shopId;

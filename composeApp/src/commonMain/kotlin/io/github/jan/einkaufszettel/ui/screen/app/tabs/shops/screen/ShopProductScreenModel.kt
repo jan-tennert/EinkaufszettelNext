@@ -1,18 +1,16 @@
 package io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.screen
 
-import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import io.github.jan.einkaufszettel.PlatformNetworkContext
 import io.github.jan.einkaufszettel.data.local.ProductDataSource
 import io.github.jan.einkaufszettel.data.remote.ProductApi
-import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.screen.detail.ShopDetailScreenModel
 import io.github.jan.supabase.exceptions.RestException
-import io.github.jan.supabase.gotrue.GoTrue
+import io.github.jan.supabase.gotrue.Auth
 import kotlinx.coroutines.launch
 
 open class ShopProductScreenModel(
-    private val goTrue: GoTrue,
+    private val auth: Auth,
     private val productApi: ProductApi,
     private val productDataSource: ProductDataSource
 ): StateScreenModel<ShopProductScreenModel.State>(State.Idle) {
@@ -29,7 +27,7 @@ open class ShopProductScreenModel(
             mutableState.value = State.Loading
             productDataSource.setLoading(productId, true)
             runCatching {
-                productApi.changeDoneStatus(productId, if (done) goTrue.currentUserOrNull()?.id else null)
+                productApi.changeDoneStatus(productId, if (done) auth.currentUserOrNull()?.id else null)
             }.onSuccess {
                 productDataSource.changeDoneStatus(productId, it.doneBy, it.doneSince)
             }.onFailure {
@@ -88,7 +86,7 @@ open class ShopProductScreenModel(
         screenModelScope.launch(PlatformNetworkContext) {
             mutableState.value = State.Loading
             runCatching {
-                productApi.createProduct(shopId, content, goTrue.currentUserOrNull()?.id ?: error("User not logged in"))
+                productApi.createProduct(shopId, content, auth.currentUserOrNull()?.id ?: error("User not logged in"))
             }.onSuccess {
                 productDataSource.insertProduct(it)
             }.onFailure {

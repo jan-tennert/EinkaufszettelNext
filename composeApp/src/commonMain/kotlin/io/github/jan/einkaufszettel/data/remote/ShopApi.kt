@@ -1,6 +1,7 @@
 package io.github.jan.einkaufszettel.data.remote
 
 import io.github.jan.supabase.postgrest.Postgrest
+import io.github.jan.supabase.storage.Storage
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
@@ -46,13 +47,24 @@ interface ShopApi {
         id: Long
     )
 
+    suspend fun uploadIcon(
+        path: String,
+        data: ByteArray
+    ): String
+
+    fun getIconUrl(
+        path: String
+    ): String
+
 }
 
 internal class ShopApiImpl(
-    postgrest: Postgrest
+    postgrest: Postgrest,
+    storage: Storage
 ) : ShopApi {
 
     private val table = postgrest["shops"]
+    private val bucket = storage["icons"]
 
     override suspend fun retrieveShops(): List<ShopDto> {
         return table.select().decodeList()
@@ -89,6 +101,14 @@ internal class ShopApiImpl(
         ) {
             ShopDto::id eq id
         }.decodeSingle()
+    }
+
+    override suspend fun uploadIcon(path: String, data: ByteArray): String {
+        return bucket.upload(path, data)
+    }
+
+    override fun getIconUrl(path: String): String {
+        return bucket.publicUrl(path)
     }
 
 }
