@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Text
@@ -19,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.seiko.imageloader.model.ImageAction
 import com.seiko.imageloader.model.ImageRequest
@@ -26,7 +26,6 @@ import com.seiko.imageloader.option.Scale
 import com.seiko.imageloader.option.SizeResolver
 import com.seiko.imageloader.rememberImageSuccessPainter
 import com.seiko.imageloader.ui.AutoSizeBox
-import com.seiko.imageloader.ui.AutoSizeImage
 import einkaufszettel.GetAllRecipes
 import io.github.jan.einkaufszettel.Res
 import io.github.jan.einkaufszettel.ui.component.LoadingCircle
@@ -35,10 +34,10 @@ import io.github.jan.supabase.CurrentPlatformTarget
 import io.github.jan.supabase.PlatformTarget
 import io.github.jan.supabase.storage.authenticatedStorageItem
 
-object RecipeCardDefaults {
-    val HEIGHT = 160.dp
-    val WIDTH = 100.dp
-    val PADDING = 8.dp
+expect object RecipeCardDefaults {
+    val HEIGHT: Dp
+    val WIDTH: Dp
+    val PADDING: Dp
 }
 
 @Composable

@@ -9,6 +9,7 @@ import io.github.jan.einkaufszettel.data.local.RecipeDataSource
 import io.github.jan.einkaufszettel.data.local.ShopDataSource
 import io.github.jan.einkaufszettel.data.remote.ProductApi
 import io.github.jan.einkaufszettel.data.remote.ProfileApi
+import io.github.jan.einkaufszettel.data.remote.ProfileDto
 import io.github.jan.einkaufszettel.data.remote.RecipeApi
 import io.github.jan.einkaufszettel.data.remote.ShopApi
 import io.github.jan.supabase.exceptions.RestException
@@ -47,12 +48,17 @@ class AppScreenModel(
             mutableState.value = State.Loading
             withContext(PlatformNetworkContext) {
                 runCatching {
+                    val oldProfiles = profileDataSource.retrieveAllProfiles()
+                    val profilesToFetch = mutableListOf<String>()
                     if(type in listOf(RefreshType.PRODUCTS, RefreshType.ALL))
-                        refreshProducts()
+                        refreshProducts(oldProfiles).also { profilesToFetch.addAll(it) }
                     if(type in listOf(RefreshType.SHOPS, RefreshType.ALL))
-                        refreshShops()
+                        refreshShops(oldProfiles).also { profilesToFetch.addAll(it) }
                     if(type in listOf(RefreshType.RECIPES, RefreshType.ALL))
                         refreshRecipes()
+                    if(profilesToFetch.isNotEmpty()) {
+                        fetchUserProfiles(profilesToFetch)
+                    }
                 }.onFailure {
                     it.printStackTrace()
                     if (!silent) {
@@ -70,10 +76,9 @@ class AppScreenModel(
         }
     }
 
-    private suspend fun refreshProducts() {
+    private suspend fun refreshProducts(oldProfiles: List<ProfileDto>): List<String> {
         val oldProducts = productDataSource.retrieveAllProducts()
         val newProducts = productApi.retrieveProducts()
-        val oldProfiles = profileDataSource.retrieveAllProfiles()
         val profilesToFetch = newProducts.map { listOf(it.userId, it.doneBy) }.flatten().filterNotNull().filter { profileId ->
             oldProfiles.none { profile ->
                 profile.id == profileId
@@ -86,16 +91,21 @@ class AppScreenModel(
         }
         productDataSource.deleteAll(productsToDelete.map { it.id })
         productDataSource.insertAll(newProducts)
-        fetchUserProfiles(profilesToFetch)
+        return profilesToFetch
     }
 
-    private suspend fun refreshShops() {
+    private suspend fun refreshShops(oldProfiles: List<ProfileDto>): List<String> {
         val oldShops = shopDataSource.retrieveAllShops()
         val newShops = shopApi.retrieveShops().map {
             val old = oldShops.find { oldShop -> oldShop.id == it.id }
             val collapsed = old?.collapsed ?: false
             val pinned = old?.pinned ?: false
             it.copy(collapsed = collapsed, pinned = pinned)
+        }
+        val profilesToFetch = newShops.map { listOf(it.ownerId) + it.authorizedUsers }.flatten().filterNotNull().filter { profileId ->
+            oldProfiles.none { profile ->
+                profile.id == profileId
+            }
         }
         val shopsToDelete = oldShops.filter { oldShop ->
             newShops.none { newShop ->
@@ -104,6 +114,7 @@ class AppScreenModel(
         }
         shopDataSource.deleteAll(shopsToDelete.map { it.id })
         shopDataSource.insertAll(newShops)
+        return profilesToFetch
     }
 
     private suspend fun refreshRecipes() {
