@@ -70,7 +70,7 @@ object ShopScreen: Screen {
                                         if (CurrentPlatformTarget == PlatformTarget.ANDROID) {
                                             navigator.parent!!.push(ShopCreateScreen)
                                         } else {
-                                            navigator.push(ShopCreateScreen)
+                                            navigator.replace(ShopCreateScreen)
                                         }
                                     }
                                 )
@@ -90,12 +90,10 @@ object ShopScreen: Screen {
                                         if (CurrentPlatformTarget == PlatformTarget.ANDROID) {
                                             navigator.parent!!.push(ShopDetailScreen(shop.id))
                                         } else {
-                                            if(navigator.lastItem is BlankScreen) {
-                                                navigator.push(ShopDetailScreen(shop.id))
-                                            } else if (navigator.lastItem is ShopDetailScreen && (navigator.lastItem as ShopDetailScreen).id == shop.id) {
-                                                navigator.push(BlankScreen)
-                                            } else if (navigator.lastItem is ShopDetailScreen) {
-                                                navigator.push(ShopDetailScreen(shop.id))
+                                            if (navigator.lastItem is ShopDetailScreen && (navigator.lastItem as ShopDetailScreen).id == shop.id) {
+                                                navigator.replace(BlankScreen)
+                                            } else {
+                                                navigator.replace(ShopDetailScreen(shop.id))
                                             }
                                         }
                                     },

@@ -15,7 +15,8 @@ val shopModels = module {
             shopId = parameters.get(),
             productApi = get(),
             productDataSource = get(),
-            auth = get()
+            auth = get(),
+            shopDataSource = get()
         )
     }
     factory {

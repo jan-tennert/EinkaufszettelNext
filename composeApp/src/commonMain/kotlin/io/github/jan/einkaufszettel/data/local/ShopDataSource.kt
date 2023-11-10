@@ -1,6 +1,7 @@
 package io.github.jan.einkaufszettel.data.local
 
 import app.cash.sqldelight.async.coroutines.awaitAsList
+import app.cash.sqldelight.async.coroutines.awaitAsOne
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import einkaufszettel.ShopTable
@@ -15,6 +16,8 @@ interface ShopDataSource {
     suspend fun insertShop(shop: ShopDto)
 
     fun getAllShops(): Flow<List<ShopDto>>
+
+    fun getShopById(id: Long): Flow<ShopDto>
 
     suspend fun retrieveAllShops(): List<ShopDto>
 
@@ -89,6 +92,10 @@ internal class ShopDataSourceImpl(
 
     override suspend fun changePinned(id: Long, pinned: Boolean) {
         queries.changePinned(id, if (pinned) 1L else 0L)
+    }
+
+    override fun getShopById(id: Long): Flow<ShopDto> {
+        return queries.getShopById(id).asFlow().map { it.awaitAsOne().toShopDto() }
     }
 
 }

@@ -46,6 +46,7 @@ import io.github.jan.einkaufszettel.ui.dialog.ErrorDialog
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.components.CreateButton
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.components.UserProfileList
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.screen.ShopProductScreenModel
+import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.screen.main.BlankScreen
 import io.github.jan.supabase.CurrentPlatformTarget
 import io.github.jan.supabase.PlatformTarget
 
@@ -139,7 +140,7 @@ object ShopCreateScreen: Screen {
             actions = {
                 if(CurrentPlatformTarget == PlatformTarget.JS) {
                     IconButton(
-                        onClick = { navigator.pop() }
+                        onClick = { navigator.replace(BlankScreen) }
                     ) {
                         Icon(Icons.Filled.Close, null)
                     }
