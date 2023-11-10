@@ -8,9 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.core.annotation.ExperimentalVoyagerApi
-import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getNavigatorScreenModel
-import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.Navigator
 import io.github.jan.einkaufszettel.Res
 import io.github.jan.einkaufszettel.collectAsStateWithLifecycle

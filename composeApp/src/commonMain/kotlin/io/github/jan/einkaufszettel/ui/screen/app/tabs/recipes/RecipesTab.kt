@@ -1,9 +1,7 @@
 package io.github.jan.einkaufszettel.ui.screen.app.tabs.recipes
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.RestaurantMenu
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.vector.rememberVectorPainter

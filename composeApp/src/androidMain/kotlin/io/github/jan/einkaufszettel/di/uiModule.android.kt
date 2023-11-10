@@ -2,11 +2,9 @@ package io.github.jan.einkaufszettel.di
 
 import com.seiko.imageloader.ImageLoader
 import com.seiko.imageloader.cache.memory.maxSizePercent
-import com.seiko.imageloader.component.fetcher.ContentUriFetcher
 import com.seiko.imageloader.component.setupDefaultComponents
 import com.seiko.imageloader.defaultImageResultMemoryCache
 import com.seiko.imageloader.option.androidContext
-import io.github.jan.supabase.imageloader.ImageLoaderIntegration
 import okio.Path.Companion.toOkioPath
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.scope.Scope

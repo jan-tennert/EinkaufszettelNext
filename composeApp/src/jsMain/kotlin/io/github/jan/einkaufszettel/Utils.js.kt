@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import io.github.jan.supabase.gotrue.Auth
-import io.github.jan.supabase.gotrue.GoTrue
-import io.ktor.http.*
+import io.ktor.http.URLBuilder
+import io.ktor.http.Url
 import kotlinx.browser.window
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.StateFlow

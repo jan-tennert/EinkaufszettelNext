@@ -1,8 +1,6 @@
 package io.github.jan.einkaufszettel.ui.screen.app.tabs.components
 
-import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction

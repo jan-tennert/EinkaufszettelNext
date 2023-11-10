@@ -1,13 +1,11 @@
 package io.github.jan.einkaufszettel.ui.screen.login
 
-import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import io.github.jan.einkaufszettel.Res
 import io.github.jan.einkaufszettel.data.remote.AuthenticationApi
 import io.github.jan.supabase.exceptions.HttpRequestException
 import io.github.jan.supabase.exceptions.RestException
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 class LoginScreenModel(

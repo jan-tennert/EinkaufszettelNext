@@ -2,7 +2,6 @@ package io.github.jan.einkaufszettel.data.local
 
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toJavaInstant
 import kotlinx.datetime.toJavaLocalDateTime
 import kotlinx.datetime.toLocalDateTime
 import java.time.format.DateTimeFormatter

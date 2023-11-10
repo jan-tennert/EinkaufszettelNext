@@ -11,11 +11,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Done
-import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -43,9 +41,7 @@ import io.github.jan.einkaufszettel.Res
 import io.github.jan.einkaufszettel.collectAsStateWithLifecycle
 import io.github.jan.einkaufszettel.ui.component.LocalImage
 import io.github.jan.einkaufszettel.ui.dialog.ErrorDialog
-import io.github.jan.einkaufszettel.ui.screen.app.tabs.components.CreateButton
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.components.UserProfileList
-import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.screen.ShopProductScreenModel
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.screen.main.BlankScreen
 import io.github.jan.supabase.CurrentPlatformTarget
 import io.github.jan.supabase.PlatformTarget

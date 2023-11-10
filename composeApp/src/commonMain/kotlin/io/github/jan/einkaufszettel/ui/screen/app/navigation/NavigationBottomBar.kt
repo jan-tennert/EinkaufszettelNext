@@ -8,10 +8,6 @@ import androidx.compose.runtime.Composable
 import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
 import cafe.adriel.voyager.navigator.tab.Tab
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.Tabs
-import io.github.jan.einkaufszettel.ui.screen.app.tabs.home.HomeTab
-import io.github.jan.einkaufszettel.ui.screen.app.tabs.recipes.RecipesTab
-import io.github.jan.einkaufszettel.ui.screen.app.tabs.settings.SettingsTab
-import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.ShopsTab
 
 @Composable
 internal fun AppNavigationBar() {
