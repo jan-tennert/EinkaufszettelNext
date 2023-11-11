@@ -33,9 +33,8 @@ import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import io.github.jan.einkaufszettel.Res
 import io.github.jan.einkaufszettel.collectAsStateWithLifecycle
-import io.github.jan.einkaufszettel.ui.dialog.ErrorDialog
+import io.github.jan.einkaufszettel.ui.screen.app.AppStateErrorHandler
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.components.ProductCard
-import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.screen.ShopProductScreenModel
 
 data object HomeTab: Tab {
 
@@ -60,15 +59,10 @@ data object HomeTab: Tab {
             WindowWidthSizeClass.Expanded -> ExpandedContent(shopAndProducts, screenModel)
         }
 
-        when(screenModelState) {
-            is ShopProductScreenModel.State.Error -> {
-                ErrorDialog((screenModelState as ShopProductScreenModel.State.Error).message, screenModel::resetState)
-            }
-            ShopProductScreenModel.State.NetworkError -> {
-                ErrorDialog(Res.string.network_error, screenModel::resetState)
-            }
-            else -> {}
-        }
+        AppStateErrorHandler(
+            state = screenModelState,
+            resetState = screenModel::resetState,
+        )
     }
 
     @OptIn(ExperimentalFoundationApi::class)

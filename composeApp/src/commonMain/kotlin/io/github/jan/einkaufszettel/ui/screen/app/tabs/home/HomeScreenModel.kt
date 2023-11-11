@@ -57,8 +57,4 @@ class HomeScreenModel(
         }
     }
 
-    override fun resetState() {
-        mutableState.value = State.Idle
-    }
-
 }
