@@ -33,7 +33,8 @@ import io.github.jan.einkaufszettel.Res
 import io.github.jan.einkaufszettel.collectAsStateWithLifecycle
 import io.github.jan.einkaufszettel.getScreenModel
 import io.github.jan.einkaufszettel.ui.component.LoadingCircle
-import io.github.jan.einkaufszettel.ui.dialog.ErrorDialog
+import io.github.jan.einkaufszettel.ui.screen.app.AppState
+import io.github.jan.einkaufszettel.ui.screen.app.AppStateErrorHandler
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.components.UserProfileList
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.screen.main.BlankScreen
 import io.github.jan.supabase.CurrentPlatformTarget
@@ -64,7 +65,7 @@ class ShopEditScreen(
                 ShopEditTopBar(navigator)
             },
             floatingActionButton = {
-                if(screenModelState is ShopEditScreenModel.State.Loading) {
+                if(screenModelState is AppState.Loading) {
                     CircularProgressIndicator()
                 } else {
                     FloatingActionButton(
@@ -96,15 +97,10 @@ class ShopEditScreen(
             }
         }
 
-        when(screenModelState) {
-            is ShopEditScreenModel.State.Error -> {
-                ErrorDialog((screenModelState as ShopEditScreenModel.State.Error).message, screenModel::resetState)
-            }
-            ShopEditScreenModel.State.NetworkError -> {
-                ErrorDialog(Res.string.network_error, screenModel::resetState)
-            }
-            else -> {}
-        }
+        AppStateErrorHandler(
+            state = screenModelState,
+            resetState = screenModel::resetState
+        )
     }
 
     @OptIn(ExperimentalMaterial3Api::class)

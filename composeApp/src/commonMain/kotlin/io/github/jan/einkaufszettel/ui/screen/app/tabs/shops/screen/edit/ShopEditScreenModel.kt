@@ -1,12 +1,12 @@
 package io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.screen.edit
 
-import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
-import io.github.jan.einkaufszettel.Res
 import io.github.jan.einkaufszettel.data.local.ProfileDataSource
 import io.github.jan.einkaufszettel.data.local.ShopDataSource
 import io.github.jan.einkaufszettel.data.remote.ProfileApi
 import io.github.jan.einkaufszettel.data.remote.ShopApi
+import io.github.jan.einkaufszettel.ui.screen.app.AppState
+import io.github.jan.einkaufszettel.ui.screen.app.tabs.models.UserImportScreenModel
 import io.github.jan.supabase.exceptions.RestException
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
@@ -16,15 +16,11 @@ class ShopEditScreenModel(
     private val shopId: Long,
     private val shopApi: ShopApi,
     private val shopDataSource: ShopDataSource,
-    private val profileApi: ProfileApi,
-    private val profileDataSource: ProfileDataSource
-): StateScreenModel<ShopEditScreenModel.State>(State.Idle) {
+    profileApi: ProfileApi,
+    profileDataSource: ProfileDataSource
+): UserImportScreenModel(profileApi, profileDataSource) {
 
-    sealed interface State {
-        data object Idle : State
-        data object Loading : State
-        data object NetworkError : State
-        data class Error(val message: String) : State
+    sealed interface State: AppState {
         data object Success : State
     }
 
@@ -36,7 +32,7 @@ class ShopEditScreenModel(
         authorizedUsers: List<String>,
     ) {
         screenModelScope.launch {
-            mutableState.value = State.Loading
+            mutableState.value = AppState.Loading
             runCatching {
                 shopApi.editShop(
                     id = shopId,
@@ -48,36 +44,11 @@ class ShopEditScreenModel(
                 mutableState.value = State.Success
             }.onFailure {
                 when(it) {
-                    is RestException -> mutableState.value = State.Error(it.message ?: "")
-                    else -> mutableState.value = State.NetworkError
+                    is RestException -> mutableState.value = AppState.Error(it.message ?: "")
+                    else -> mutableState.value = AppState.NetworkError
                 }
             }
         }
-    }
-
-    fun importUser(id: String) {
-        screenModelScope.launch {
-            mutableState.value = State.Loading
-            runCatching {
-                profileApi.retrieveProfile(id)
-            }.onSuccess {
-                if(it != null) {
-                    profileDataSource.insertProfile(it)
-                    mutableState.value = State.Idle
-                } else {
-                    mutableState.value = State.Error(Res.string.user_not_found)
-                }
-            }.onFailure {
-                when(it) {
-                    is RestException -> mutableState.value = State.Error(it.message ?: "")
-                    else -> mutableState.value = State.NetworkError
-                }
-            }
-        }
-    }
-
-    fun resetState() {
-        mutableState.value = State.Idle
     }
 
 }

@@ -40,7 +40,8 @@ import com.darkrockstudios.libraries.mpfilepicker.FilePicker
 import io.github.jan.einkaufszettel.Res
 import io.github.jan.einkaufszettel.collectAsStateWithLifecycle
 import io.github.jan.einkaufszettel.ui.component.LocalImage
-import io.github.jan.einkaufszettel.ui.dialog.ErrorDialog
+import io.github.jan.einkaufszettel.ui.screen.app.AppState
+import io.github.jan.einkaufszettel.ui.screen.app.AppStateErrorHandler
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.components.UserProfileList
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.screen.main.BlankScreen
 import io.github.jan.supabase.CurrentPlatformTarget
@@ -64,7 +65,7 @@ object ShopCreateScreen: Screen {
                 ShopCreateTopBar(navigator)
             },
             floatingActionButton = {
-                if(screenModelState is ShopCreateScreenModel.State.Loading) {
+                if(screenModelState is AppState.Loading) {
                     CircularProgressIndicator()
                 } else {
                     FloatingActionButton(
@@ -114,18 +115,17 @@ object ShopCreateScreen: Screen {
         )
 
         when(screenModelState) {
-            is ShopCreateScreenModel.State.Error -> {
-                ErrorDialog((screenModelState as ShopCreateScreenModel.State.Error).message, screenModel::resetState)
-            }
-            ShopCreateScreenModel.State.NetworkError -> {
-                ErrorDialog(Res.string.network_error, screenModel::resetState)
-            }
             ShopCreateScreenModel.State.Success -> {
                 SideEffect {
                     navigator.replace(BlankScreen)
                 }
             }
-            else -> {}
+            else -> {
+                AppStateErrorHandler(
+                    state = screenModelState,
+                    resetState = screenModel::resetState
+                )
+            }
         }
     }
 

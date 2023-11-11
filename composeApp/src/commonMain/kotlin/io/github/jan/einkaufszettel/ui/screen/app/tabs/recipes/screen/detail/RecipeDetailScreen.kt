@@ -19,12 +19,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import einkaufszettel.GetAllRecipes
-import io.github.jan.einkaufszettel.Res
 import io.github.jan.einkaufszettel.collectAsStateWithLifecycle
 import io.github.jan.einkaufszettel.data.remote.ShopDto
 import io.github.jan.einkaufszettel.getScreenModel
 import io.github.jan.einkaufszettel.ui.component.LoadingCircle
-import io.github.jan.einkaufszettel.ui.dialog.ErrorDialog
+import io.github.jan.einkaufszettel.ui.screen.app.AppStateErrorHandler
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.recipes.screen.detail.components.IngredientDetailContent
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.recipes.screen.detail.components.StepDetailContent
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.dialog.ProductDialog
@@ -80,15 +79,10 @@ class RecipeDetailScreen(
             )
         }
 
-        when(shopProductState) {
-            is ShopProductScreenModel.State.Error -> {
-                ErrorDialog((shopProductState as ShopProductScreenModel.State.Error).message, shopProductScreenModel::resetState)
-            }
-            ShopProductScreenModel.State.NetworkError -> {
-                ErrorDialog(Res.string.network_error, shopProductScreenModel::resetState)
-            }
-            else -> {}
-        }
+        AppStateErrorHandler(
+            state = shopProductState,
+            resetState = shopProductScreenModel::resetState,
+        )
     }
 
     @Composable

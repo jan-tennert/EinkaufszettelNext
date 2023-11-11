@@ -31,13 +31,12 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import io.github.jan.einkaufszettel.Res
 import io.github.jan.einkaufszettel.collectAsStateWithLifecycle
 import io.github.jan.einkaufszettel.getScreenModel
-import io.github.jan.einkaufszettel.ui.dialog.ErrorDialog
 import io.github.jan.einkaufszettel.ui.screen.app.AppScreenModel
+import io.github.jan.einkaufszettel.ui.screen.app.AppStateErrorHandler
 import io.github.jan.einkaufszettel.ui.screen.app.pullrefresh.RefreshScope
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.components.CreateButton
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.components.ProductCard
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.dialog.ProductDialog
-import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.screen.ShopProductScreenModel
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.screen.main.BlankScreen
 import io.github.jan.supabase.CurrentPlatformTarget
 import io.github.jan.supabase.PlatformTarget
@@ -100,15 +99,10 @@ data class ShopDetailScreen(val id: Long): Screen {
             )
         }
 
-        when(screenModelState) {
-            is ShopProductScreenModel.State.Error -> {
-                ErrorDialog((screenModelState as ShopProductScreenModel.State.Error).message, screenModel::resetState)
-            }
-            ShopProductScreenModel.State.NetworkError -> {
-                ErrorDialog(Res.string.network_error, screenModel::resetState)
-            }
-            else -> {}
-        }
+        AppStateErrorHandler(
+            state = screenModelState,
+            resetState = screenModel::resetState
+        )
     }
 
     @OptIn(ExperimentalMaterial3Api::class)

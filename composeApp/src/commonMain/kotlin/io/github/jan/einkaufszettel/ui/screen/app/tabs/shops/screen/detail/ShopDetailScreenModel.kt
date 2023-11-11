@@ -26,8 +26,4 @@ class ShopDetailScreenModel(
 
     fun createProduct(content: String) = createProduct(shopId, content)
 
-    override fun resetState() {
-        mutableState.value = State.Idle
-    }
-
 }
