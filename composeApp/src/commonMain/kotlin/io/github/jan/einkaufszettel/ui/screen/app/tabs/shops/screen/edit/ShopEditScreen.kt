@@ -1,13 +1,9 @@
-package io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.screen.create
+package io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.screen.edit
 
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Done
@@ -22,7 +18,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -30,45 +25,50 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import com.darkrockstudios.libraries.mpfilepicker.FilePicker
 import io.github.jan.einkaufszettel.Res
 import io.github.jan.einkaufszettel.collectAsStateWithLifecycle
-import io.github.jan.einkaufszettel.ui.component.LocalImage
+import io.github.jan.einkaufszettel.getScreenModel
+import io.github.jan.einkaufszettel.ui.component.LoadingCircle
 import io.github.jan.einkaufszettel.ui.dialog.ErrorDialog
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.components.UserProfileList
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.screen.main.BlankScreen
 import io.github.jan.supabase.CurrentPlatformTarget
 import io.github.jan.supabase.PlatformTarget
+import org.koin.core.parameter.parametersOf
 
-object ShopCreateScreen: Screen {
+class ShopEditScreen(
+    private val shopId: Long,
+): Screen {
 
     @Composable
     override fun Content() {
-        val screenModel = getScreenModel<ShopCreateScreenModel>()
-        val userProfiles by screenModel.userProfiles.collectAsStateWithLifecycle()
-        val imageData by screenModel.imageData.collectAsStateWithLifecycle()
-        var showImageDialog by remember { mutableStateOf(false) }
-        var name by remember { mutableStateOf("") }
-        val authorizedUsers = remember { mutableStateListOf<String>() }
-        val navigator = LocalNavigator.currentOrThrow
+        val screenModel = getScreenModel<ShopEditScreenModel>(tag = shopId.toString(), parameters = { parametersOf(shopId) })
+        val shop by screenModel.shop.collectAsStateWithLifecycle()
+        if(shop == null) {
+            LoadingCircle()
+            return
+        }
         val screenModelState by screenModel.state.collectAsStateWithLifecycle()
+        val navigator = LocalNavigator.currentOrThrow
+        val userProfiles by screenModel.userProfiles.collectAsStateWithLifecycle()
+        var name by remember { mutableStateOf(shop!!.name) }
+        val authorizedUsers = remember { mutableStateListOf(*shop!!.authorizedUsers.toTypedArray()) }
+
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             topBar = {
-                ShopCreateTopBar(navigator)
+                ShopEditTopBar(navigator)
             },
             floatingActionButton = {
-                if(screenModelState is ShopCreateScreenModel.State.Loading) {
+                if(screenModelState is ShopEditScreenModel.State.Loading) {
                     CircularProgressIndicator()
                 } else {
                     FloatingActionButton(
-                        onClick = { imageData?.let { screenModel.createShop(name, it, authorizedUsers) } },
+                        onClick = { screenModel.updateShop(name, authorizedUsers) },
                     ) {
                         Icon(Icons.Filled.Done, null)
                     }
@@ -85,15 +85,6 @@ object ShopCreateScreen: Screen {
                     label = { Text(Res.string.name) },
                     singleLine = true
                 )
-                Box(Modifier.padding(8.dp)) {
-                    LocalImage(
-                        imageData,
-                        modifier = Modifier
-                            .size(128.dp)
-                            .border(2.dp, MaterialTheme.colorScheme.onSurface)
-                            .clickable { showImageDialog = true }
-                    )
-                }
                 UserProfileList(
                     profiles = userProfiles,
                     selectedUsers = authorizedUsers,
@@ -104,26 +95,13 @@ object ShopCreateScreen: Screen {
                 )
             }
         }
-        FilePicker(
-            show = showImageDialog,
-            fileExtensions = listOf("png", "jpg", "jpeg"),
-            onFileSelected = {
-                showImageDialog = false
-                it?.platformFile?.let { file -> screenModel.importNativeFile(file) }
-            }
-        )
 
         when(screenModelState) {
-            is ShopCreateScreenModel.State.Error -> {
-                ErrorDialog((screenModelState as ShopCreateScreenModel.State.Error).message, screenModel::resetState)
+            is ShopEditScreenModel.State.Error -> {
+                ErrorDialog((screenModelState as ShopEditScreenModel.State.Error).message, screenModel::resetState)
             }
-            ShopCreateScreenModel.State.NetworkError -> {
+            ShopEditScreenModel.State.NetworkError -> {
                 ErrorDialog(Res.string.network_error, screenModel::resetState)
-            }
-            ShopCreateScreenModel.State.Success -> {
-                SideEffect {
-                    navigator.replace(BlankScreen)
-                }
             }
             else -> {}
         }
@@ -131,10 +109,10 @@ object ShopCreateScreen: Screen {
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    private fun ShopCreateTopBar(navigator: Navigator) {
+    private fun ShopEditTopBar(navigator: Navigator) {
         CenterAlignedTopAppBar(
             title = {
-                Text(Res.string.create_list, style = MaterialTheme.typography.headlineMedium)
+                Text(Res.string.edit_list, style = MaterialTheme.typography.headlineMedium)
             },
             actions = {
                 if(CurrentPlatformTarget == PlatformTarget.JS) {

@@ -44,6 +44,7 @@ expect object RecipeCardDefaults {
 fun RecipeCard(
     recipe: GetAllRecipes,
     modifier: Modifier = Modifier,
+    isOwner: Boolean = false,
     onClick: () -> Unit = {},
     onEdit: () -> Unit = {},
     onDelete: () -> Unit = {},
@@ -54,11 +55,13 @@ fun RecipeCard(
         items = {
             DropdownMenuItem(
                 text = { Text(Res.string.edit) },
-                onClick = onEdit
+                onClick = onEdit,
+                enabled = isOwner
             )
             DropdownMenuItem(
                 text = { Text(Res.string.delete) },
-                onClick = onDelete
+                onClick = onDelete,
+                enabled = isOwner
             )
         }
     ) {

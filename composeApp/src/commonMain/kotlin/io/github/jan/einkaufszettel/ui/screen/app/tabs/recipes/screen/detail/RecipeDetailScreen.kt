@@ -27,9 +27,9 @@ import io.github.jan.einkaufszettel.ui.component.LoadingCircle
 import io.github.jan.einkaufszettel.ui.dialog.ErrorDialog
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.recipes.screen.detail.components.IngredientDetailContent
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.recipes.screen.detail.components.StepDetailContent
-import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.ShopScreenModel
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.dialog.ProductDialog
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.screen.ShopProductScreenModel
+import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.screen.main.ShopScreenModel
 import org.koin.core.parameter.parametersOf
 
 typealias Ingredient = Pair<Long, String>

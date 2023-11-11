@@ -14,6 +14,7 @@
 
     <string name="create_user_profile">Create User Profile</string>
     <string name="username">Username</string>
+    <string name="user_id">User-ID</string>
     <string name="unknown">Unknown</string>
     <string name="by">by</string>
     <string name="create">Create</string>
@@ -24,8 +25,13 @@
     <string name="product">Product</string>
 
     <string name="authorized_users">Authorized Users</string>
+    <string name="add_user">Add User</string>
+    <string name="user_not_found">User not found</string>
+    <string name="add">Add</string>
     <string name="create_list">Create New List</string>
+    <string name="edit_list">Edit List</string>
     <string name="delete_list">Delete List</string>
+    <string name="empty_list">No entries found</string>
     <string name="delete_list_text">Are you sure you want to delete this list? This will also delete all associated products.</string>
     <string name="name">Name</string>
 

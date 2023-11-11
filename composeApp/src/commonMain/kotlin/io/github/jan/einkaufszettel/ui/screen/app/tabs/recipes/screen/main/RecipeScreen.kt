@@ -40,6 +40,7 @@ object RecipeScreen : Screen {
         val filteredRecipes by derivedStateOf {
             recipes.filter { it.name.contains(searchQuery, ignoreCase = true) }
         }
+        val userId by screenModel.userIdFlow.collectAsStateWithLifecycle()
         val navigator = LocalNavigator.currentOrThrow
         Column(
             modifier = Modifier.fillMaxSize()
@@ -61,6 +62,7 @@ object RecipeScreen : Screen {
                 items(filteredRecipes, { it.id }) {
                     RecipeCard(
                         recipe = it,
+                        isOwner = it.creatorId == userId,
                         modifier = Modifier.width(RecipeCardDefaults.WIDTH).height(RecipeCardDefaults.HEIGHT).padding(RecipeCardDefaults.PADDING),
                         onClick = {
                             navigator.push(RecipeDetailScreen(it.id))

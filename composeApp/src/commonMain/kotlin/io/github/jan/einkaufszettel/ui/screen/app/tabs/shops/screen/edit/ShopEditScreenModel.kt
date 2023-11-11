@@ -1,31 +1,24 @@
-package io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.screen.create
+package io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.screen.edit
 
 import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import io.github.jan.einkaufszettel.Res
 import io.github.jan.einkaufszettel.data.local.ProfileDataSource
 import io.github.jan.einkaufszettel.data.local.ShopDataSource
-import io.github.jan.einkaufszettel.data.local.image.LocalImageData
-import io.github.jan.einkaufszettel.data.local.image.LocalImageReader
 import io.github.jan.einkaufszettel.data.remote.ProfileApi
 import io.github.jan.einkaufszettel.data.remote.ShopApi
 import io.github.jan.supabase.exceptions.RestException
-import io.github.jan.supabase.gotrue.Auth
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
 
-class ShopCreateScreenModel(
+class ShopEditScreenModel(
+    private val shopId: Long,
     private val shopApi: ShopApi,
-    private val profileDataSource: ProfileDataSource,
-    private val profileApi: ProfileApi,
     private val shopDataSource: ShopDataSource,
-    private val auth: Auth,
-    private val localImageReader: LocalImageReader
-): StateScreenModel<ShopCreateScreenModel.State>(State.Idle) {
+    private val profileApi: ProfileApi,
+    private val profileDataSource: ProfileDataSource
+): StateScreenModel<ShopEditScreenModel.State>(State.Idle) {
 
     sealed interface State {
         data object Idle : State
@@ -35,25 +28,20 @@ class ShopCreateScreenModel(
         data object Success : State
     }
 
+    val shop = shopDataSource.getShopById(shopId).stateIn(screenModelScope, SharingStarted.Eagerly, null)
     val userProfiles = profileDataSource.getProfiles().stateIn(screenModelScope, SharingStarted.Eagerly, emptyList())
-    private val _imageData = MutableStateFlow<LocalImageData?>(null)
-    val imageData = _imageData.asStateFlow()
 
-    fun createShop(
+    fun updateShop(
         name: String,
-        iconData: LocalImageData,
         authorizedUsers: List<String>,
     ) {
         screenModelScope.launch {
             mutableState.value = State.Loading
             runCatching {
-                val iconPath = "${Clock.System.now().toEpochMilliseconds()}.${iconData.extension}"
-                shopApi.uploadIcon(iconPath, iconData.data)
-                shopApi.createShop(
-                    name = name,
-                    iconUrl = shopApi.getIconUrl(iconPath),
-                    authorizedUsers = authorizedUsers,
-                    ownerId = auth.currentUserOrNull()?.id ?: ""
+                shopApi.editShop(
+                    id = shopId,
+                    newName = name,
+                    authorizedUsers = authorizedUsers
                 )
             }.onSuccess {
                 shopDataSource.insertShop(it)
@@ -63,18 +51,6 @@ class ShopCreateScreenModel(
                     is RestException -> mutableState.value = State.Error(it.message ?: "")
                     else -> mutableState.value = State.NetworkError
                 }
-            }
-        }
-    }
-
-    fun importNativeFile(file: Any) {
-        screenModelScope.launch {
-            runCatching {
-                localImageReader.platformFileToLocalImage(file)
-            }.onSuccess {
-                _imageData.value = it
-            }.onFailure {
-                it.printStackTrace()
             }
         }
     }

@@ -50,6 +50,7 @@ object ShopCardDefaults {
 @Composable
 fun ShopCard(
     shop: ShopDto,
+    isOwner: Boolean = false,
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     onEdit: () -> Unit,
@@ -61,11 +62,13 @@ fun ShopCard(
         items = {
             DropdownMenuItem(
                 text = { Text(Res.string.edit) },
-                onClick = onEdit
+                onClick = onEdit,
+                enabled = isOwner
             )
             DropdownMenuItem(
                 text = { Text(Res.string.delete) },
-                onClick = onDelete
+                onClick = onDelete,
+                enabled = isOwner
             )
         },
         content = {

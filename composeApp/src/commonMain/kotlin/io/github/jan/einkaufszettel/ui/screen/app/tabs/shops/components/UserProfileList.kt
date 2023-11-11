@@ -7,14 +7,22 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,8 +35,10 @@ import io.github.jan.einkaufszettel.data.remote.ProfileDto
 fun UserProfileList(
     profiles: List<ProfileDto>,
     selectedUsers: SnapshotStateList<String>,
+    addUser: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    var showAddUserDialog by remember { mutableStateOf(false) }
     LazyColumn(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -50,7 +60,58 @@ fun UserProfileList(
                 }
             )
         }
+        item {
+            Button(
+                onClick = {
+                    showAddUserDialog = true
+                }
+            ) {
+                Text(Res.string.add_user)
+            }
+        }
     }
+
+    if(showAddUserDialog) {
+        AddUserDialog(
+            onAdd = { id ->
+                showAddUserDialog = false
+                addUser(id)
+            },
+            onDismiss = { showAddUserDialog = false }
+        )
+    }
+}
+
+@Composable
+private fun AddUserDialog(
+    onAdd: (String) -> Unit,
+    onDismiss: () -> Unit
+) {
+    var id by remember { mutableStateOf("") }
+    AlertDialog(
+        title = { Text(Res.string.add_user) },
+        onDismissRequest = onDismiss,
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(Res.string.cancel)
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = {
+                onAdd(id)
+            }) {
+                Text(Res.string.add)
+            }
+        },
+        text = {
+            OutlinedTextField(
+                value = id,
+                onValueChange = { id = it },
+                label = { Text(Res.string.user_id) },
+                singleLine = true
+            )
+        }
+    )
 }
 
 @Composable

@@ -75,6 +75,11 @@ data class ShopDetailScreen(val id: Long): Screen {
                     horizontalAlignment = Alignment.CenterHorizontally,
                     state = listState
                 ) {
+                    item {
+                        if(products.isEmpty()) {
+                            Text(Res.string.empty_list, style = MaterialTheme.typography.bodyMedium)
+                        }
+                    }
                     items(products, { it.id }) {
                         ProductCard(
                             product = it,

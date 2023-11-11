@@ -6,7 +6,7 @@ import org.koin.dsl.module
 
 val recipeModels = module {
     factory {
-        RecipeScreenModel(get())
+        RecipeScreenModel(get(), get())
     }
     factory { parameters ->
         RecipeDetailScreenModel(parameters.get(), get())
