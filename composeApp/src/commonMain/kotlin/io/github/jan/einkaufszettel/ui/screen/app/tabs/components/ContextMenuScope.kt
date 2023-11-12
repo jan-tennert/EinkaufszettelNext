@@ -20,6 +20,8 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import io.github.jan.supabase.CurrentPlatformTarget
+import io.github.jan.supabase.PlatformTarget
 
 @Composable
 fun ContextMenuScope(
@@ -40,33 +42,43 @@ fun ContextMenuScope(
             .onSizeChanged {
                 itemHeight = with(density) { it.height.toDp() }
             }
-            .pointerInput(Unit) {
-                detectTapGestures(
-                    onLongPress = {
-                        isContextMenuVisible = true
-                        pressOffset = DpOffset(it.x.toDp(), it.y.toDp())
-                    },
-                    onPress = {
-                        val press = PressInteraction.Press(it)
-                        interactionSource.emit(press)
-                        tryAwaitRelease()
-                        interactionSource.emit(PressInteraction.Release(press))
-                    },
-                    onTap = {
-                        onItemClicked()
+            .let {
+                if(CurrentPlatformTarget == PlatformTarget.ANDROID || true) {
+                    it.pointerInput(Unit) {
+                        detectTapGestures(
+                            onLongPress = { offset ->
+                                isContextMenuVisible = true
+                                pressOffset = DpOffset(offset.x.toDp(), offset.y.toDp())
+                            },
+                            onPress = { offset ->
+                                val press = PressInteraction.Press(offset)
+                                interactionSource.emit(press)
+                                tryAwaitRelease()
+                                interactionSource.emit(PressInteraction.Release(press))
+                            },
+                            onTap = {
+                                onItemClicked()
+                            }
+                        )
                     }
-                )
-            }.pointerInput(Unit) {
-                awaitPointerEventScope {
-                    val event = awaitPointerEvent()
-                    if (event.type == PointerEventType.Press &&
-                        event.buttons.isSecondaryPressed
-                    ) {
-                        event.changes.forEach { e -> e.consume() }
-                        //broken currently
+                } else {
+                    it.pointerInput(Unit) {
+                        awaitPointerEventScope {
+                            val event = awaitPointerEvent()
+                            if (event.type == PointerEventType.Press &&
+                                event.buttons.isSecondaryPressed
+                            ) {
+                                event.changes.forEach { e -> e.consume() }
+                                println("right click")
+                            } else if (event.type == PointerEventType.Press && event.buttons.isSecondaryPressed) {
+                                event.changes.forEach { e -> e.consume() }
+                                onItemClicked()
+                            }
+                        }
                     }
                 }
-            }.then(modifier),
+            }
+            .then(modifier)
     ) {
         content(interactionSource)
         DropdownMenu(

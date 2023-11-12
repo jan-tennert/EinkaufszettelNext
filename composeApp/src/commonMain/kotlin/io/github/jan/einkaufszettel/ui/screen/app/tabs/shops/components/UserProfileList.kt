@@ -15,7 +15,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -26,9 +25,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import io.github.jan.einkaufszettel.Res
 import io.github.jan.einkaufszettel.data.remote.ProfileDto
+import io.github.jan.einkaufszettel.ui.screen.app.tabs.components.OutlinedSTextField
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -71,7 +72,7 @@ fun UserProfileList(
         }
     }
 
-    if(showAddUserDialog) {
+    if (showAddUserDialog) {
         AddUserDialog(
             onAdd = { id ->
                 showAddUserDialog = false
@@ -87,7 +88,7 @@ private fun AddUserDialog(
     onAdd: (String) -> Unit,
     onDismiss: () -> Unit
 ) {
-    var id by remember { mutableStateOf("") }
+    var id by remember { mutableStateOf(TextFieldValue()) }
     AlertDialog(
         title = { Text(Res.string.add_user) },
         onDismissRequest = onDismiss,
@@ -98,15 +99,17 @@ private fun AddUserDialog(
         },
         confirmButton = {
             TextButton(onClick = {
-                onAdd(id)
+                onAdd(id.text)
             }) {
                 Text(Res.string.add)
             }
         },
         text = {
-            OutlinedTextField(
+            OutlinedSTextField(
                 value = id,
-                onValueChange = { id = it },
+                onValueChange = {
+                    id = it
+                },
                 label = { Text(Res.string.user_id) },
                 singleLine = true
             )

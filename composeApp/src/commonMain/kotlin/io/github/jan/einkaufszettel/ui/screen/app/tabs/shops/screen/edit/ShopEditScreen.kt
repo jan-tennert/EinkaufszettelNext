@@ -18,6 +18,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -97,10 +98,19 @@ class ShopEditScreen(
             }
         }
 
-        AppStateErrorHandler(
-            state = screenModelState,
-            resetState = screenModel::resetState
-        )
+        when(screenModelState) {
+            ShopEditScreenModel.State.Success -> {
+                SideEffect {
+                    navigator.replace(BlankScreen)
+                }
+            }
+            else -> {
+                AppStateErrorHandler(
+                    state = screenModelState,
+                    resetState = screenModel::resetState
+                )
+            }
+        }
     }
 
     @OptIn(ExperimentalMaterial3Api::class)
