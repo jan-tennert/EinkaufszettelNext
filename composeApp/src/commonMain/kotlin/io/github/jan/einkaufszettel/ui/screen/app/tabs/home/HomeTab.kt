@@ -33,10 +33,11 @@ import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import io.github.jan.einkaufszettel.Res
 import io.github.jan.einkaufszettel.collectAsStateWithLifecycle
-import io.github.jan.einkaufszettel.ui.screen.app.AppStateErrorHandler
+import io.github.jan.einkaufszettel.ui.screen.app.AppState
+import io.github.jan.einkaufszettel.ui.screen.app.tabs.AppStateScreen
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.components.ProductCard
 
-data object HomeTab: Tab {
+data object HomeTab: Tab, AppStateScreen<HomeScreenModel> {
 
     override val options: TabOptions
         @Composable
@@ -47,22 +48,20 @@ data object HomeTab: Tab {
             }
         }
 
+    @Composable
+    override fun createScreenModel(): HomeScreenModel {
+        return getScreenModel<HomeScreenModel>()
+    }
+
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     @Composable
-    override fun Content() {
+    override fun Content(screenModel: HomeScreenModel, state: AppState) {
         val windowSizeClass = calculateWindowSizeClass()
-        val screenModel = getScreenModel<HomeScreenModel>()
-        val screenModelState by screenModel.state.collectAsStateWithLifecycle()
         val shopAndProducts by screenModel.shopAndProductFlow.collectAsStateWithLifecycle()
         when(windowSizeClass.widthSizeClass) {
             WindowWidthSizeClass.Compact, WindowWidthSizeClass.Medium -> CompactContent(shopAndProducts, screenModel)
             WindowWidthSizeClass.Expanded -> ExpandedContent(shopAndProducts, screenModel)
         }
-
-        AppStateErrorHandler(
-            state = screenModelState,
-            resetState = screenModel::resetState,
-        )
     }
 
     @OptIn(ExperimentalFoundationApi::class)

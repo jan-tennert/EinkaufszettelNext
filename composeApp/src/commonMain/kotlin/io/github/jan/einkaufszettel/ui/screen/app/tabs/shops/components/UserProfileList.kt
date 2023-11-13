@@ -1,7 +1,12 @@
 package io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -40,36 +45,39 @@ fun UserProfileList(
     modifier: Modifier = Modifier
 ) {
     var showAddUserDialog by remember { mutableStateOf(false) }
-    LazyColumn(
+    Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        stickyHeader {
-            UserProfileListHeader()
-        }
-        items(profiles) {
-            UserProfileListItem(
-                profile = it,
-                selected = selectedUsers.contains(it.id),
-                modifier = Modifier.fillMaxWidth().padding(8.dp),
-                onSelectChange = { selected ->
-                    if (selected) {
-                        selectedUsers.add(it.id)
-                    } else {
-                        selectedUsers.remove(it.id)
+        UserProfileListHeader()
+        LazyColumn(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.weight(1f)
+        ) {
+            items(profiles) {
+                UserProfileListItem(
+                    profile = it,
+                    selected = selectedUsers.contains(it.id),
+                    modifier = Modifier.fillMaxWidth().padding(8.dp),
+                    onSelectChange = { selected ->
+                        if (selected) {
+                            selectedUsers.add(it.id)
+                        } else {
+                            selectedUsers.remove(it.id)
+                        }
                     }
-                }
-            )
-        }
-        item {
-            Button(
-                onClick = {
-                    showAddUserDialog = true
-                }
-            ) {
-                Text(Res.string.add_user)
+                )
             }
         }
+
+        Button(
+            onClick = {
+                showAddUserDialog = true
+            }
+        ) {
+            Text(Res.string.add_user)
+        }
+        Spacer(Modifier.height(8.dp))
     }
 
     if (showAddUserDialog) {
@@ -145,5 +153,10 @@ private fun UserProfileListItem(
 
 @Composable
 private fun UserProfileListHeader() {
-    Text(Res.string.authorized_users, style = MaterialTheme.typography.headlineSmall)
+    Box(
+        modifier = Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.background).padding(8.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(Res.string.authorized_users, style = MaterialTheme.typography.headlineSmall)
+    }
 }

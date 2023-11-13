@@ -24,7 +24,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
@@ -32,8 +31,9 @@ import io.github.jan.einkaufszettel.Res
 import io.github.jan.einkaufszettel.collectAsStateWithLifecycle
 import io.github.jan.einkaufszettel.getScreenModel
 import io.github.jan.einkaufszettel.ui.screen.app.AppScreenModel
-import io.github.jan.einkaufszettel.ui.screen.app.AppStateErrorHandler
+import io.github.jan.einkaufszettel.ui.screen.app.AppState
 import io.github.jan.einkaufszettel.ui.screen.app.pullrefresh.RefreshScope
+import io.github.jan.einkaufszettel.ui.screen.app.tabs.AppStateScreen
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.components.CreateButton
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.components.ProductCard
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.dialog.ProductDialog
@@ -42,14 +42,17 @@ import io.github.jan.supabase.CurrentPlatformTarget
 import io.github.jan.supabase.PlatformTarget
 import org.koin.core.parameter.parametersOf
 
-data class ShopDetailScreen(val id: Long): Screen {
+data class ShopDetailStateScreen(val id: Long): AppStateScreen<ShopDetailScreenModel> {
+
+    @Composable
+    override fun createScreenModel(): ShopDetailScreenModel {
+        return getScreenModel<ShopDetailScreenModel>(parameters = { parametersOf(id) }, tag = id.toString())
+    }
 
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
-    override fun Content() {
-        val screenModel = getScreenModel<ShopDetailScreenModel>(parameters = { parametersOf(id) }, tag = id.toString())
+    override fun Content(screenModel: ShopDetailScreenModel, state: AppState) {
         val products by screenModel.productFlow.collectAsStateWithLifecycle()
-        val screenModelState by screenModel.state.collectAsStateWithLifecycle()
         val shop = screenModel.shopFlow.collectAsStateWithLifecycle()
         var showCreateDialog by remember { mutableStateOf(false) }
         val listState = rememberLazyListState()
@@ -98,11 +101,6 @@ data class ShopDetailScreen(val id: Long): Screen {
                 onSubmit = { showCreateDialog = false; screenModel.createProduct(it) }
             )
         }
-
-        AppStateErrorHandler(
-            state = screenModelState,
-            resetState = screenModel::resetState
-        )
     }
 
     @OptIn(ExperimentalMaterial3Api::class)

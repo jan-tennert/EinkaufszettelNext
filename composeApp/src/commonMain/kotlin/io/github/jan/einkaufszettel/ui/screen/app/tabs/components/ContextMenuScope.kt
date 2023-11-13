@@ -8,13 +8,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.PointerEventType
-import androidx.compose.ui.input.pointer.isSecondaryPressed
+import androidx.compose.ui.input.pointer.PointerInputScope
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
@@ -27,10 +27,10 @@ import io.github.jan.supabase.PlatformTarget
 fun ContextMenuScope(
     modifier: Modifier = Modifier,
     onItemClicked: () -> Unit = {},
-    items: @Composable ColumnScope.() -> Unit,
+    items: @Composable ColumnScope.(contextMenuVisible: MutableState<Boolean>) -> Unit,
     content: @Composable (indication: InteractionSource) -> Unit
 ) {
-    var isContextMenuVisible by remember { mutableStateOf(false) }
+    val isContextMenuVisible = remember { mutableStateOf(false) }
     var pressOffset by remember { mutableStateOf(DpOffset.Zero) }
     var itemHeight by remember { mutableStateOf(0.dp) }
     val density = LocalDensity.current
@@ -43,11 +43,11 @@ fun ContextMenuScope(
                 itemHeight = with(density) { it.height.toDp() }
             }
             .let {
-                if(CurrentPlatformTarget == PlatformTarget.ANDROID || true) {
+                if(CurrentPlatformTarget == PlatformTarget.ANDROID) {
                     it.pointerInput(Unit) {
                         detectTapGestures(
                             onLongPress = { offset ->
-                                isContextMenuVisible = true
+                                isContextMenuVisible.value = true
                                 pressOffset = DpOffset(offset.x.toDp(), offset.y.toDp())
                             },
                             onPress = { offset ->
@@ -63,18 +63,16 @@ fun ContextMenuScope(
                     }
                 } else {
                     it.pointerInput(Unit) {
-                        awaitPointerEventScope {
-                            val event = awaitPointerEvent()
-                            if (event.type == PointerEventType.Press &&
-                                event.buttons.isSecondaryPressed
-                            ) {
-                                event.changes.forEach { e -> e.consume() }
-                                println("right click")
-                            } else if (event.type == PointerEventType.Press && event.buttons.isSecondaryPressed) {
-                                event.changes.forEach { e -> e.consume() }
+                        handleClicks(
+                            interactionSource = interactionSource,
+                            onLeftClick = {
                                 onItemClicked()
+                            },
+                            onRightClick = { x, y ->
+                                isContextMenuVisible.value = true
+                                pressOffset = DpOffset(x.dp, y.dp)
                             }
-                        }
+                        )
                     }
                 }
             }
@@ -82,10 +80,18 @@ fun ContextMenuScope(
     ) {
         content(interactionSource)
         DropdownMenu(
-            expanded = isContextMenuVisible,
-            onDismissRequest = { isContextMenuVisible = false },
+            expanded = isContextMenuVisible.value,
+            onDismissRequest = { isContextMenuVisible.value = false },
             offset = pressOffset.copy(y = pressOffset.y - itemHeight),
-            content = items
+            content = {
+                items(isContextMenuVisible)
+            }
         )
     }
 }
+
+internal expect suspend fun PointerInputScope.handleClicks(
+    interactionSource: MutableInteractionSource,
+    onLeftClick: () -> Unit,
+    onRightClick: (x: Float, y: Float) -> Unit
+)

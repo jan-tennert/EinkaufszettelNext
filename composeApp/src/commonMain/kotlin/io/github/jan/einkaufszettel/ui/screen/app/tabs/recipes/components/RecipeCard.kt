@@ -9,8 +9,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.QuestionMark
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -55,12 +59,18 @@ fun RecipeCard(
         items = {
             DropdownMenuItem(
                 text = { Text(Res.string.edit) },
-                onClick = onEdit,
+                onClick = {
+                    onEdit()
+                    it.value = false
+                },
                 enabled = isOwner
             )
             DropdownMenuItem(
                 text = { Text(Res.string.delete) },
-                onClick = onDelete,
+                onClick = {
+                    onDelete()
+                    it.value = false
+                },
                 enabled = isOwner
             )
         }
@@ -74,9 +84,7 @@ fun RecipeCard(
             ) {
                 Text(recipe.name, maxLines = 2, overflow = TextOverflow.Ellipsis)
                 Spacer(Modifier.height(4.dp))
-                if(CurrentPlatformTarget != PlatformTarget.JS) {
-                    RecipeCardImage(recipe.imagePath, Modifier.weight(1f))
-                }
+                RecipeCardImage(recipe.imagePath, Modifier.weight(1f))
             }
         }
     }
@@ -84,34 +92,39 @@ fun RecipeCard(
 
 @Composable
 private fun RecipeCardImage(imagePath: String?, modifier: Modifier) {
-    Box(modifier) {
-        if(imagePath != null) {
+    Box(modifier, contentAlignment = Alignment.Center) {
+        if (imagePath != null && CurrentPlatformTarget != PlatformTarget.JS) {
             AutoSizeBox(
-                request = remember { ImageRequest(authenticatedStorageItem("recipes", imagePath)) {
-                    scale(Scale.FIT)
-                    size(SizeResolver {
-                        Size(200f, 200f)
-                    })
-                } },
-                modifier = modifier
+                request = remember {
+                    ImageRequest(authenticatedStorageItem("recipes", imagePath)) {
+                        scale(Scale.FIT)
+                        size(SizeResolver {
+                            Size(200f, 200f)
+                        })
+                    }
+                },
+                modifier = Modifier.matchParentSize()
             ) { action ->
                 when (action) {
                     is ImageAction.Loading -> {
                         LoadingCircle()
                     }
+
                     is ImageAction.Success -> {
                         Image(
                             painter = rememberImageSuccessPainter(action),
-                            contentDescription = null
+                            contentDescription = null,
+                            modifier = Modifier.matchParentSize()
                         )
                     }
+
                     is ImageAction.Failure -> {
                         // TODO
                     }
                 }
             }
         } else {
-            // TODO question mark as icon
+            Icon(Icons.Filled.QuestionMark, modifier = Modifier.matchParentSize(), contentDescription = null, tint = MaterialTheme.colorScheme.onSurface)
         }
     }
 }

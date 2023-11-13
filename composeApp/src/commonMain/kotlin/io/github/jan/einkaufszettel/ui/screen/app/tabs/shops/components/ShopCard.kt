@@ -62,12 +62,18 @@ fun ShopCard(
         items = {
             DropdownMenuItem(
                 text = { Text(Res.string.edit) },
-                onClick = onEdit,
+                onClick = {
+                    onEdit()
+                    it.value = false
+                },
                 enabled = isOwner
             )
             DropdownMenuItem(
                 text = { Text(Res.string.delete) },
-                onClick = onDelete,
+                onClick = {
+                    onDelete()
+                    it.value = false
+                },
                 enabled = isOwner
             )
         },

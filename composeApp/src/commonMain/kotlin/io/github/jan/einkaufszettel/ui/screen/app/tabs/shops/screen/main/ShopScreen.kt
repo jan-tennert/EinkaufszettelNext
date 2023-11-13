@@ -43,9 +43,9 @@ import io.github.jan.einkaufszettel.ui.screen.app.tabs.components.CreateButton
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.components.ShopCard
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.components.ShopCardDefaults
 import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.components.VerticalDivider
-import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.screen.create.ShopCreateScreen
-import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.screen.detail.ShopDetailScreen
-import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.screen.edit.ShopEditScreen
+import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.screen.create.ShopCreateStateScreen
+import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.screen.detail.ShopDetailStateScreen
+import io.github.jan.einkaufszettel.ui.screen.app.tabs.shops.screen.edit.ShopEditStateScreen
 import io.github.jan.supabase.CurrentPlatformTarget
 import io.github.jan.supabase.PlatformTarget
 
@@ -66,14 +66,14 @@ object ShopScreen: Screen {
                     Scaffold(
                         modifier = Modifier.fillMaxHeight().weight(1f),
                         floatingActionButton = {
-                            if(navigator.lastItem !is ShopCreateScreen && navigator.lastItem !is ShopDetailScreen) {
+                            if(navigator.lastItem !is ShopCreateStateScreen && navigator.lastItem !is ShopDetailStateScreen) {
                                 CreateButton(
                                     extended = listState.firstVisibleItemIndex == 0,
                                     onClick = {
                                         if (CurrentPlatformTarget == PlatformTarget.ANDROID) {
-                                            navigator.parent!!.push(ShopCreateScreen)
+                                            navigator.parent!!.push(ShopCreateStateScreen)
                                         } else {
-                                            navigator.replace(ShopCreateScreen)
+                                            navigator.replace(ShopCreateStateScreen)
                                         }
                                     }
                                 )
@@ -87,9 +87,9 @@ object ShopScreen: Screen {
                             showDeleteDialog = { id -> showDeleteDialog = id },
                             onEdit = { id ->
                                 if (CurrentPlatformTarget == PlatformTarget.ANDROID) {
-                                    navigator.parent!!.push(ShopEditScreen(id))
+                                    navigator.parent!!.push(ShopEditStateScreen(id))
                                 } else {
-                                    navigator.replace(ShopEditScreen(id))
+                                    navigator.replace(ShopEditStateScreen(id))
                                 }
                             },
                             modifier = Modifier.padding(it)
@@ -148,12 +148,12 @@ object ShopScreen: Screen {
                     modifier = Modifier.size(ShopCardDefaults.SIZE).padding(ShopCardDefaults.PADDING).animateItemPlacement(),
                     onClick = {
                         if (CurrentPlatformTarget == PlatformTarget.ANDROID) {
-                            navigator.parent!!.push(ShopDetailScreen(shop.id))
+                            navigator.parent!!.push(ShopDetailStateScreen(shop.id))
                         } else {
-                            if (navigator.lastItem is ShopDetailScreen && (navigator.lastItem as ShopDetailScreen).id == shop.id) {
+                            if (navigator.lastItem is ShopDetailStateScreen && (navigator.lastItem as ShopDetailStateScreen).id == shop.id) {
                                 navigator.replace(BlankScreen)
                             } else {
-                                navigator.replace(ShopDetailScreen(shop.id))
+                                navigator.replace(ShopDetailStateScreen(shop.id))
                             }
                         }
                     },
