@@ -34,7 +34,9 @@ internal class ProfileApiImpl(
 
     override suspend fun retrieveProfile(uid: String): ProfileDto? {
         val result = profileTable.select {
-            ProfileDto::id eq uid
+            filter {
+                ProfileDto::id eq uid
+            }
         }
         return result.decodeSingleOrNull()
     }
@@ -53,7 +55,9 @@ internal class ProfileApiImpl(
 
     override suspend fun retrieveProfiles(ids: List<String>): List<ProfileDto> {
         return profileTable.select {
-            ProfileDto::id isIn ids
+            filter {
+                ProfileDto::id isIn ids
+            }
         }.decodeList()
     }
 

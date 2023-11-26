@@ -38,7 +38,7 @@ internal class AuthenticationApiImpl(
     }
 
     override suspend fun logout() {
-        auth.logout()
+        auth.signOut()
     }
 
 }

@@ -82,7 +82,9 @@ internal class RecipeApiImpl(
 
     override suspend fun deleteRecipe(id: Long) {
         table.delete {
-            RecipeDto::id eq id
+            filter {
+                RecipeDto::id eq id
+            }
         }
     }
 
@@ -101,7 +103,9 @@ internal class RecipeApiImpl(
             RecipeDto::steps setTo steps
             RecipeDto::private setTo private
         }) {
-            RecipeDto::id eq id
+            filter {
+                RecipeDto::id eq id
+            }
         }
     }
 

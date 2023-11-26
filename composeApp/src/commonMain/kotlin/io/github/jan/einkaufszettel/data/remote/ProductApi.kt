@@ -69,7 +69,9 @@ internal class ProductApiImpl(
 
     override suspend fun deleteProduct(id: Long) {
         table.delete {
-            ProductDto::id eq id
+            filter {
+                ProductDto::id eq id
+            }
         }
     }
 
@@ -77,7 +79,9 @@ internal class ProductApiImpl(
         return table.update({
             ProductDto::content setTo content
         }) {
-            ProductDto::id eq id
+            filter {
+                ProductDto::id eq id
+            }
         }.decodeSingle()
     }
 
@@ -86,7 +90,9 @@ internal class ProductApiImpl(
             ProductDto::doneBy setTo doneById
             ProductDto::doneSince setTo if(doneById != null) Clock.System.now() else null
         }) {
-            ProductDto::id eq id
+            filter {
+                ProductDto::id eq id
+            }
         }.decodeSingle()
     }
 

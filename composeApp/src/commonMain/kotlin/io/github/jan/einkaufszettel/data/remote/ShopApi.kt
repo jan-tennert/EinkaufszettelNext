@@ -88,7 +88,9 @@ internal class ShopApiImpl(
 
     override suspend fun deleteShop(id: Long) {
         table.delete {
-            ShopDto::id eq id
+            filter {
+                ShopDto::id eq id
+            }
         }
     }
 
@@ -99,7 +101,9 @@ internal class ShopApiImpl(
                 ShopDto::authorizedUsers setTo authorizedUsers
             }
         ) {
-            ShopDto::id eq id
+            filter {
+                ShopDto::id eq id
+            }
         }.decodeSingle()
     }
 
