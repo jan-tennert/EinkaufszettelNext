@@ -129,8 +129,10 @@ android {
 }
 
 
-compose.experimental {
-    web.application {}
+compose {
+    experimental {
+        web.application {}
+    }
 }
 
 libres {
