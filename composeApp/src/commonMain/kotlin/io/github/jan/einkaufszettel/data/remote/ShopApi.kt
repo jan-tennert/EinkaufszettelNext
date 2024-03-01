@@ -101,6 +101,7 @@ internal class ShopApiImpl(
                 ShopDto::authorizedUsers setTo authorizedUsers
             }
         ) {
+            select()
             filter {
                 ShopDto::id eq id
             }

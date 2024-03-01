@@ -26,6 +26,6 @@ val remoteModule = module {
         ShopApiImpl(get(), get())
     }
     single<RecipeApi> {
-        RecipeApiImpl(get())
+        RecipeApiImpl(get(), get())
     }
 }

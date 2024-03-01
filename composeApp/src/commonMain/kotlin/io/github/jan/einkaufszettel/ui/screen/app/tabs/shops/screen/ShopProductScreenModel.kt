@@ -29,6 +29,7 @@ open class ShopProductScreenModel(
                     is RestException -> mutableState.value = AppState.Error(it.message ?: "")
                     else -> mutableState.value = AppState.NetworkError
                 }
+                it.printStackTrace()
             }.onSuccess {
                 mutableState.value = AppState.Idle
             }

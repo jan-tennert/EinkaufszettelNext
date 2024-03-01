@@ -1,6 +1,7 @@
 package io.github.jan.einkaufszettel.data.remote
 
 import io.github.jan.supabase.postgrest.Postgrest
+import io.github.jan.supabase.storage.Storage
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 
@@ -35,7 +36,7 @@ interface RecipeApi {
         ingredients: List<String>,
         steps: String,
         private: Boolean,
-    )
+    ): RecipeDto
 
     suspend fun editRecipe(
         id: Long,
@@ -50,13 +51,17 @@ interface RecipeApi {
 
     suspend fun deleteRecipe(id: Long)
 
+    suspend fun uploadImage(imagePath: String, image: ByteArray)
+
 }
 
 internal class RecipeApiImpl(
-    postgrest: Postgrest
+    postgrest: Postgrest,
+    storage: Storage,
 ) : RecipeApi {
 
     private val table = postgrest["recipes"]
+    private val images = storage["images"]
 
     override suspend fun retrieveRecipes(): List<RecipeDto> {
         return table.select().decodeList()
@@ -69,15 +74,15 @@ internal class RecipeApiImpl(
         ingredients: List<String>,
         steps: String,
         private: Boolean
-    ) {
-        table.insert(RecipeCreationDto(
+    ): RecipeDto {
+        return table.insert(RecipeCreationDto(
             name = name,
             creatorId = creatorId,
             imagePath = imagePath,
             ingredients = ingredients,
             steps = steps,
             private = private
-        ))
+        )).decodeSingle()
     }
 
     override suspend fun deleteRecipe(id: Long) {
@@ -107,6 +112,10 @@ internal class RecipeApiImpl(
                 RecipeDto::id eq id
             }
         }
+    }
+
+    override suspend fun uploadImage(imagePath: String, image: ByteArray) {
+        images.upload(imagePath, image)
     }
 
 }

@@ -79,6 +79,7 @@ internal class ProductApiImpl(
         return table.update({
             ProductDto::content setTo content
         }) {
+            select()
             filter {
                 ProductDto::id eq id
             }
@@ -90,6 +91,7 @@ internal class ProductApiImpl(
             ProductDto::doneBy setTo doneById
             ProductDto::doneSince setTo if(doneById != null) Clock.System.now() else null
         }) {
+            select()
             filter {
                 ProductDto::id eq id
             }

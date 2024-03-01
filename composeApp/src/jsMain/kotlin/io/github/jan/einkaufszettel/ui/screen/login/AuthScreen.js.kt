@@ -14,6 +14,6 @@ import kotlinx.browser.document
 internal actual fun loginWithGoogle(
     composeAuth: ComposeAuth,
     onResult: (NativeSignInResult) -> Unit
-) = defaultLoginBehavior {
+) = composeAuth.defaultLoginBehavior {
     composeAuth.supabaseClient.auth.signInWith(Google, redirectUrl = document.location?.href)
 }
