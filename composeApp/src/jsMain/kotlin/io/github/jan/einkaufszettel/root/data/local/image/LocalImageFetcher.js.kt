@@ -1,10 +1,9 @@
-package io.github.jan.einkaufszettel.root.data.image
+package io.github.jan.einkaufszettel.root.data.local.image
 
 import androidx.compose.ui.graphics.asSkiaBitmap
 import androidx.compose.ui.graphics.toComposeImageBitmap
 import coil3.annotation.ExperimentalCoilApi
 import coil3.asCoilImage
-import io.github.jan.einkaufszettel.root.data.local.image.LocalImageData
 import org.jetbrains.skia.Image
 
 @OptIn(ExperimentalCoilApi::class)

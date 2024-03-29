@@ -1,4 +1,4 @@
-package io.github.jan.einkaufszettel.root.data.db
+package io.github.jan.einkaufszettel.root.data.local.db
 
 import app.cash.sqldelight.db.SqlDriver
 import app.cash.sqldelight.driver.worker.WebWorkerDriver

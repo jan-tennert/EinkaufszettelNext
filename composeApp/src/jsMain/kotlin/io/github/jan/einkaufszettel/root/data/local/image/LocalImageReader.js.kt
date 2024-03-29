@@ -1,6 +1,5 @@
-package io.github.jan.einkaufszettel.root.data.image
+package io.github.jan.einkaufszettel.root.data.local.image
 
-import io.github.jan.einkaufszettel.root.data.local.image.LocalImageData
 import org.khronos.webgl.ArrayBuffer
 import org.khronos.webgl.Int8Array
 import org.w3c.files.File
