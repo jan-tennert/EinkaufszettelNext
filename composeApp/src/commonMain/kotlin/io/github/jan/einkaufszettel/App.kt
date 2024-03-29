@@ -14,17 +14,33 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.navigator.Navigator
-import io.github.jan.einkaufszettel.data.local.db.DatabaseProvider
-import io.github.jan.einkaufszettel.theme.AppTheme
-import io.github.jan.einkaufszettel.ui.component.LoadingCircle
-import io.github.jan.einkaufszettel.ui.screen.RootScreen
+import coil3.ImageLoader
+import coil3.PlatformContext
+import coil3.annotation.ExperimentalCoilApi
+import coil3.compose.setSingletonImageLoaderFactory
+import coil3.fetch.Fetcher
+import coil3.network.ktor.KtorNetworkFetcherFactory
+import coil3.util.DebugLogger
+import io.github.jan.einkaufszettel.root.data.local.db.DatabaseProvider
+import io.github.jan.einkaufszettel.root.data.local.image.LocalImageFetcher
+import io.github.jan.einkaufszettel.root.ui.component.LoadingCircle
+import io.github.jan.einkaufszettel.root.ui.screen.RootScreen
+import io.github.jan.einkaufszettel.root.ui.theme.AppTheme
+import io.github.jan.supabase.annotations.SupabaseExperimental
+import io.github.jan.supabase.coil.CoilIntegration
 import io.github.jan.supabase.gotrue.Auth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 
+@OptIn(ExperimentalCoilApi::class)
 @Composable
 internal fun App() = AppTheme {
+    LocalImageFetcher.Factory() as Fetcher.Factory<*>
+    val coil = koinInject<CoilIntegration>()
+    setSingletonImageLoaderFactory {
+        createImageLoader(it, coil)
+    }
     Surface(
         modifier = Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.safeDrawing),
         color = MaterialTheme.colorScheme.background
@@ -50,3 +66,13 @@ internal fun App() = AppTheme {
         }
     }
 }
+
+@OptIn(SupabaseExperimental::class)
+fun createImageLoader(context: PlatformContext, coilIntegration: CoilIntegration) = ImageLoader.Builder(context).apply {
+    components {
+        add(KtorNetworkFetcherFactory())
+        add(coilIntegration)
+        add(LocalImageFetcher.Factory())
+    }
+    logger(DebugLogger())
+}.build()

@@ -1,28 +1,29 @@
 [versions]
 
-kotlin = "1.9.22"
+kotlin = "1.9.23"
 agp = "8.2.2"
-compose = "1.6.0"
+compose = "1.6.1"
 androidx-appcompat = "1.6.1"
 androidx-activityCompose = "1.8.2"
-compose-uitooling = "1.6.2"
+compose-uitooling = "1.6.3"
 libres = "1.2.0"
 voyager = "1.1.0-alpha03"
-composeImageLoader = "1.7.6"
+composeImageLoader = "1.7.8"
 buildConfig = "4.1.1"
 kotlinx-coroutines = "1.8.0"
 kotlinx-serialization = "1.6.2"
 kotlinx-datetime = "0.5.0"
-koin = "3.6.0-jsfix"
+koin = "3.6.0-alpha3"
 koin-compose = "1.1.0"
 ktor = "2.3.8"
 sqlDelight = "2.0.1"
-supabase = "2.2.0-rc-1"
+supabase = "2.3.0-coil3d1"
 lifecycle = "2.7.0"
 windowsizeclass = "0.3.1"
-okio = "3.8.0"
+okio = "3.9.0"
 richeditor = "1.0.0-rc01"
-file-picker = "3.0.0"
+file-picker = "3.1.0"
+coil = "3.0.0-alpha06"
 
 [libraries]
 
@@ -53,6 +54,7 @@ storage-kt = { module = "io.github.jan-tennert.supabase:storage-kt", version.ref
 postgrest-kt = { module = "io.github.jan-tennert.supabase:postgrest-kt", version.ref = "supabase" }
 compose-auth = { module = "io.github.jan-tennert.supabase:compose-auth", version.ref = "supabase" }
 compose-auth-ui = { module = "io.github.jan-tennert.supabase:compose-auth-ui", version.ref = "supabase" }
+coil-integration = { module = "io.github.jan-tennert.supabase:coil-integration", version.ref = "supabase" }
 imageloader-integration = { module = "io.github.jan-tennert.supabase:imageloader-integration", version.ref = "supabase" }
 windowsizeclass = { module = "dev.chrisbanes.material3:material3-window-size-class-multiplatform", version.ref = "windowsizeclass" }
 ktor-client-js = { module = "io.ktor:ktor-client-js", version.ref = "ktor" }
@@ -60,6 +62,8 @@ ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "kto
 okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
 richeditor = { module = "com.mohamedrejeb.richeditor:richeditor-compose", version.ref = "richeditor" }
 filepicker = { module = "com.darkrockstudios:mpfilepicker", version.ref = "file-picker" }
+coil = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
+coil-ktor = { module = "io.coil-kt.coil3:coil-network-ktor", version.ref = "coil" }
 
 [plugins]
 
@@ -78,7 +82,8 @@ supabase = [
     "postgrest-kt",
     "compose-auth",
     "compose-auth-ui",
-    "imageloader-integration"
+   # "imageloader-integration",
+    "coil-integration"
 ]
 koin = [
     "koin-core",
@@ -89,4 +94,8 @@ voyager = [
     "voyager-transitions",
     "voyager-koin",
     "voyager-tab"
+]
+coil = [
+    "coil",
+    "coil-ktor"
 ]

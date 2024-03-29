@@ -46,7 +46,7 @@ kotlin {
             implementation(compose.materialIconsExtended)
             implementation(libs.libres)
             implementation(libs.voyager.navigator)
-            implementation(libs.composeImageLoader)
+           // implementation(libs.composeImageLoader)
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.kotlinx.datetime)
@@ -58,6 +58,7 @@ kotlin {
             implementation(libs.okio)
             implementation(libs.richeditor)
             implementation(libs.filepicker)
+            implementation(libs.bundles.coil)
         }
 
         commonTest.dependencies {
@@ -116,7 +117,8 @@ android {
     }
     buildTypes {
         release {
-            isMinifyEnabled = true
+            isMinifyEnabled = false
+            isDebuggable = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro")
