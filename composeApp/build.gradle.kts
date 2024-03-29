@@ -117,10 +117,8 @@ android {
     }
     buildTypes {
         release {
-            if(!isCI) {
-                isMinifyEnabled = false
-                isDebuggable = true
-            }
+            isMinifyEnabled = isCI
+            isDebuggable = !isCI
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro")
