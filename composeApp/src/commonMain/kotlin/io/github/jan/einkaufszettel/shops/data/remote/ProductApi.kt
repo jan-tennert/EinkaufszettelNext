@@ -65,8 +65,9 @@ internal class ProductApiImpl(
             content = content,
             shopId = shopId,
             userId = creatorId
-        )
-        ).decodeSingle()
+        )) {
+            select()
+        }.decodeSingle()
     }
 
     override suspend fun deleteProduct(id: Long) {

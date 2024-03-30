@@ -85,6 +85,7 @@ open class ShopProductScreenModel(
             }.onSuccess {
                 productDataSource.insertProduct(it)
             }.onFailure {
+                it.printStackTrace()
                 when(it) {
                     is RestException -> mutableState.value = AppState.Error(it.message ?: "")
                     else -> mutableState.value = AppState.NetworkError

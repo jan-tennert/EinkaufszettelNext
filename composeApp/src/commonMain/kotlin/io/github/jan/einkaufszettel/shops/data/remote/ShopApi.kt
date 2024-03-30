@@ -83,7 +83,9 @@ internal class ShopApiImpl(
                 ownerId,
                 authorizedUsers
             )
-        ).decodeSingle()
+        ) {
+            select()
+        }.decodeSingle()
     }
 
     override suspend fun deleteShop(id: Long) {
