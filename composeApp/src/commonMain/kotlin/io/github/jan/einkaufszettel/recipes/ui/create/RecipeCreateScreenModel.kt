@@ -24,7 +24,7 @@ class RecipeCreateScreenModel(
 ): AppStateModel() {
 
     sealed interface State: AppState {
-        data object Success : State
+        data class Success(val id: Long) : State
     }
 
     private val _imageData = MutableStateFlow<LocalImageData?>(null)
@@ -55,7 +55,7 @@ class RecipeCreateScreenModel(
             }.onSuccess {
                 recipeDataSource.insertRecipe(it)
                 resetContent()
-                mutableState.value = State.Success
+                mutableState.value = State.Success(it.id)
             }.onFailure {
                 it.printStackTrace()
                 when(it) {

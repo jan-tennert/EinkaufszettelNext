@@ -1,4 +1,4 @@
-package io.github.jan.einkaufszettel.recipes.ui.main
+package io.github.jan.einkaufszettel.cards.ui.screen.main
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInHorizontally
@@ -15,7 +15,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.CurrentScreen
 import cafe.adriel.voyager.navigator.Navigator
 import io.github.jan.einkaufszettel.Res
@@ -24,46 +23,46 @@ import io.github.jan.einkaufszettel.app.ui.AppState
 import io.github.jan.einkaufszettel.app.ui.AppStateScreen
 import io.github.jan.einkaufszettel.app.ui.components.CreateButton
 import io.github.jan.einkaufszettel.app.ui.pullrefresh.RefreshScope
-import io.github.jan.einkaufszettel.recipes.ui.create.RecipeCreateScreen
-import io.github.jan.einkaufszettel.recipes.ui.create.components.RecipeList
-import io.github.jan.einkaufszettel.recipes.ui.detail.RecipeDetailScreen
-import io.github.jan.einkaufszettel.root.ui.dialog.LoadingDialog
+import io.github.jan.einkaufszettel.cards.ui.screen.create.CardCreateScreen
+import io.github.jan.einkaufszettel.cards.ui.screen.detail.CardDetailScreen
+import io.github.jan.einkaufszettel.getScreenModel
 import io.github.jan.einkaufszettel.shops.ui.components.VerticalDivider
 import io.github.jan.einkaufszettel.shops.ui.screen.main.BlankScreen
 import io.github.jan.supabase.CurrentPlatformTarget
 import io.github.jan.supabase.PlatformTarget
 
-object RecipeScreen : AppStateScreen<RecipeScreenModel> {
+object CardsScreen : AppStateScreen<CardsScreenModel> {
 
     @Composable
-    override fun createScreenModel(): RecipeScreenModel {
-        return getScreenModel<RecipeScreenModel>()
+    override fun createScreenModel(): CardsScreenModel {
+        return getScreenModel()
     }
+
     @Composable
-    override fun Content(screenModel: RecipeScreenModel, state: AppState) {
+    override fun Content(screenModel: CardsScreenModel, state: AppState) {
         Navigator(BlankScreen) { navigator ->
-            RefreshScope(navigator.parent!!, AppScreenModel.RefreshType.RECIPES) {
+            RefreshScope(navigator.parent!!, AppScreenModel.RefreshType.CARDS) {
                 Row {
                     val listState = rememberLazyGridState()
                     Scaffold(
                         modifier = Modifier.fillMaxHeight().weight(1f),
                         floatingActionButton = {
-                            if(navigator.lastItem !is RecipeCreateScreen && navigator.lastItem !is RecipeDetailScreen) {
+                            if (navigator.lastItem !is CardCreateScreen && navigator.lastItem !is CardDetailScreen) {
                                 CreateButton(
                                     extended = listState.firstVisibleItemIndex == 0,
                                     onClick = {
                                         if (CurrentPlatformTarget == PlatformTarget.ANDROID) {
-                                            navigator.parent!!.push(RecipeCreateScreen)
+                                            navigator.parent!!.push(CardCreateScreen)
                                         } else {
-                                            navigator.replace(RecipeCreateScreen)
+                                            navigator.replace(CardCreateScreen)
                                         }
                                     }
                                 )
                             }
                         }
                     ) {
-                        RecipeList(screenModel, navigator.parent!!, listState)
                     }
+
 
                     AnimatedVisibility(
                         visible = navigator.lastItem !is BlankScreen,
@@ -85,60 +84,39 @@ object RecipeScreen : AppStateScreen<RecipeScreenModel> {
             }
         }
 
-        if(state is RecipeScreenModel.State.DeleteSuccess) {
-            AlertDialog(
-                onDismissRequest = screenModel::resetState,
-                confirmButton = {
-                    TextButton(
-                        onClick = screenModel::resetState
-                    ) {
-                        Text("Ok")
-                    }
-                },
-                title = {
-                    Text(Res.string.recipe_deleted)
-                },
-                text = {
-                    Text(Res.string.recipe_deleted_message)
-                }
-            )
-        } else if(state is AppState.Loading) {
-            LoadingDialog()
-        }
+        /*if (showDeleteDialog != null) {
+            //
+        }*/
     }
+}
 
-    @Composable
-    fun DeleteDialog(
-        onDismiss: () -> Unit,
-        onDelete: () -> Unit
-    ) {
-        AlertDialog(
-            onDismissRequest = onDismiss,
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        onDelete()
-                        onDismiss()
-                    }
-                ) {
-                    Text(Res.string.delete)
+@Composable
+private fun DeleteDialog(
+    onDismiss: () -> Unit,
+    onDelete: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        confirmButton = {
+            TextButton(
+                onClick = {
+                    onDelete()
+                    onDismiss()
                 }
-            },
-            dismissButton = {
-                TextButton(
-                    onClick = onDismiss
-                ) {
-                    Text(Res.string.cancel)
-                }
-            },
-            title = {
-                Text(Res.string.delete_recipe)
-            },
-            text = {
-                Text(Res.string.delete_recipe_text)
+            ) {
+                Text(Res.string.delete)
             }
-        )
-    }
-
+        },
+        dismissButton = {
+            TextButton(
+                onClick = onDismiss
+            ) {
+                Text(Res.string.cancel)
+            }
+        },
+        text = {
+            Text(Res.string.delete_list_text)
+        }
+    )
 
 }

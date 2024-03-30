@@ -19,7 +19,7 @@ data object SettingsTab: Tab {
         get() {
             val painter = rememberVectorPainter(Icons.Filled.Settings)
             return remember {
-                TabOptions(3u, Res.string.settings, painter)
+                TabOptions(4u, Res.string.settings, painter)
             }
         }
 

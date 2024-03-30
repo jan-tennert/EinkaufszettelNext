@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
@@ -32,7 +33,8 @@ import io.github.jan.einkaufszettel.recipes.ui.main.RecipeScreenModel
 @Composable
 fun RecipeList(
     screenModel: RecipeScreenModel,
-    navigator: Navigator
+    navigator: Navigator,
+    listState: LazyGridState
 ) {
     val recipes by screenModel.recipeFlow.collectAsStateWithLifecycle()
     val searchQuery by screenModel.searchQuery.collectAsStateWithLifecycle()
@@ -56,7 +58,8 @@ fun RecipeList(
         ) { }
         LazyVerticalGrid(
             columns = GridCells.Adaptive(RecipeCardDefaults.WIDTH),
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
+            state = listState
         ) {
             items(filteredRecipes, { it.id }) {
                 RecipeCard(

@@ -1,0 +1,37 @@
+import kotlin.String;
+import kotlin.collections.List;
+import kotlinx.datetime.Instant;
+
+CREATE TABLE cardTable (
+    id INTEGER NOT NULL PRIMARY KEY,
+    description TEXT NOT NULL,
+    createdAt INTEGER AS Instant NOT NULL,
+    ownerId TEXT NOT NULL,
+    authorizedUsers TEXT AS List<String> NOT NULL,
+    imagePath TEXT NOT NULL,
+    FOREIGN KEY (ownerId) REFERENCES profileTable(id)
+);
+
+getAllCards:
+SELECT cardEntry.id, description, createdAt, authorizedUsers, imagePath, ownerEntry.username AS owner
+FROM cardTable AS cardEntry
+LEFT JOIN profileTable ownerEntry
+ON cardEntry.ownerId = ownerEntry.id;
+
+insertCard:
+INSERT OR REPLACE
+INTO cardTable
+VALUES(?, ?, ?, ?, ?, ?);
+
+deleteCardById:
+DELETE
+FROM cardTable
+WHERE id = :id;
+
+clear:
+DELETE FROM cardTable;
+
+editCard:
+UPDATE cardTable
+SET description = :description, authorizedUsers = :authorizedUsers
+WHERE id = :id;

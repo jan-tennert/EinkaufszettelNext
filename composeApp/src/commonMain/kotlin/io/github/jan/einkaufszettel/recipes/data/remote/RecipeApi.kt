@@ -79,14 +79,16 @@ internal class RecipeApiImpl(
     ): RecipeDto {
         return table.insert(
             RecipeCreationDto(
-            name = name,
-            creatorId = creatorId,
-            imagePath = imagePath,
-            ingredients = ingredients,
-            steps = steps,
-            private = private
-        )
-        ).decodeSingle()
+                name = name,
+                creatorId = creatorId,
+                imagePath = imagePath,
+                ingredients = ingredients,
+                steps = steps,
+                private = private
+            )
+        ) {
+            select()
+        }.decodeSingle()
     }
 
     override suspend fun deleteRecipe(id: Long) {

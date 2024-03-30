@@ -24,6 +24,7 @@ import cafe.adriel.voyager.transitions.SlideTransition
 import io.github.jan.einkaufszettel.Res
 import io.github.jan.einkaufszettel.app.ui.AppState
 import io.github.jan.einkaufszettel.app.ui.AppStateScreen
+import io.github.jan.einkaufszettel.recipes.ui.detail.RecipeDetailScreen
 import io.github.jan.einkaufszettel.root.ui.dialog.LoadingDialog
 
 object RecipeCreateScreen: AppStateScreen<RecipeCreateScreenModel> {
@@ -85,7 +86,7 @@ object RecipeCreateScreen: AppStateScreen<RecipeCreateScreenModel> {
             is RecipeCreateScreenModel.State.Success -> {
                 RecipeCreatedDialog {
                     screenModel.resetState()
-                    pNavigator.pop()
+                    pNavigator.replace(RecipeDetailScreen(state.id))
                 }
             }
         }

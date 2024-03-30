@@ -40,6 +40,7 @@ class AppScreenModel(
         PRODUCTS,
         SHOPS,
         RECIPES,
+        CARDS,
         ALL
     }
 

@@ -32,6 +32,7 @@ val supabaseModule = module {
         }
     }
     single<SupabaseClient> {
+        CoilIntegration.setLogLevel(LogLevel.INFO)
         createSupabaseClient(BuildConfig.SUPABASE_URL, BuildConfig.SUPABASE_KEY) {
             defaultSerializer = KotlinXSerializer(get())
             defaultLogLevel = LogLevel.DEBUG
