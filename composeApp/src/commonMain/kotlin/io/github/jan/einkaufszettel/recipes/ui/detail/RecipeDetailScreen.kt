@@ -1,5 +1,6 @@
 package io.github.jan.einkaufszettel.recipes.ui.detail
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,14 +17,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import einkaufszettel.GetAllRecipes
 import io.github.jan.einkaufszettel.app.ui.AppStateErrorHandler
 import io.github.jan.einkaufszettel.collectAsStateWithLifecycle
 import io.github.jan.einkaufszettel.getScreenModel
-import io.github.jan.einkaufszettel.recipes.detail.ui.components.IngredientDetailContent
-import io.github.jan.einkaufszettel.recipes.detail.ui.components.StepDetailContent
+import io.github.jan.einkaufszettel.recipes.ui.detail.components.IngredientDetailContent
+import io.github.jan.einkaufszettel.recipes.ui.detail.components.StepDetailContent
 import io.github.jan.einkaufszettel.root.ui.component.LoadingCircle
 import io.github.jan.einkaufszettel.shops.data.remote.ShopDto
 import io.github.jan.einkaufszettel.shops.ui.dialog.ProductDialog
@@ -91,22 +93,24 @@ class RecipeDetailScreen(
         shops: List<ShopDto>,
         onAdd: (shop: Long, content: String) -> Unit = { _, _ -> }
     ) {
-        LazyColumn(
+        Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxSize().padding(8.dp)
         ) {
-            item {
-                Text(recipe.name, style = MaterialTheme.typography.headlineLarge)
-            }
-            if(!recipe.steps.isNullOrBlank()) {
-                StepDetailContent(steps = recipe.steps)
-            }
-            if(recipe.ingredients.isNotEmpty()) {
-                IngredientDetailContent(
-                    ingredients = recipe.ingredients,
-                    onAdd = onAdd,
-                    shops = shops
-                )
+            Text(recipe.name, style = MaterialTheme.typography.headlineLarge, textAlign = TextAlign.Center)
+            LazyColumn(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.fillMaxSize().padding(8.dp)
+            ) {
+                if(!recipe.steps.isNullOrBlank()) {
+                    StepDetailContent(steps = recipe.steps)
+                }
+                if(recipe.ingredients.isNotEmpty()) {
+                    IngredientDetailContent(
+                        ingredients = recipe.ingredients,
+                        onAdd = onAdd,
+                        shops = shops
+                    )
+                }
             }
         }
     }

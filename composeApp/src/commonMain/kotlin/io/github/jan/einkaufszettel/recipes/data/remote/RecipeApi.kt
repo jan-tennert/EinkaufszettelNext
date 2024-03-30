@@ -53,6 +53,8 @@ interface RecipeApi {
 
     suspend fun uploadImage(imagePath: String, image: ByteArray)
 
+    suspend fun deleteImage(imagePath: String)
+
 }
 
 internal class RecipeApiImpl(
@@ -61,7 +63,7 @@ internal class RecipeApiImpl(
 ) : RecipeApi {
 
     private val table = postgrest["recipes"]
-    private val images = storage["images"]
+    private val images = storage["recipes"]
 
     override suspend fun retrieveRecipes(): List<RecipeDto> {
         return table.select().decodeList()
@@ -118,6 +120,10 @@ internal class RecipeApiImpl(
 
     override suspend fun uploadImage(imagePath: String, image: ByteArray) {
         images.upload(imagePath, image)
+    }
+
+    override suspend fun deleteImage(imagePath: String) {
+        images.delete(imagePath)
     }
 
 }

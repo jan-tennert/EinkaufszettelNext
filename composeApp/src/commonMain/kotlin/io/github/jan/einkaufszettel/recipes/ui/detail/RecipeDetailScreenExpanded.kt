@@ -26,8 +26,8 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import com.mohamedrejeb.richeditor.model.RichTextState
 import einkaufszettel.GetAllRecipes
 import io.github.jan.einkaufszettel.Res
-import io.github.jan.einkaufszettel.recipes.detail.ui.components.IngredientContent
-import io.github.jan.einkaufszettel.recipes.detail.ui.components.StepCard
+import io.github.jan.einkaufszettel.recipes.ui.detail.components.IngredientContent
+import io.github.jan.einkaufszettel.recipes.ui.detail.components.StepCard
 import io.github.jan.einkaufszettel.shops.data.remote.ShopDto
 
 @OptIn(ExperimentalMaterial3Api::class)

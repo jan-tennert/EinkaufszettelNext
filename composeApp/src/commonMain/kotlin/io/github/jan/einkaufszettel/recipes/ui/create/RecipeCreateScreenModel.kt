@@ -1,6 +1,8 @@
 package io.github.jan.einkaufszettel.recipes.ui.create
 
+import androidx.compose.runtime.mutableStateListOf
 import cafe.adriel.voyager.core.model.screenModelScope
+import com.mohamedrejeb.richeditor.model.RichTextState
 import io.github.jan.einkaufszettel.app.ui.AppState
 import io.github.jan.einkaufszettel.app.ui.AppStateModel
 import io.github.jan.einkaufszettel.recipes.data.local.RecipeDataSource
@@ -26,19 +28,29 @@ class RecipeCreateScreenModel(
     }
 
     private val _imageData = MutableStateFlow<LocalImageData?>(null)
+    private val _name = MutableStateFlow("")
+    private val _showIngredientsDialog = MutableStateFlow(false)
+    val ingredients = mutableStateListOf<String>()
+    val name = _name.asStateFlow()
     val imageData = _imageData.asStateFlow()
+    val instructionState = RichTextState()
+    val showIngredientsDialog = _showIngredientsDialog.asStateFlow()
 
     fun createRecipe(
         name: String,
-        imageData: LocalImageData,
+        imageData: LocalImageData?,
         steps: String,
         ingredients: List<String>,
         private: Boolean,
     ) {
+        mutableState.value = AppState.Loading
         screenModelScope.launch {
             runCatching {
-                val imagePath = "${Clock.System.now().toEpochMilliseconds()}.${imageData.extension}"
-                recipeApi.uploadImage(imagePath, imageData.data)
+                val imagePath = imageData?.let {
+                    val imagePath = "${Clock.System.now().toEpochMilliseconds()}.${imageData.extension}"
+                    recipeApi.uploadImage(imagePath, imageData.data)
+                    imagePath
+                }
                 recipeApi.createRecipe(name, auth.currentUserOrNull()?.id ?: error("No user found"), imagePath, ingredients, steps, private)
             }.onSuccess {
                 recipeDataSource.insertRecipe(it)
@@ -63,6 +75,21 @@ class RecipeCreateScreenModel(
                 it.printStackTrace()
             }
         }
+    }
+
+    fun setName(name: String) {
+        _name.value = name
+    }
+
+    fun setShowIngredientsDialog(show: Boolean) {
+        _showIngredientsDialog.value = show
+    }
+
+    fun resetContent() {
+        _name.value = ""
+        ingredients.clear()
+        instructionState.clear()
+        _showIngredientsDialog.value = false
     }
 
 }

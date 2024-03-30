@@ -19,6 +19,7 @@
     <string name="by">by</string>
     <string name="create">Create</string>
     <string name="save">Save</string>
+    <string name="add_image">Click to add image</string>
 
     <string name="create_product">Create Product</string>
     <string name="edit_product">Edit Product</string>
@@ -35,9 +36,20 @@
     <string name="delete_list_text">Are you sure you want to delete this list? This will also delete all associated products.</string>
     <string name="name">Name</string>
 
+    <string name="instructions">Instructions</string>
+    <string name="create_recipe">Create Recipe</string>
+
     <string name="steps">Instructions</string>
     <string name="empty_steps">No instructions given</string>
     <string name="ingredients">Ingredients</string>
+    <string name="no_ingredients">No ingredients added</string>
+    <string name="add_ingredient">Add Ingredient</string>
+    <string name="ingredient">Ingredient</string>
+    <string name="recipe_created">Recipe created</string>
+    <string name="recipe_created_message">Your recipe has been created successfully.</string>
+    <string name="delete_recipe">Delete Recipe</string>
+    <string name="delete_recipe_text">Are you sure you want to delete this recipe?</string>
+    <string name="recipe_deleted">Recipe deleted</string>
 
     <string name="home">Home</string>
     <string name="shops">Lists</string>

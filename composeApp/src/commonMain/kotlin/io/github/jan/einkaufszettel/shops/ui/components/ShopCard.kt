@@ -19,6 +19,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import coil3.compose.LocalPlatformContext
+import coil3.request.ImageRequest
+import coil3.request.crossfade
 import io.github.jan.einkaufszettel.Res
 import io.github.jan.einkaufszettel.app.ui.components.ContextMenuScope
 import io.github.jan.einkaufszettel.shops.data.remote.ShopDto
@@ -88,7 +91,7 @@ fun ShopCard(
                         }
                     }*/
                     AsyncImage(
-                        model = shop.iconUrl,
+                        model = ImageRequest.Builder(LocalPlatformContext.current).data(shop.iconUrl).crossfade(true).build(),
                         contentDescription = shop.name,
                         modifier = Modifier.size(ShopCardDefaults.ICON_SIZE),
                     )

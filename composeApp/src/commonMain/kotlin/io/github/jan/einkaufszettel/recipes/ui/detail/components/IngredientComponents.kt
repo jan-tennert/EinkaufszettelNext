@@ -1,4 +1,4 @@
-package io.github.jan.einkaufszettel.recipes.detail.ui.components
+package io.github.jan.einkaufszettel.recipes.ui.detail.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -66,7 +66,7 @@ fun IngredientContent(
     var expandShops by rememberSaveable(key = ingredient) { mutableStateOf(false) }
     ExposedDropdownMenuBox(
         expanded = expandShops,
-        onExpandedChange = { expandShops = it },
+        onExpandedChange = {  },
         content = {
             ElevatedCard(
                 modifier = Modifier.fillMaxWidth().padding(8.dp).menuAnchor().then(modifier)

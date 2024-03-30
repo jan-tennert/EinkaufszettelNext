@@ -1,4 +1,4 @@
-package io.github.jan.einkaufszettel.recipes.detail.ui.components
+package io.github.jan.einkaufszettel.recipes.ui.detail.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background

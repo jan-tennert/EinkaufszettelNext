@@ -23,16 +23,20 @@ object RootScreen: Screen {
                     .collect { status: SessionStatus ->
                         when (status) {
                             is SessionStatus.Authenticated -> {
-                                navigator.push(AuthenticatedScreen)
+                                if(navigator.lastItem !is AuthenticatedScreen) {
+                                    navigator.replace(AuthenticatedScreen)
+                                }
                             }
                             SessionStatus.NetworkError -> {
                                 if (navigator.lastItem is LoadingScreen) {
-                                    navigator.push(AppScreen)
+                                    navigator.replace(AppScreen)
                                 }
                             }
-                            is SessionStatus.NotAuthenticated -> navigator.push(LoginScreen)
+                            is SessionStatus.NotAuthenticated -> navigator.replace(LoginScreen)
                             SessionStatus.LoadingFromStorage -> {
-                                navigator.push(LoadingScreen)
+                                if(navigator.lastItem !is AuthenticatedScreen) {
+                                    navigator.replace(LoadingScreen)
+                                }
                             }
                         }
                     }

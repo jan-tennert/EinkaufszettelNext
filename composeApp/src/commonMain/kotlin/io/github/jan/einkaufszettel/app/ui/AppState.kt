@@ -27,7 +27,7 @@ fun AppStateErrorHandler(
 ) {
     when(state) {
         is AppState.Error -> {
-            ErrorDialog((state as AppState.Error).message, resetState)
+            ErrorDialog(state.message, resetState)
         }
         AppState.NetworkError -> {
             ErrorDialog(Res.string.network_error, resetState)

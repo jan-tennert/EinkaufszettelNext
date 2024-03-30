@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -71,7 +72,7 @@ fun RecipeCard(
                 modifier = Modifier.fillMaxSize().padding(8.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(recipe.name, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                Text(recipe.name, maxLines = 2, overflow = TextOverflow.Ellipsis, textAlign = TextAlign.Center)
                 Spacer(Modifier.height(4.dp))
                 RecipeCardImage(recipe.imagePath, Modifier.weight(1f))
             }
@@ -83,7 +84,7 @@ fun RecipeCard(
 private fun RecipeCardImage(imagePath: String?, modifier: Modifier) {
     Box(modifier, contentAlignment = Alignment.Center) {
         if (imagePath != null) {
-            AsyncImage(publicStorageItem("recipes", imagePath), modifier = Modifier.matchParentSize(), contentDescription = null)
+            AsyncImage(publicStorageItem("recipes", imagePath), contentDescription = null)
         } else {
             Icon(Icons.Filled.QuestionMark, modifier = Modifier.matchParentSize(), contentDescription = null, tint = MaterialTheme.colorScheme.onSurface)
         }

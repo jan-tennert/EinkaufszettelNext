@@ -20,7 +20,6 @@ import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.setSingletonImageLoaderFactory
 import coil3.fetch.Fetcher
 import coil3.network.ktor.KtorNetworkFetcherFactory
-import coil3.util.DebugLogger
 import io.github.jan.einkaufszettel.root.data.local.db.DatabaseProvider
 import io.github.jan.einkaufszettel.root.data.local.image.LocalImageFetcher
 import io.github.jan.einkaufszettel.root.ui.component.LoadingCircle
@@ -74,5 +73,4 @@ fun createImageLoader(context: PlatformContext, coilIntegration: CoilIntegration
         add(coilIntegration)
         add(LocalImageFetcher.Factory())
     }
-    logger(DebugLogger())
 }.build()
