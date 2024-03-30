@@ -54,7 +54,6 @@ object RecipeCreateScreen: AppStateScreen<RecipeCreateScreenModel> {
                                     imageData = screenModel.imageData.value,
                                     private = false
                                 )
-                                pNavigator.pop()
                             }
                         },
                     ) {
@@ -84,25 +83,31 @@ object RecipeCreateScreen: AppStateScreen<RecipeCreateScreenModel> {
                 LoadingDialog()
             }
             is RecipeCreateScreenModel.State.Success -> {
-                AlertDialog(
-                    onDismissRequest = {
-                        pNavigator.pop()
-                    },
-                    title = { Text(Res.string.recipe_created) },
-                    text = { Text(Res.string.recipe_created_message) },
-                    confirmButton = {
-                        TextButton(
-                            onClick = {
-                                pNavigator.pop()
-                            }
-                        ) {
-                            Text("Ok")
-                        }
-                    }
-                )
+                RecipeCreatedDialog {
+                    screenModel.resetState()
+                    pNavigator.pop()
+                }
             }
         }
 
+    }
+
+    @Composable
+    private fun RecipeCreatedDialog(
+        onClose: () -> Unit
+    ) {
+        AlertDialog(
+            onDismissRequest = onClose,
+            title = { Text(Res.string.recipe_created) },
+            text = { Text(Res.string.recipe_created_message) },
+            confirmButton = {
+                TextButton(
+                    onClick = onClose
+                ) {
+                    Text("Ok")
+                }
+            }
+        )
     }
 
 }
