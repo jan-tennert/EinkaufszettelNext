@@ -7,12 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -25,21 +19,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import io.github.jan.einkaufszettel.Res
 import io.github.jan.einkaufszettel.app.ui.AppScreenModel
 import io.github.jan.einkaufszettel.app.ui.AppState
 import io.github.jan.einkaufszettel.app.ui.AppStateScreen
+import io.github.jan.einkaufszettel.app.ui.components.ChildTopBar
 import io.github.jan.einkaufszettel.app.ui.components.CreateButton
 import io.github.jan.einkaufszettel.app.ui.components.ProductCard
 import io.github.jan.einkaufszettel.app.ui.pullrefresh.RefreshScope
 import io.github.jan.einkaufszettel.collectAsStateWithLifecycle
 import io.github.jan.einkaufszettel.getScreenModel
 import io.github.jan.einkaufszettel.shops.ui.dialog.ProductDialog
-import io.github.jan.einkaufszettel.shops.ui.screen.main.BlankScreen
-import io.github.jan.supabase.CurrentPlatformTarget
-import io.github.jan.supabase.PlatformTarget
 import org.koin.core.parameter.parametersOf
 
 data class ShopDetailStateScreen(val id: Long): AppStateScreen<ShopDetailScreenModel> {
@@ -66,7 +57,7 @@ data class ShopDetailStateScreen(val id: Long): AppStateScreen<ShopDetailScreenM
                     )
                 },
                 topBar = {
-                    TopBar(
+                    ChildTopBar(
                         title = shop.value?.name ?: "",
                         navigator = navigator
                     )
@@ -101,23 +92,6 @@ data class ShopDetailStateScreen(val id: Long): AppStateScreen<ShopDetailScreenM
                 onSubmit = { showCreateDialog = false; screenModel.createProduct(it) }
             )
         }
-    }
-
-    @OptIn(ExperimentalMaterial3Api::class)
-    @Composable
-    private fun TopBar(title: String, navigator: Navigator) {
-        CenterAlignedTopAppBar(
-            title = { Text(title, style = MaterialTheme.typography.headlineMedium) },
-            actions = {
-                if(CurrentPlatformTarget == PlatformTarget.JS) {
-                    IconButton(
-                        onClick = { navigator.replace(BlankScreen) }
-                    ) {
-                        Icon(Icons.Filled.Close, null)
-                    }
-                }
-            }
-        )
     }
 
 }

@@ -54,7 +54,6 @@ class RecipeCreateScreenModel(
                 recipeApi.createRecipe(name, auth.currentUserOrNull()?.id ?: error("No user found"), imagePath, ingredients, steps, private)
             }.onSuccess {
                 recipeDataSource.insertRecipe(it)
-                resetContent()
                 mutableState.value = State.Success(it.id)
             }.onFailure {
                 it.printStackTrace()

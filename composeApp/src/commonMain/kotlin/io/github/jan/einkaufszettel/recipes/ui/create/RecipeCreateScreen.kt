@@ -2,14 +2,12 @@ package io.github.jan.einkaufszettel.recipes.ui.create
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -24,6 +22,7 @@ import cafe.adriel.voyager.transitions.SlideTransition
 import io.github.jan.einkaufszettel.Res
 import io.github.jan.einkaufszettel.app.ui.AppState
 import io.github.jan.einkaufszettel.app.ui.AppStateScreen
+import io.github.jan.einkaufszettel.app.ui.components.ChildTopBar
 import io.github.jan.einkaufszettel.recipes.ui.detail.RecipeDetailScreen
 import io.github.jan.einkaufszettel.root.ui.dialog.LoadingDialog
 
@@ -60,20 +59,17 @@ object RecipeCreateScreen: AppStateScreen<RecipeCreateScreenModel> {
                     ) {
                         Icon(if(currentStep.nextStep != null) Icons.AutoMirrored.Filled.ArrowForward else Icons.Filled.Done, contentDescription = Res.string.create)
                     }
+                },
+                topBar = {
+                    ChildTopBar(Res.string.create_recipe, pNavigator)
                 }
             ) {
-                Column(
-                    modifier = Modifier.fillMaxSize().padding(it),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(Res.string.create_recipe, style = MaterialTheme.typography.headlineLarge)
-                    SlideTransition(navigator) {
-                        Column(
-                            modifier = Modifier.fillMaxSize(),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            it.Content()
-                        }
+                SlideTransition(navigator) {
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        it.Content()
                     }
                 }
             }
@@ -86,6 +82,7 @@ object RecipeCreateScreen: AppStateScreen<RecipeCreateScreenModel> {
             is RecipeCreateScreenModel.State.Success -> {
                 RecipeCreatedDialog {
                     screenModel.resetState()
+                    screenModel.resetContent()
                     pNavigator.replace(RecipeDetailScreen(state.id))
                 }
             }

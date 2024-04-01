@@ -16,11 +16,8 @@ import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,7 +33,9 @@ import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import io.github.jan.einkaufszettel.Res
 import io.github.jan.einkaufszettel.app.ui.AppScreenModel
+import io.github.jan.einkaufszettel.app.ui.BlankScreen
 import io.github.jan.einkaufszettel.app.ui.components.CreateButton
+import io.github.jan.einkaufszettel.app.ui.components.DeleteDialog
 import io.github.jan.einkaufszettel.app.ui.pullrefresh.RefreshScope
 import io.github.jan.einkaufszettel.collectAsStateWithLifecycle
 import io.github.jan.einkaufszettel.shops.data.remote.ShopDto
@@ -118,6 +117,8 @@ object ShopScreen: Screen {
 
         if(showDeleteDialog != null) {
             DeleteDialog(
+                title = Res.string.delete_list,
+                text = Res.string.delete_list_text,
                 onDismiss = { showDeleteDialog = null },
                 onDelete = {
                     screenModel.deleteShop(showDeleteDialog!!)
@@ -170,36 +171,6 @@ object ShopScreen: Screen {
                 )
             }
         }
-    }
-
-    @Composable
-    private fun DeleteDialog(
-        onDismiss: () -> Unit,
-        onDelete: () -> Unit
-    ) {
-        AlertDialog(
-            onDismissRequest = onDismiss,
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                       onDelete()
-                       onDismiss()
-                    }
-                ) {
-                    Text(Res.string.delete)
-                }
-            },
-            dismissButton = {
-                TextButton(
-                    onClick = onDismiss
-                ) {
-                    Text(Res.string.cancel)
-                }
-            },
-            text = {
-                Text(Res.string.delete_list_text)
-            }
-        )
     }
 
 }

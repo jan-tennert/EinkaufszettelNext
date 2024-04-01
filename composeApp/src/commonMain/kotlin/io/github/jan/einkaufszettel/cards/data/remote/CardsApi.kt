@@ -61,6 +61,11 @@ interface CardsApi {
         path: String
     )
 
+    companion object {
+        const val BUCKET_ID = "cards"
+        const val TABLE_NAME = "cards"
+    }
+
 }
 
 internal class CardsApiImpl(
@@ -68,8 +73,8 @@ internal class CardsApiImpl(
     storage: Storage
 ) : CardsApi {
 
-    private val table = postgrest["cards"]
-    private val cardImages = storage["cards"]
+    private val table = postgrest[CardsApi.TABLE_NAME]
+    private val cardImages = storage[CardsApi.BUCKET_ID]
 
     override suspend fun retrieveCards(): List<CardDto> {
         return table.select().decodeList()

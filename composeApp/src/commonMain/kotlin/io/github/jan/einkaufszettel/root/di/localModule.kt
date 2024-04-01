@@ -1,5 +1,7 @@
 package io.github.jan.einkaufszettel.root.di
 
+import io.github.jan.einkaufszettel.cards.data.local.CardsDataSource
+import io.github.jan.einkaufszettel.cards.data.local.CardsDataSourceImpl
 import io.github.jan.einkaufszettel.profile.data.local.ProfileDataSource
 import io.github.jan.einkaufszettel.profile.data.local.ProfileDataSourceImpl
 import io.github.jan.einkaufszettel.recipes.data.local.RecipeDataSource
@@ -27,6 +29,9 @@ val localModule = module {
     }
     single<LocalImageReader> {
         createLocalImageReader()
+    }
+    single<CardsDataSource> {
+        CardsDataSourceImpl(get())
     }
 }
 

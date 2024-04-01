@@ -1,16 +1,15 @@
-package io.github.jan.einkaufszettel.shops.ui.screen.create
+package io.github.jan.einkaufszettel.cards.ui.screen.create
 
 import androidx.compose.runtime.mutableStateListOf
 import cafe.adriel.voyager.core.model.screenModelScope
 import io.github.jan.einkaufszettel.app.ui.AppState
 import io.github.jan.einkaufszettel.app.ui.models.UserImportScreenModel
+import io.github.jan.einkaufszettel.cards.data.local.CardsDataSource
+import io.github.jan.einkaufszettel.cards.data.remote.CardsApi
 import io.github.jan.einkaufszettel.profile.data.local.ProfileDataSource
 import io.github.jan.einkaufszettel.profile.data.remote.ProfileApi
 import io.github.jan.einkaufszettel.root.data.local.image.LocalImageData
 import io.github.jan.einkaufszettel.root.data.local.image.LocalImageReader
-import io.github.jan.einkaufszettel.shops.data.local.ShopDataSource
-import io.github.jan.einkaufszettel.shops.data.remote.ShopApi
-import io.github.jan.supabase.exceptions.RestException
 import io.github.jan.supabase.gotrue.Auth
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -19,46 +18,49 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 
-class ShopCreateScreenModel(
-    private val shopApi: ShopApi,
+class CardsCreateScreenModel(
     profileDataSource: ProfileDataSource,
     profileApi: ProfileApi,
-    private val shopDataSource: ShopDataSource,
     private val auth: Auth,
+    private val cardsDataSource: CardsDataSource,
+    private val cardsApi: CardsApi,
     private val localImageReader: LocalImageReader
-): UserImportScreenModel(profileApi, profileDataSource) {
+) : UserImportScreenModel(profileApi, profileDataSource) {
 
-    sealed interface State: AppState {
-        data object Success : State
+    sealed interface State : AppState {
+        data object CreateSuccess : State
     }
 
-    val userProfiles = profileDataSource.getProfiles().stateIn(screenModelScope, SharingStarted.Eagerly, emptyList())
-    private val _imageData = MutableStateFlow<LocalImageData?>(null)
-    val imageData = _imageData.asStateFlow()
-    private val _name = MutableStateFlow("")
-    val name = _name.asStateFlow()
+    val userProfiles = profileDataSource.getProfiles()
+        .stateIn(screenModelScope, SharingStarted.Eagerly, emptyList())
     val authorizedUsers = mutableStateListOf<String>()
+    private val _imageData = MutableStateFlow<LocalImageData?>(null)
+    private val _description = MutableStateFlow("")
+    val description = _description.asStateFlow()
+    val imageData = _imageData.asStateFlow()
 
-    fun createShop() {
+    fun createCard() {
         screenModelScope.launch {
             mutableState.value = AppState.Loading
             runCatching {
-                val iconPath = "${Clock.System.now().toEpochMilliseconds()}.${imageData.value!!.extension}"
-                shopApi.uploadIcon(iconPath, imageData.value!!.data)
-                shopApi.createShop(
-                    name = name.value,
-                    iconUrl = shopApi.getIconUrl(iconPath),
-                    authorizedUsers = authorizedUsers,
-                    ownerId = auth.currentUserOrNull()?.id ?: ""
+                val imagePath = imageData.let {
+                    val imagePath =
+                        "${Clock.System.now().toEpochMilliseconds()}.${imageData.value!!.extension}"
+                    cardsApi.uploadImage(imagePath, imageData.value!!.data)
+                    imagePath
+                }
+                cardsApi.createCard(
+                    imagePath,
+                    description.value,
+                    auth.currentUserOrNull()?.id ?: "",
+                    authorizedUsers.toList()
                 )
             }.onSuccess {
-                shopDataSource.insertShop(it)
-                mutableState.value = State.Success
+                cardsDataSource.insertCard(it)
+                mutableState.value = State.CreateSuccess
             }.onFailure {
-                when(it) {
-                    is RestException -> mutableState.value = AppState.Error(it.message ?: "")
-                    else -> mutableState.value = AppState.NetworkError
-                }
+                it.printStackTrace()
+                mutableState.value = AppState.NetworkError
             }
         }
     }
@@ -75,14 +77,13 @@ class ShopCreateScreenModel(
         }
     }
 
-    fun setName(name: String) {
-        _name.value = name
-    }
-
     fun resetContent() {
-        _name.value = ""
         _imageData.value = null
+        _description.value = ""
         authorizedUsers.clear()
     }
 
+    fun setDescription(description: String) {
+        _description.value = description
+    }
 }

@@ -74,6 +74,7 @@ kotlin {
             implementation(libs.sqlDelight.driver.android)
             implementation(libs.koin.android)
             implementation(libs.ktor.client.okhttp)
+            implementation(libs.zoomable)
         }
 
         jsMain.dependencies {

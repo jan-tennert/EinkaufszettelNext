@@ -82,35 +82,11 @@ fun ShopCard(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
-                    /*val request = remember {
-                        ImageRequest(shop.iconUrl) {
-                            scale(Scale.FIT)
-                            size(SizeResolver {
-                                Size(ShopCardDefaults.IMAGE_SIZE, ShopCardDefaults.IMAGE_SIZE)
-                            })
-                        }
-                    }*/
                     AsyncImage(
                         model = ImageRequest.Builder(LocalPlatformContext.current).data(shop.iconUrl).crossfade(true).build(),
                         contentDescription = shop.name,
                         modifier = Modifier.size(ShopCardDefaults.ICON_SIZE),
                     )
-                    /*AutoSizeBox(request, modifier = Modifier.size(ShopCardDefaults.ICON_SIZE)) { action ->
-                        when(action) {
-                            is ImageAction.Loading -> {
-                                LoadingCircle()
-                            }
-                            is ImageAction.Failure -> {
-                                SideEffect {
-                                    action.error.printStackTrace()
-                                }
-                                Icon(Icons.Filled.Error, null)
-                            }
-                            is ImageAction.Success -> {
-                                Image(rememberImageSuccessPainter(action), null)
-                            }
-                        }
-                    }*/
                     Spacer(Modifier.height(ShopCardDefaults.PADDING))
                     Text(shop.name)
                 }

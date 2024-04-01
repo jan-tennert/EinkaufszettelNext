@@ -9,22 +9,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Done
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -33,16 +28,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.darkrockstudios.libraries.mpfilepicker.FilePicker
 import io.github.jan.einkaufszettel.Res
 import io.github.jan.einkaufszettel.app.ui.AppState
 import io.github.jan.einkaufszettel.app.ui.AppStateScreen
+import io.github.jan.einkaufszettel.app.ui.BlankScreen
+import io.github.jan.einkaufszettel.app.ui.components.ChildTopBar
 import io.github.jan.einkaufszettel.collectAsStateWithLifecycle
 import io.github.jan.einkaufszettel.root.ui.component.LocalImage
+import io.github.jan.einkaufszettel.root.ui.dialog.LoadingDialog
 import io.github.jan.einkaufszettel.shops.ui.components.UserProfileList
-import io.github.jan.einkaufszettel.shops.ui.screen.main.BlankScreen
+import io.github.jan.einkaufszettel.shops.ui.screen.main.ShopScreen
 import io.github.jan.supabase.CurrentPlatformTarget
 import io.github.jan.supabase.PlatformTarget
 
@@ -58,23 +55,22 @@ object ShopCreateStateScreen: AppStateScreen<ShopCreateScreenModel> {
         val userProfiles by screenModel.userProfiles.collectAsStateWithLifecycle()
         val imageData by screenModel.imageData.collectAsStateWithLifecycle()
         var showImageDialog by remember { mutableStateOf(false) }
-        var name by remember { mutableStateOf("") }
-        val authorizedUsers = remember { mutableStateListOf<String>() }
+        val name by screenModel.name.collectAsStateWithLifecycle()
         val navigator = LocalNavigator.currentOrThrow
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             topBar = {
-                ShopCreateTopBar(navigator)
+                ChildTopBar(Res.string.create_list, navigator)
             },
             floatingActionButton = {
-                if(state is AppState.Loading) {
-                    CircularProgressIndicator()
-                } else {
-                    FloatingActionButton(
-                        onClick = { imageData?.let { screenModel.createShop(name, it, authorizedUsers) } },
-                    ) {
-                        Icon(Icons.Filled.Done, null)
-                    }
+                FloatingActionButton(
+                    onClick = {
+                        imageData?.let {
+                            screenModel.createShop() }
+                            //verify params
+                        },
+                ) {
+                    Icon(Icons.Filled.Done, null)
                 }
             }
         ) {
@@ -84,7 +80,7 @@ object ShopCreateStateScreen: AppStateScreen<ShopCreateScreenModel> {
             ) {
                 OutlinedTextField(
                     value = name,
-                    onValueChange = { name = it },
+                    onValueChange = screenModel::setName,
                     label = { Text(Res.string.name) },
                     singleLine = true
                 )
@@ -99,7 +95,7 @@ object ShopCreateStateScreen: AppStateScreen<ShopCreateScreenModel> {
                 }
                 UserProfileList(
                     profiles = userProfiles,
-                    selectedUsers = authorizedUsers,
+                    selectedUsers = screenModel.authorizedUsers,
                     modifier = Modifier.fillMaxWidth().weight(1f),
                     addUser = { id ->
                         screenModel.importUser(id)
@@ -116,27 +112,37 @@ object ShopCreateStateScreen: AppStateScreen<ShopCreateScreenModel> {
             }
         )
 
-        if(state is ShopCreateScreenModel.State.Success) {
-            SideEffect {
-                navigator.replace(BlankScreen)
+        when(state) {
+            is AppState.Loading -> {
+                LoadingDialog()
+            }
+            is ShopCreateScreenModel.State.Success -> {
+                ShopCreateDialog {
+                    screenModel.resetState()
+                    screenModel.resetContent()
+                    if(CurrentPlatformTarget == PlatformTarget.ANDROID) {
+                        navigator.push(ShopScreen)
+                    } else {
+                        navigator.replace(BlankScreen)
+                    }
+                }
             }
         }
     }
 
-    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    private fun ShopCreateTopBar(navigator: Navigator) {
-        CenterAlignedTopAppBar(
-            title = {
-                Text(Res.string.create_list, style = MaterialTheme.typography.headlineMedium)
-            },
-            actions = {
-                if(CurrentPlatformTarget == PlatformTarget.JS) {
-                    IconButton(
-                        onClick = { navigator.replace(BlankScreen) }
-                    ) {
-                        Icon(Icons.Filled.Close, null)
-                    }
+    private fun ShopCreateDialog(
+        onClose: () -> Unit
+    ) {
+        AlertDialog(
+            onDismissRequest = onClose,
+            title = { Text(Res.string.list_created) },
+            text = { Text(Res.string.list_created_message) },
+            confirmButton = {
+                TextButton(
+                    onClick = onClose
+                ) {
+                    Text("Ok")
                 }
             }
         )

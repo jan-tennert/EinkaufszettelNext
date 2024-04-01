@@ -22,11 +22,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.navigator.Navigator
 import io.github.jan.einkaufszettel.Res
+import io.github.jan.einkaufszettel.app.ui.components.DeleteDialog
 import io.github.jan.einkaufszettel.collectAsStateWithLifecycle
 import io.github.jan.einkaufszettel.recipes.ui.components.RecipeCard
 import io.github.jan.einkaufszettel.recipes.ui.components.RecipeCardDefaults
 import io.github.jan.einkaufszettel.recipes.ui.detail.RecipeDetailScreen
-import io.github.jan.einkaufszettel.recipes.ui.main.RecipeScreen
 import io.github.jan.einkaufszettel.recipes.ui.main.RecipeScreenModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -79,7 +79,9 @@ fun RecipeList(
     }
 
     if(showDeleteDialog != null) {
-        RecipeScreen.DeleteDialog(
+        DeleteDialog(
+            title = Res.string.delete_recipe,
+            text = Res.string.delete_recipe_text,
             onDismiss = { screenModel.onShowDeleteDialogChanged(null) },
             onDelete = {
                 screenModel.deleteRecipe(showDeleteDialog!!.id, showDeleteDialog?.imagePath)

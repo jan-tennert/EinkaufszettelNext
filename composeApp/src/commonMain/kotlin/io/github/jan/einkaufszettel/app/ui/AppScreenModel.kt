@@ -3,6 +3,8 @@ package io.github.jan.einkaufszettel.app.ui
 import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import io.github.jan.einkaufszettel.PlatformNetworkContext
+import io.github.jan.einkaufszettel.cards.data.local.CardsDataSource
+import io.github.jan.einkaufszettel.cards.data.remote.CardsApi
 import io.github.jan.einkaufszettel.profile.data.local.ProfileDataSource
 import io.github.jan.einkaufszettel.profile.data.remote.ProfileApi
 import io.github.jan.einkaufszettel.profile.data.remote.ProfileDto
@@ -24,7 +26,9 @@ class AppScreenModel(
     private val recipeDataSource: RecipeDataSource,
     private val recipeApi: RecipeApi,
     private val profileApi: ProfileApi,
-    private val shopApi: ShopApi
+    private val shopApi: ShopApi,
+    private val cardApi: CardsApi,
+    private val cardDataSource: CardsDataSource
 ): StateScreenModel<AppScreenModel.State>(State.Idle) {
 
     sealed interface State {
@@ -57,6 +61,8 @@ class AppScreenModel(
                         refreshShops(oldProfiles).also { profilesToFetch.addAll(it) }
                     if(type in listOf(RefreshType.RECIPES, RefreshType.ALL))
                         refreshRecipes()
+                    if(type in listOf(RefreshType.CARDS, RefreshType.ALL))
+                        refreshCards()
                     if(profilesToFetch.isNotEmpty()) {
                         fetchUserProfiles(profilesToFetch)
                     }
@@ -129,6 +135,18 @@ class AppScreenModel(
         }
         recipeDataSource.deleteAll(recipesToDelete.map { it.id })
         recipeDataSource.insertAll(newRecipes)
+    }
+
+    private suspend fun refreshCards() {
+        val oldCards = cardDataSource.retrieveAllCards()
+        val newCards = cardApi.retrieveCards()
+        val cardsToDelete = oldCards.filter { oldCard ->
+            newCards.none { newCard ->
+                newCard.id == oldCard.id
+            }
+        }
+        cardDataSource.deleteAll(cardsToDelete.map { it.id })
+        cardDataSource.insertCards(newCards)
     }
 
     private fun fetchUserProfiles(ids: List<String>) {

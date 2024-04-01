@@ -33,6 +33,10 @@
     <string name="edit_list">Edit List</string>
     <string name="delete_list">Delete List</string>
     <string name="empty_list">No entries found</string>
+    <string name="list_edited">List edited</string>
+    <string name="list_edited_message">Your list has been edited successfully.</string>
+    <string name="list_created">List created</string>
+    <string name="list_created_message">Your list has been created successfully.</string>
     <string name="delete_list_text">Are you sure you want to delete this list? This will also delete all associated products.</string>
     <string name="name">Name</string>
 
@@ -52,6 +56,17 @@
     <string name="recipe_deleted">Recipe deleted</string>
     <string name="recipe_deleted_message">Your recipe has been deleted successfully.</string>
 
+    <string name="create_card">Create Card</string>
+    <string name="edit_card">Edit Card</string>
+    <string name="delete_card">Delete Card</string>
+    <string name="delete_card_text">Are you sure you want to delete this card?</string>
+    <string name="description">Description</string>
+    <string name="card_created">Card created</string>
+    <string name="card_created_message">Your card has been created successfully.</string>
+    <string name="card_deleted">Card deleted</string>
+    <string name="card_deleted_message">Your card has been deleted successfully.</string>
+    <string name="card_edited">Card edited</string>
+    <string name="card_edited_message">Your card has been edited successfully.</string>
 
     <string name="home">Home</string>
     <string name="shops">Lists</string>

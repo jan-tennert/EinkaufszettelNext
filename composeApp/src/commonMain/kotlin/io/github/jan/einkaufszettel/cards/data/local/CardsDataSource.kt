@@ -1,13 +1,16 @@
 package io.github.jan.einkaufszettel.cards.data.local
 
 import app.cash.sqldelight.async.coroutines.awaitAsList
+import app.cash.sqldelight.async.coroutines.awaitAsOne
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import einkaufszettel.GetAllCards
+import einkaufszettel.GetCardById
 import io.github.jan.einkaufszettel.cards.data.remote.CardDto
 import io.github.jan.einkaufszettel.root.data.local.db.DatabaseProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 interface CardsDataSource {
 
@@ -21,10 +24,18 @@ interface CardsDataSource {
 
     fun getAllCards(): Flow<List<GetAllCards>>
 
+    fun getCardById(
+        id: Long
+    ): Flow<GetCardById>
+
     suspend fun retrieveAllCards(): List<GetAllCards>
 
     suspend fun deleteCardById(
         id: Long
+    )
+
+    suspend fun deleteAll(
+        ids: List<Long>
     )
 
 }
@@ -58,6 +69,10 @@ internal class CardsDataSourceImpl(
         return queries.getAllCards().asFlow().mapToList(Dispatchers.Default)
     }
 
+    override fun getCardById(id: Long): Flow<GetCardById> {
+        return queries.getCardById(id).asFlow().map { it.awaitAsOne() }
+    }
+
     override suspend fun retrieveAllCards(): List<GetAllCards> {
         return queries.getAllCards().awaitAsList()
     }
@@ -66,6 +81,12 @@ internal class CardsDataSourceImpl(
         id: Long
     ) {
         queries.deleteCardById(id)
+    }
+
+    override suspend fun deleteAll(ids: List<Long>) {
+        queries.transaction {
+            ids.forEach { deleteCardById(it) }
+        }
     }
 
 }

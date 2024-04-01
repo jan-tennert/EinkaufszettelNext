@@ -20,6 +20,13 @@ FROM recipeTable AS recipe
 LEFT JOIN profileTable creator
 ON recipe.creatorId = creator.id;
 
+getRecipeById:
+SELECT recipe.id, recipe.createdAt, recipe.name, recipe.imagePath, recipe.ingredients, recipe.steps, recipe.isPrivate, creator.username AS creator, recipe.creatorId AS creatorId
+FROM recipeTable AS recipe
+LEFT JOIN profileTable creator
+ON recipe.creatorId = creator.id
+WHERE recipe.id = ?;
+
 insertRecipe:
 INSERT OR REPLACE
 INTO recipeTable VALUES(?, ?, ?, ?, ?, ?, ?, ?);

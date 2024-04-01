@@ -1,9 +1,10 @@
-package io.github.jan.einkaufszettel.recipes.ui.components
+package io.github.jan.einkaufszettel.cards.ui.components
 
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.indication
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -21,27 +22,26 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import coil3.compose.LocalPlatformContext
 import coil3.request.ImageRequest
 import coil3.request.crossfade
-import einkaufszettel.GetAllRecipes
+import einkaufszettel.GetAllCards
 import io.github.jan.einkaufszettel.Res
 import io.github.jan.einkaufszettel.app.ui.components.ContextMenuScope
-import io.github.jan.einkaufszettel.recipes.data.remote.RecipeApi
-import io.github.jan.supabase.storage.publicStorageItem
+import io.github.jan.einkaufszettel.cards.data.remote.CardsApi
+import io.github.jan.supabase.storage.authenticatedStorageItem
 
-expect object RecipeCardDefaults {
+/*expect object RecipeCardDefaults {
     val HEIGHT: Dp
     val WIDTH: Dp
     val PADDING: Dp
-}
+}*/
 
 @Composable
-fun RecipeCard(
-    recipe: GetAllRecipes,
+fun CardCard(
+    card: GetAllCards,
     modifier: Modifier = Modifier,
     isOwner: Boolean = false,
     onClick: () -> Unit = {},
@@ -73,32 +73,54 @@ fun RecipeCard(
         ElevatedCard(
             modifier = Modifier.indication(it, LocalIndication.current),
         ) {
-            RecipeCardImage(recipe.imagePath, recipe.name, Modifier.fillMaxSize())
+            CardImage(card.imagePath, card.description, Modifier.fillMaxSize())
         }
     }
 }
 
 @Composable
-private fun RecipeCardImage(imagePath: String?, text: String, modifier: Modifier) {
-    Box(
-        modifier = modifier
+private fun CardImage(imagePath: String?, text: String, modifier: Modifier) {
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if(imagePath != null) {
-            val request = ImageRequest.Builder(LocalPlatformContext.current)
-                .data(publicStorageItem(RecipeApi.BUCKET_ID, imagePath))
-                .crossfade(true)
-                .build()
             AsyncImage(
-                model = request,
+                model = ImageRequest.Builder(LocalPlatformContext.current)
+                    .data(authenticatedStorageItem(CardsApi.BUCKET_ID, imagePath))
+                    .crossfade(true)
+                    .build(),
                 contentDescription = text,
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.weight(1f)
             )
         } else {
             Icon(Icons.Default.QuestionMark, contentDescription = null, tint = Color.Gray, modifier = Modifier.fillMaxSize())
         }
-        Box(Modifier.fillMaxSize().background(Brush.verticalGradient(colors = listOf(Color.Transparent, Color.Black), 250f)))
-        Box(modifier = Modifier.fillMaxSize().padding(vertical = 12.dp, horizontal = 4.dp), contentAlignment = Alignment.BottomCenter) {
-            Text(text = text, style = TextStyle(color = Color.White), maxLines = 2, overflow = TextOverflow.Ellipsis, textAlign = TextAlign.Center)
+        Text(text = text, maxLines = 2, overflow = TextOverflow.Ellipsis, textAlign = TextAlign.Center, modifier = Modifier.padding(4.dp))
+    }
+}
+
+@Composable
+fun ImageCard(
+    imageModel: Any,
+    text: String,
+    modifier: Modifier,
+    onClick: () -> Unit = {}
+) {
+    ElevatedCard(onClick) {
+        Box(
+            modifier = modifier
+        ) {
+            AsyncImage(
+                model = imageModel,
+                contentDescription = text,
+                contentScale = ContentScale.Crop
+            )
+            Box(Modifier.fillMaxSize().background(Brush.verticalGradient(colors = listOf(Color.Transparent, Color.Black), 250f)))
+            Box(modifier = Modifier.fillMaxSize().padding(vertical = 12.dp, horizontal = 4.dp), contentAlignment = Alignment.BottomCenter) {
+                Text(text = text, style = TextStyle(color = Color.White), maxLines = 2, overflow = TextOverflow.Ellipsis)
+            }
         }
     }
 }

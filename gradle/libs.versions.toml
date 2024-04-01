@@ -24,6 +24,7 @@ okio = "3.9.0"
 richeditor = "1.0.0-rc01"
 file-picker = "3.1.0"
 coil = "3.0.0-alpha06"
+zoomable = "1.6.1"
 
 [libraries]
 
@@ -64,6 +65,7 @@ richeditor = { module = "com.mohamedrejeb.richeditor:richeditor-compose", versio
 filepicker = { module = "com.darkrockstudios:mpfilepicker", version.ref = "file-picker" }
 coil = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
 coil-ktor = { module = "io.coil-kt.coil3:coil-network-ktor", version.ref = "coil" }
+zoomable = { module = "net.engawapg.lib:zoomable", version.ref = "zoomable" }
 
 [plugins]
 

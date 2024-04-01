@@ -1,4 +1,4 @@
-package io.github.jan.einkaufszettel.shops.ui.screen.edit
+package io.github.jan.einkaufszettel.cards.ui.screen.edit
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,48 +29,48 @@ import io.github.jan.einkaufszettel.app.ui.AppState
 import io.github.jan.einkaufszettel.app.ui.AppStateScreen
 import io.github.jan.einkaufszettel.app.ui.BlankScreen
 import io.github.jan.einkaufszettel.app.ui.components.ChildTopBar
+import io.github.jan.einkaufszettel.cards.ui.screen.main.CardsScreen
 import io.github.jan.einkaufszettel.collectAsStateWithLifecycle
 import io.github.jan.einkaufszettel.getScreenModel
 import io.github.jan.einkaufszettel.root.ui.component.LoadingCircle
 import io.github.jan.einkaufszettel.root.ui.dialog.LoadingDialog
 import io.github.jan.einkaufszettel.shops.ui.components.UserProfileList
-import io.github.jan.einkaufszettel.shops.ui.screen.main.ShopScreen
 import io.github.jan.supabase.CurrentPlatformTarget
 import io.github.jan.supabase.PlatformTarget
 import org.koin.core.parameter.parametersOf
 
-class ShopEditStateScreen(
-    private val shopId: Long,
-): AppStateScreen<ShopEditScreenModel> {
+class CardEditScreen(
+    private val cardId: Long,
+): AppStateScreen<CardEditScreenModel> {
 
     @Composable
-    override fun createScreenModel(): ShopEditScreenModel {
-        return getScreenModel<ShopEditScreenModel>(tag = shopId.toString(), parameters = { parametersOf(shopId) })
+    override fun createScreenModel(): CardEditScreenModel {
+        return getScreenModel<CardEditScreenModel>(tag = cardId.toString(), parameters = { parametersOf(cardId) })
     }
 
     @Composable
-    override fun Content(screenModel: ShopEditScreenModel, state: AppState) {
-        val shop by screenModel.shop.collectAsStateWithLifecycle()
-        if(shop == null) {
+    override fun Content(screenModel: CardEditScreenModel, state: AppState) {
+        val card by screenModel.card.collectAsStateWithLifecycle()
+        if(card == null) {
             LoadingCircle()
             return
         }
         val navigator = LocalNavigator.currentOrThrow
         val userProfiles by screenModel.userProfiles.collectAsStateWithLifecycle()
-        var name by remember { mutableStateOf(shop!!.name) }
-        val authorizedUsers = remember { mutableStateListOf(*shop!!.authorizedUsers.toTypedArray()) }
+        var description by remember { mutableStateOf(card!!.description) }
+        val authorizedUsers = remember { mutableStateListOf(*card!!.authorizedUsers.toTypedArray()) }
 
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             topBar = {
-                ChildTopBar(Res.string.edit_list, navigator)
+                ChildTopBar(Res.string.edit_card, navigator)
             },
             floatingActionButton = {
                 if(state is AppState.Loading) {
                     CircularProgressIndicator()
                 } else {
                     FloatingActionButton(
-                        onClick = { screenModel.updateShop(name, authorizedUsers) },
+                        onClick = { screenModel.updateCard(description, authorizedUsers) },
                     ) {
                         Icon(Icons.Filled.Done, null)
                     }
@@ -82,9 +82,9 @@ class ShopEditStateScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 OutlinedTextField(
-                    value = name,
-                    onValueChange = { name = it },
-                    label = { Text(Res.string.name) },
+                    value = description,
+                    onValueChange = { description = it },
+                    label = { Text(Res.string.description) },
                     singleLine = true
                 )
                 UserProfileList(
@@ -102,11 +102,11 @@ class ShopEditStateScreen(
             is AppState.Loading -> {
                 LoadingDialog()
             }
-            is ShopEditScreenModel.State.Success -> {
-                ShopEditDialog {
+            is CardEditScreenModel.State.Success -> {
+                CardEditDialog {
                     screenModel.resetState()
                     if (CurrentPlatformTarget == PlatformTarget.ANDROID) {
-                        navigator.push(ShopScreen)
+                        navigator.push(CardsScreen)
                     } else {
                         navigator.replace(BlankScreen)
                     }
@@ -116,13 +116,13 @@ class ShopEditStateScreen(
     }
 
     @Composable
-    private fun ShopEditDialog(
+    private fun CardEditDialog(
         onClose: () -> Unit
     ) {
         AlertDialog(
             onDismissRequest = onClose,
-            title = { Text(Res.string.list_edited) },
-            text = { Text(Res.string.list_edited_message) },
+            title = { Text(Res.string.card_edited) },
+            text = { Text(Res.string.card_edited_message) },
             confirmButton = {
                 TextButton(
                     onClick = onClose

@@ -55,6 +55,11 @@ interface RecipeApi {
 
     suspend fun deleteImage(imagePath: String)
 
+    companion object {
+        const val BUCKET_ID = "recipes"
+        const val TABLE_NAME = "recipes"
+    }
+
 }
 
 internal class RecipeApiImpl(
@@ -62,8 +67,8 @@ internal class RecipeApiImpl(
     storage: Storage,
 ) : RecipeApi {
 
-    private val table = postgrest["recipes"]
-    private val images = storage["recipes"]
+    private val table = postgrest[RecipeApi.TABLE_NAME]
+    private val images = storage[RecipeApi.BUCKET_ID]
 
     override suspend fun retrieveRecipes(): List<RecipeDto> {
         return table.select().decodeList()

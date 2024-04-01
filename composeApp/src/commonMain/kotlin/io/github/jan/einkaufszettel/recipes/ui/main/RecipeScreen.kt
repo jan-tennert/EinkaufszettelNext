@@ -22,6 +22,7 @@ import io.github.jan.einkaufszettel.Res
 import io.github.jan.einkaufszettel.app.ui.AppScreenModel
 import io.github.jan.einkaufszettel.app.ui.AppState
 import io.github.jan.einkaufszettel.app.ui.AppStateScreen
+import io.github.jan.einkaufszettel.app.ui.BlankScreen
 import io.github.jan.einkaufszettel.app.ui.components.CreateButton
 import io.github.jan.einkaufszettel.app.ui.pullrefresh.RefreshScope
 import io.github.jan.einkaufszettel.recipes.ui.create.RecipeCreateScreen
@@ -29,7 +30,6 @@ import io.github.jan.einkaufszettel.recipes.ui.create.components.RecipeList
 import io.github.jan.einkaufszettel.recipes.ui.detail.RecipeDetailScreen
 import io.github.jan.einkaufszettel.root.ui.dialog.LoadingDialog
 import io.github.jan.einkaufszettel.shops.ui.components.VerticalDivider
-import io.github.jan.einkaufszettel.shops.ui.screen.main.BlankScreen
 import io.github.jan.supabase.CurrentPlatformTarget
 import io.github.jan.supabase.PlatformTarget
 
@@ -60,7 +60,7 @@ object RecipeScreen : AppStateScreen<RecipeScreenModel> {
                                     }
                                 )
                             }
-                        }
+                        },
                     ) {
                         RecipeList(screenModel, navigator.parent!!, listState)
                     }
@@ -106,39 +106,5 @@ object RecipeScreen : AppStateScreen<RecipeScreenModel> {
             LoadingDialog()
         }
     }
-
-    @Composable
-    fun DeleteDialog(
-        onDismiss: () -> Unit,
-        onDelete: () -> Unit
-    ) {
-        AlertDialog(
-            onDismissRequest = onDismiss,
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        onDelete()
-                        onDismiss()
-                    }
-                ) {
-                    Text(Res.string.delete)
-                }
-            },
-            dismissButton = {
-                TextButton(
-                    onClick = onDismiss
-                ) {
-                    Text(Res.string.cancel)
-                }
-            },
-            title = {
-                Text(Res.string.delete_recipe)
-            },
-            text = {
-                Text(Res.string.delete_recipe_text)
-            }
-        )
-    }
-
 
 }
