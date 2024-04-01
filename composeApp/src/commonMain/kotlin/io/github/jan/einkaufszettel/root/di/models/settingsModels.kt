@@ -9,6 +9,9 @@ val settingsModels = module {
             get(),
             get(),
             get(),
+            get(),
+            get(),
+            get(),
             get()
         )
     }

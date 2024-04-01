@@ -1,4 +1,4 @@
-package io.github.jan.einkaufszettel.recipes.ui.create
+package io.github.jan.einkaufszettel.recipes.ui.steps
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -32,16 +32,27 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import io.github.jan.einkaufszettel.Res
 import io.github.jan.einkaufszettel.collectAsStateWithLifecycle
+import io.github.jan.einkaufszettel.getNavigatorScreenModelT
+import io.github.jan.einkaufszettel.recipes.ui.create.RecipeCreateScreenModel
+import io.github.jan.einkaufszettel.recipes.ui.edit.RecipeEditScreenModel
+import org.koin.core.parameter.parametersOf
 
-object RecipeCreateS3Screen: RecipeCreateStepScreen {
+class RecipeModifyS3Screen(
+    private val oldRecipeId: Long? = null,
+    private val oldRecipeImage: String? = null
+): RecipeModifyStepScreen {
 
     override val index: Int = 2
-    override val nextStep: RecipeCreateStepScreen? = null
+    override val nextStep: RecipeModifyStepScreen? = null
 
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-        val model = navigator.parent!!.getNavigatorScreenModel<RecipeCreateScreenModel>()
+        val model = if(oldRecipeId != null) {
+            navigator.parent!!.getNavigatorScreenModelT<RecipeEditScreenModel>(tag = oldRecipeId.toString(), parameters = { parametersOf(oldRecipeId) })
+        } else {
+            navigator.parent!!.getNavigatorScreenModel<RecipeCreateScreenModel>()
+        }
         val showIngredientDialog by model.showIngredientsDialog.collectAsStateWithLifecycle()
         Box(
             modifier = Modifier.fillMaxWidth()

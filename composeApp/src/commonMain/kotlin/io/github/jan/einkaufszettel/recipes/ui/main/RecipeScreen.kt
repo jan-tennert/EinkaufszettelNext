@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Scaffold
@@ -25,8 +26,8 @@ import io.github.jan.einkaufszettel.app.ui.AppStateScreen
 import io.github.jan.einkaufszettel.app.ui.BlankScreen
 import io.github.jan.einkaufszettel.app.ui.components.CreateButton
 import io.github.jan.einkaufszettel.app.ui.pullrefresh.RefreshScope
+import io.github.jan.einkaufszettel.recipes.ui.components.RecipeList
 import io.github.jan.einkaufszettel.recipes.ui.create.RecipeCreateScreen
-import io.github.jan.einkaufszettel.recipes.ui.create.components.RecipeList
 import io.github.jan.einkaufszettel.recipes.ui.detail.RecipeDetailScreen
 import io.github.jan.einkaufszettel.root.ui.dialog.LoadingDialog
 import io.github.jan.einkaufszettel.shops.ui.components.VerticalDivider
@@ -62,7 +63,9 @@ object RecipeScreen : AppStateScreen<RecipeScreenModel> {
                             }
                         },
                     ) {
-                        RecipeList(screenModel, navigator.parent!!, listState)
+                        Box(Modifier.fillMaxSize().padding(it)) {
+                            RecipeList(screenModel, navigator.parent!!, listState)
+                        }
                     }
 
                     AnimatedVisibility(

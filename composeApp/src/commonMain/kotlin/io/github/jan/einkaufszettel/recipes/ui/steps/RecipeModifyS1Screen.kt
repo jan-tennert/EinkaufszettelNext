@@ -1,4 +1,4 @@
-package io.github.jan.einkaufszettel.recipes.ui.create
+package io.github.jan.einkaufszettel.recipes.ui.steps
 
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
@@ -15,19 +15,30 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import com.mohamedrejeb.richeditor.ui.material3.OutlinedRichTextEditor
 import io.github.jan.einkaufszettel.Res
 import io.github.jan.einkaufszettel.collectAsStateWithLifecycle
+import io.github.jan.einkaufszettel.getNavigatorScreenModelT
+import io.github.jan.einkaufszettel.recipes.ui.create.RecipeCreateScreenModel
 import io.github.jan.einkaufszettel.recipes.ui.create.components.RichTextStyleRow
+import io.github.jan.einkaufszettel.recipes.ui.edit.RecipeEditScreenModel
+import org.koin.core.parameter.parametersOf
 
-object RecipeCreateS1Screen: RecipeCreateStepScreen {
+class RecipeModifyS1Screen(
+    private val oldRecipeId: Long? = null,
+    oldRecipeImage: String? = null
+): RecipeModifyStepScreen {
 
     override val index: Int = 0
 
-    override val nextStep: RecipeCreateStepScreen = RecipeCreateS2Screen
+    override val nextStep: RecipeModifyStepScreen = RecipeModifyS2Screen(oldRecipeId = oldRecipeId, oldRecipeImage = oldRecipeImage)
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-        val model = navigator.parent!!.getNavigatorScreenModel<RecipeCreateScreenModel>()
+        val model = if(oldRecipeId != null) {
+            navigator.parent!!.getNavigatorScreenModelT<RecipeEditScreenModel>(tag = oldRecipeId.toString(), parameters = { parametersOf(oldRecipeId) })
+        } else {
+            navigator.parent!!.getNavigatorScreenModel<RecipeCreateScreenModel>()
+        }
         val name by model.name.collectAsStateWithLifecycle()
         OutlinedTextField(
             value = name,

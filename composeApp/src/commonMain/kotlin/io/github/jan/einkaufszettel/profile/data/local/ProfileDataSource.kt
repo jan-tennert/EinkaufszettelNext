@@ -1,6 +1,7 @@
 package io.github.jan.einkaufszettel.profile.data.local
 
 import app.cash.sqldelight.async.coroutines.awaitAsList
+import app.cash.sqldelight.async.coroutines.awaitAsOne
 import app.cash.sqldelight.async.coroutines.awaitAsOneOrNull
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
@@ -15,6 +16,8 @@ import kotlinx.coroutines.flow.map
 interface ProfileDataSource {
 
     fun getProfiles(): Flow<List<ProfileDto>>
+
+    fun getOwnProfile(): Flow<ProfileDto>
 
     suspend fun retrieveAllProfiles(): List<ProfileDto>
 
@@ -55,6 +58,10 @@ internal class ProfileDataSourceImpl(
     }
 
     override suspend fun retrieveProfile(uid: String): ProfileDto? = queries.getProfileById(uid).awaitAsOneOrNull()?.toProfile()
+
+    override fun getOwnProfile(): Flow<ProfileDto> {
+        return auth.currentUserOrNull()?.id!!.let { id -> queries.getProfileById(id).asFlow().map { it.awaitAsOne().toProfile() } }
+    }
 
     override suspend fun retrieveOwnProfile(): ProfileDto? = auth.currentUserOrNull()?.id?.let { retrieveProfile(it) }
 

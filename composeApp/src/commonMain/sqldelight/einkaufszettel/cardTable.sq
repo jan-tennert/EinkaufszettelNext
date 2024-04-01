@@ -18,13 +18,6 @@ FROM cardTable AS cardEntry
 LEFT JOIN profileTable ownerEntry
 ON cardEntry.ownerId = ownerEntry.id;
 
-getCardById:
-SELECT cardEntry.id, description, createdAt, authorizedUsers, imagePath, ownerEntry.username AS owner, ownerId
-FROM cardTable AS cardEntry
-LEFT JOIN profileTable ownerEntry
-ON cardEntry.ownerId = ownerEntry.id
-WHERE cardEntry.id = :id;
-
 insertCard:
 INSERT OR REPLACE
 INTO cardTable

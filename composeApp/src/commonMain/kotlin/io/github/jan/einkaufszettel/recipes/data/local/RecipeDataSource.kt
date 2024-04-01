@@ -8,10 +8,13 @@ import io.github.jan.einkaufszettel.recipes.data.remote.RecipeDto
 import io.github.jan.einkaufszettel.root.data.local.db.DatabaseProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 interface RecipeDataSource {
 
     fun getAllRecipes(): Flow<List<GetAllRecipes>>
+
+    fun getRecipeById(recipeId: Long): Flow<GetAllRecipes?>
 
     suspend fun retrieveAllRecipes(): List<GetAllRecipes>
 
@@ -39,6 +42,10 @@ internal class RecipeDataSourceImpl(
 
     override fun getAllRecipes(): Flow<List<GetAllRecipes>> {
         return queries.getAllRecipes().asFlow().mapToList(Dispatchers.Default)
+    }
+
+    override fun getRecipeById(recipeId: Long): Flow<GetAllRecipes?> = getAllRecipes().map { recipes ->
+        recipes.find { it.id == recipeId }
     }
 
     override suspend fun retrieveAllRecipes(): List<GetAllRecipes> {

@@ -1,4 +1,4 @@
-package io.github.jan.einkaufszettel.recipes.ui.create.components
+package io.github.jan.einkaufszettel.recipes.ui.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,9 +24,8 @@ import cafe.adriel.voyager.navigator.Navigator
 import io.github.jan.einkaufszettel.Res
 import io.github.jan.einkaufszettel.app.ui.components.DeleteDialog
 import io.github.jan.einkaufszettel.collectAsStateWithLifecycle
-import io.github.jan.einkaufszettel.recipes.ui.components.RecipeCard
-import io.github.jan.einkaufszettel.recipes.ui.components.RecipeCardDefaults
 import io.github.jan.einkaufszettel.recipes.ui.detail.RecipeDetailScreen
+import io.github.jan.einkaufszettel.recipes.ui.edit.RecipeEditScreen
 import io.github.jan.einkaufszettel.recipes.ui.main.RecipeScreenModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -68,7 +67,10 @@ fun RecipeList(
                     modifier = Modifier.width(RecipeCardDefaults.WIDTH).height(
                         RecipeCardDefaults.HEIGHT).padding(RecipeCardDefaults.PADDING),
                     onClick = {
-                        navigator.push(RecipeDetailScreen(it.id))
+                        navigator.push(RecipeDetailScreen(it.id)) //TODO: JS
+                    },
+                    onEdit = {
+                        navigator.push(RecipeEditScreen(it.id))
                     },
                     onDelete = {
                         screenModel.onShowDeleteDialogChanged(it)

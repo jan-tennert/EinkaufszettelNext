@@ -54,6 +54,8 @@
     <string name="delete_recipe">Delete Recipe</string>
     <string name="delete_recipe_text">Are you sure you want to delete this recipe?</string>
     <string name="recipe_deleted">Recipe deleted</string>
+    <string name="recipe_edited">Recipe edited</string>
+    <string name="recipe_edited_message">Your recipe has been edited successfully.</string>
     <string name="recipe_deleted_message">Your recipe has been deleted successfully.</string>
 
     <string name="create_card">Create Card</string>
@@ -79,6 +81,12 @@
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
 
+    <string name="account">Account</string>
+    <string name="change">Change</string>
+    <string name="change_password">Change Password</string>
+    <string name="logout">Logout</string>
+    <string name="yes">Yes</string>
+    <string name="logout_confirmation">Are you sure you want to log out?</string>
     <string name="error">Error</string>
     <string name="unknown_error">Unknown error: ${message}</string>
     <string name="network_error">Network error. Please check your internet connection.</string>

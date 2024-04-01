@@ -1,4 +1,4 @@
-package io.github.jan.einkaufszettel.recipes.ui.create
+package io.github.jan.einkaufszettel.recipes.ui.edit
 
 import cafe.adriel.voyager.core.model.screenModelScope
 import io.github.jan.einkaufszettel.app.ui.AppState
@@ -9,10 +9,13 @@ import io.github.jan.einkaufszettel.root.data.local.image.LocalImageData
 import io.github.jan.einkaufszettel.root.data.local.image.LocalImageReader
 import io.github.jan.supabase.exceptions.RestException
 import io.github.jan.supabase.gotrue.Auth
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 
-class RecipeCreateScreenModel(
+class RecipeEditScreenModel(
+    private val recipeId: Long,
     recipeApi: RecipeApi,
     recipeDataSource: RecipeDataSource,
     localImageReader: LocalImageReader,
@@ -23,12 +26,14 @@ class RecipeCreateScreenModel(
         data class Success(val id: Long) : State
     }
 
-    fun createRecipe(
-        name: String,
+    val recipe = recipeDataSource.getRecipeById(recipeId).stateIn(screenModelScope, SharingStarted.Eagerly, null)
+
+    fun editRecipe(
+        name: String?,
         imageData: LocalImageData?,
-        steps: String,
-        ingredients: List<String>,
-        private: Boolean,
+        oldImagePath: String?,
+        steps: String?,
+        ingredients: List<String>?,
     ) {
         mutableState.value = AppState.Loading
         screenModelScope.launch {
@@ -38,7 +43,10 @@ class RecipeCreateScreenModel(
                     recipeApi.uploadImage(imagePath, imageData.data)
                     imagePath
                 }
-                recipeApi.createRecipe(name, auth.currentUserOrNull()?.id ?: error("No user found"), imagePath, ingredients, steps, private)
+                if(oldImagePath != null && imageData != null) {
+                    recipeApi.deleteImage(oldImagePath)
+                }
+                recipeApi.editRecipe(recipeId, name, imagePath, ingredients, steps)
             }.onSuccess {
                 recipeDataSource.insertRecipe(it)
                 mutableState.value = State.Success(it.id)

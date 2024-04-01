@@ -17,10 +17,6 @@ CREATE TABLE shopTable (
 getAllShops:
 SELECT * FROM shopTable;
 
-getShopById:
-SELECT * FROM shopTable
-WHERE id = :id;
-
 insertShop:
 INSERT OR REPLACE
 INTO shopTable

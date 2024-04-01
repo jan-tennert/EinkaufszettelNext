@@ -1,11 +1,9 @@
 package io.github.jan.einkaufszettel.cards.data.local
 
 import app.cash.sqldelight.async.coroutines.awaitAsList
-import app.cash.sqldelight.async.coroutines.awaitAsOne
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import einkaufszettel.GetAllCards
-import einkaufszettel.GetCardById
 import io.github.jan.einkaufszettel.cards.data.remote.CardDto
 import io.github.jan.einkaufszettel.root.data.local.db.DatabaseProvider
 import kotlinx.coroutines.Dispatchers
@@ -26,7 +24,7 @@ interface CardsDataSource {
 
     fun getCardById(
         id: Long
-    ): Flow<GetCardById>
+    ): Flow<GetAllCards?>
 
     suspend fun retrieveAllCards(): List<GetAllCards>
 
@@ -69,8 +67,8 @@ internal class CardsDataSourceImpl(
         return queries.getAllCards().asFlow().mapToList(Dispatchers.Default)
     }
 
-    override fun getCardById(id: Long): Flow<GetCardById> {
-        return queries.getCardById(id).asFlow().map { it.awaitAsOne() }
+    override fun getCardById(id: Long): Flow<GetAllCards?> = getAllCards().map { cards ->
+        cards.find { it.id == id }
     }
 
     override suspend fun retrieveAllCards(): List<GetAllCards> {

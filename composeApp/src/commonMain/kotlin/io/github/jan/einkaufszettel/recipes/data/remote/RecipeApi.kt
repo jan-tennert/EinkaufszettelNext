@@ -40,12 +40,11 @@ interface RecipeApi {
 
     suspend fun editRecipe(
         id: Long,
-        name: String,
+        name: String?,
         imagePath: String?,
-        ingredients: List<String>,
-        steps: String,
-        private: Boolean,
-    )
+        ingredients: List<String>?,
+        steps: String?,
+    ): RecipeDto
 
     suspend fun retrieveRecipes(): List<RecipeDto>
 
@@ -106,23 +105,22 @@ internal class RecipeApiImpl(
 
     override suspend fun editRecipe(
         id: Long,
-        name: String,
+        name: String?,
         imagePath: String?,
-        ingredients: List<String>,
-        steps: String,
-        private: Boolean
-    ) {
-        table.update({
-            RecipeDto::name setTo name
-            RecipeDto::imagePath setTo imagePath
-            RecipeDto::ingredients setTo ingredients
-            RecipeDto::steps setTo steps
-            RecipeDto::private setTo private
+        ingredients: List<String>?,
+        steps: String?,
+    ): RecipeDto {
+        return table.update({
+            name?.let { RecipeDto::name setTo it }
+            imagePath?.let { RecipeDto::imagePath setTo it }
+            ingredients?.let { RecipeDto::ingredients setTo it }
+            steps?.let { RecipeDto::steps setTo it }
         }) {
+            select()
             filter {
                 RecipeDto::id eq id
             }
-        }
+        }.decodeSingle()
     }
 
     override suspend fun uploadImage(imagePath: String, image: ByteArray) {
