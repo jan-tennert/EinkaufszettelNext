@@ -7,7 +7,7 @@
 
     <application
         android:name=".AndroidApp"
-        android:icon="@android:drawable/ic_menu_compass"
+        android:icon="@drawable/orders"
         android:label="Einkaufszettel"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
         <activity
