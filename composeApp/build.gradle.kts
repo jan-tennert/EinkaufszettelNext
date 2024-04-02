@@ -41,6 +41,7 @@ kotlin {
     }
     sourceSets {
         commonMain.dependencies {
+            implementation(libs.semver)
             implementation(compose.runtime)
             implementation(compose.material3)
             implementation(compose.materialIconsExtended)
@@ -150,6 +151,7 @@ buildConfig {
     buildConfigField("String", "SUPABASE_URL", supabaseUrl)
     buildConfigField("String", "SUPABASE_KEY", supabaseKey)
     buildConfigField("String", "GOOGLE_CLIENT_ID", googleClientId)
+    buildConfigField("String", "APP_VERSION_NAME", "\"$appVersionName\"")
 }
 
 sqldelight {

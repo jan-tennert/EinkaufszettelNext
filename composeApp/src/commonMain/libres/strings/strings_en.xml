@@ -81,6 +81,11 @@
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
 
+    <string name="app_update">App Update</string>
+    <string name="app_update_message">A new version of the app is available: ${version}. Do you want to update?</string>
+    <string name="downloading">Downloading...</string>
+    <string name="update_downloaded">Update downloaded. Installing...</string>
+
     <string name="account">Account</string>
     <string name="change">Change</string>
     <string name="change_password">Change Password</string>

@@ -12,9 +12,25 @@ import io.github.jan.einkaufszettel.shops.data.remote.ProductApi
 import io.github.jan.einkaufszettel.shops.data.remote.ProductApiImpl
 import io.github.jan.einkaufszettel.shops.data.remote.ShopApi
 import io.github.jan.einkaufszettel.shops.data.remote.ShopApiImpl
+import io.github.jan.einkaufszettel.update.data.remote.GithubApi
+import io.github.jan.einkaufszettel.update.data.remote.GithubApiImpl
+import io.github.jan.einkaufszettel.update.data.remote.UpdateManager
+import io.ktor.client.HttpClient
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.serialization.kotlinx.json.json
+import org.koin.core.scope.Scope
 import org.koin.dsl.module
 
+expect fun Scope.updateManager(): UpdateManager
+
 val remoteModule = module {
+    single<HttpClient> {
+        HttpClient {
+            install(ContentNegotiation) {
+                json()
+            }
+        }
+    }
     single<AuthenticationApi> {
         AuthenticationApiImpl(get())
     }
@@ -32,5 +48,11 @@ val remoteModule = module {
     }
     single<CardsApi> {
         CardsApiImpl(get(), get())
+    }
+    single {
+        updateManager()
+    }
+    single<GithubApi> {
+        GithubApiImpl(get())
     }
 }

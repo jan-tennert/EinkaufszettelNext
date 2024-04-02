@@ -5,7 +5,7 @@ agp = "8.2.2"
 compose = "1.6.1"
 androidx-appcompat = "1.6.1"
 androidx-activityCompose = "1.8.2"
-compose-uitooling = "1.6.3"
+compose-uitooling = "1.6.4"
 libres = "1.2.0"
 voyager = "1.1.0-alpha03"
 composeImageLoader = "1.7.8"
@@ -25,6 +25,7 @@ richeditor = "1.0.0-rc01"
 file-picker = "3.1.0"
 coil = "3.0.0-alpha06"
 zoomable = "1.6.1"
+semver = "2.0.0"
 
 [libraries]
 
@@ -66,6 +67,7 @@ filepicker = { module = "com.darkrockstudios:mpfilepicker", version.ref = "file-
 coil = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
 coil-ktor = { module = "io.coil-kt.coil3:coil-network-ktor", version.ref = "coil" }
 zoomable = { module = "net.engawapg.lib:zoomable", version.ref = "zoomable" }
+semver = { module = "net.swiftzer.semver:semver", version.ref = "semver" }
 
 [plugins]
 
