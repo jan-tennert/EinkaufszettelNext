@@ -22,6 +22,10 @@ interface ProfileApi {
 
     suspend fun createProfileForCurrentUser(name: String): ProfileDto
 
+    suspend fun updateProfile(uid: String, name: String): ProfileDto
+
+    suspend fun updateOwnProfile(name: String): ProfileDto
+
 }
 
 
@@ -59,6 +63,21 @@ internal class ProfileApiImpl(
                 ProfileDto::id isIn ids
             }
         }.decodeList()
+    }
+
+    override suspend fun updateOwnProfile(name: String): ProfileDto {
+        val uid = auth.currentUserOrNull()?.id ?: error("No user logged in")
+        return updateProfile(uid, name)
+    }
+
+    override suspend fun updateProfile(uid: String, name: String): ProfileDto {
+        val result = profileTable.update(ProfileDto(uid, name)) {
+            select()
+            filter {
+                ProfileDto::id eq uid
+            }
+        }
+        return result.decodeSingle()
     }
 
 }

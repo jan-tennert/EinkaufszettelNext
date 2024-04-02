@@ -17,6 +17,7 @@ class LoginScreenModel(
         data object Loading : State
         data class Error(val message: String) : State
         data object SignUpSuccess : State
+        data class PasswordResetSuccess(val email: String) : State
     }
 
     fun login(email: String, password: String) {
@@ -41,12 +42,38 @@ class LoginScreenModel(
         }
     }
 
+    fun sendPasswordResetEmail(email: String) {
+        screenModelScope.launch {
+            mutableState.value = State.Loading
+            runCatching {
+                authenticationApiImpl.sendPasswordResetEmail(email)
+            }.onSuccess {
+                mutableState.value = State.PasswordResetSuccess(email)
+            }.onFailure(::handleError)
+        }
+    }
+
+    fun signInWithOtp(email: String, otp: String) {
+        screenModelScope.launch {
+            mutableState.value = State.Loading
+            runCatching {
+                authenticationApiImpl.signInWithOtp(email, otp)
+            }.onSuccess {
+                mutableState.value = State.Idle
+            }.onFailure(::handleError)
+        }
+    }
+
     fun resetState() {
         mutableState.value = State.Idle
     }
 
     fun setLoading() {
         mutableState.value = State.Loading
+    }
+
+    fun setPassResetSuccess(email: String) {
+        mutableState.value = State.PasswordResetSuccess(email)
     }
 
     private fun handleError(error: Throwable) {

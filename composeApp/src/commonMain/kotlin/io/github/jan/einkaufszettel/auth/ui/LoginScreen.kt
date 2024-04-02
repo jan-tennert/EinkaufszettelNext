@@ -2,6 +2,7 @@ package io.github.jan.einkaufszettel.auth.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -59,6 +60,7 @@ object LoginScreen : Screen {
         var email by rememberSaveable { mutableStateOf("") }
         var password by rememberSaveable { mutableStateOf("") }
         var signUp by rememberSaveable { mutableStateOf(false) }
+        var showPasswordResetDialog by rememberSaveable { mutableStateOf(false) }
 
         AuthForm {
             val state = LocalAuthState.current
@@ -79,8 +81,25 @@ object LoginScreen : Screen {
                         onValueChange = { password = it },
                         label = { Text(Res.string.password) }
                     )
+                    Row {
+                        TextButton(
+                            onClick = { showPasswordResetDialog = true }
+                        ) {
+                            Text(Res.string.forgot_password)
+                        }
+                        TextButton(
+                            onClick = { screenModel.setPassResetSuccess(email) }
+                        ) {
+                            Text(Res.string.enter_code)
+                        }
+                    }
                     Button(
-                        onClick = { if(signUp) screenModel.signUp(email, password) else screenModel.login(email, password) },
+                        onClick = {
+                            if (signUp) screenModel.signUp(
+                                email,
+                                password
+                            ) else screenModel.login(email, password)
+                        },
                         enabled = state.validForm
                     ) {
                         Text(if (signUp) Res.string.sign_up else Res.string.sign_in)
@@ -112,7 +131,7 @@ object LoginScreen : Screen {
         }
 
 
-        when(screenState) {
+        when (screenState) {
             is LoginScreenModel.State.Error -> {
                 ErrorDialog(
                     error = (screenState as LoginScreenModel.State.Error).message,
@@ -127,11 +146,30 @@ object LoginScreen : Screen {
                     screenModel.resetState()
                 }
             }
+            is LoginScreenModel.State.PasswordResetSuccess -> {
+                val email = (screenState as LoginScreenModel.State.PasswordResetSuccess).email
+                var code by rememberSaveable { mutableStateOf("") }
+                PasswordResetSuccess(
+                    code = code,
+                    email = email,
+                    onCodeChange = { code = it },
+                    signIn = {
+                        screenModel.signInWithOtp(email, code)
+                    },
+                    dismiss = {
+                        screenModel.resetState()
+                    }
+                )
+            }
             else -> {}
         }
 
-        if(nativeSignInResult != null && nativeSignInResult !in listOf(NativeSignInResult.Success, NativeSignInResult.ClosedByUser)) {
-            val message = when(nativeSignInResult) {
+        if (nativeSignInResult != null && nativeSignInResult !in listOf(
+                NativeSignInResult.Success,
+                NativeSignInResult.ClosedByUser
+            )
+        ) {
+            val message = when (nativeSignInResult) {
                 is NativeSignInResult.Error -> Res.string.unknown_error.format((nativeSignInResult as NativeSignInResult.Error).message)
                 is NativeSignInResult.NetworkError -> Res.string.network_error
                 else -> ""
@@ -141,6 +179,97 @@ object LoginScreen : Screen {
                 onDismiss = { nativeSignInResult = null }
             )
         }
+        if (showPasswordResetDialog) {
+            PasswordResetDialog(
+                onDismiss = { showPasswordResetDialog = false },
+                onSend = {
+                    screenModel.sendPasswordResetEmail(it)
+                    showPasswordResetDialog = false
+                }
+            )
+        }
+    }
+
+    @OptIn(SupabaseExperimental::class, ExperimentalMaterial3Api::class)
+    @Composable
+    private fun PasswordResetSuccess(
+        code: String,
+        email: String,
+        onCodeChange: (String) -> Unit,
+        signIn: () -> Unit,
+        dismiss: () -> Unit
+    ) {
+        AlertDialog(
+            onDismissRequest = { },
+            title = { Text(Res.string.forgot_password) },
+            text = {
+                Column {
+                    Text(Res.string.password_reset_success.format(email))
+                    Spacer(Modifier.height(8.dp))
+                    OutlinedPasswordField(
+                        value = code,
+                        onValueChange = onCodeChange,
+                        label = { Text(Res.string.code) }
+                    )
+                }
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = signIn,
+                    enabled = code.isNotBlank()
+                ) {
+                    Text("Ok")
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = dismiss
+                ) {
+                    Text(Res.string.cancel)
+                }
+            }
+        )
+    }
+
+    @OptIn(SupabaseExperimental::class, ExperimentalMaterial3Api::class)
+    @Composable
+    private fun PasswordResetDialog(
+        onDismiss: () -> Unit,
+        onSend: (email: String) -> Unit
+    ) {
+        var email by rememberSaveable { mutableStateOf("") }
+        AlertDialog(
+            onDismissRequest = onDismiss,
+            title = { Text(Res.string.forgot_password) },
+            text = {
+                Column {
+                    Text(Res.string.forgot_password_message)
+                    Spacer(Modifier.height(8.dp))
+                    OutlinedEmailField(
+                        value = email,
+                        onValueChange = { email = it },
+                        label = { Text(Res.string.email) }
+                    )
+                }
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        onSend(email)
+                    },
+                    enabled = email.isNotBlank()
+                ) {
+                    Text(Res.string.send)
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = onDismiss
+                ) {
+                    Text(Res.string.cancel)
+                }
+            }
+        )
     }
 
     @Composable
@@ -158,7 +287,6 @@ object LoginScreen : Screen {
             }
         )
     }
-
 
 
 }

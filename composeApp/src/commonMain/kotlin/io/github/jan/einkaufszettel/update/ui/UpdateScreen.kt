@@ -9,6 +9,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import io.github.jan.einkaufszettel.BuildConfig
 import io.github.jan.einkaufszettel.Res
+import io.github.jan.einkaufszettel.app.ui.AppState
 import io.github.jan.einkaufszettel.collectAsStateWithLifecycle
 import net.swiftzer.semver.SemVer
 import org.koin.compose.koinInject
@@ -21,7 +22,7 @@ fun CheckForUpdates() {
     val currentVersion = remember { SemVer.parse(BuildConfig.APP_VERSION_NAME) }
     val ignoreUpdate by updateScreenModel.ignoreUpdate.collectAsStateWithLifecycle()
     val state by updateScreenModel.state.collectAsStateWithLifecycle()
-    if(latestVersion != null && currentVersion < latestVersion!! && !ignoreUpdate) {
+    if(latestVersion != null && currentVersion < latestVersion!! && !ignoreUpdate && state is AppState.Idle) {
         UpdateAvailableDialog(
             ignoreUpdate = { updateScreenModel.ignoreUpdate() },
             onUpdate = { updateScreenModel.downloadLatestVersion() },

@@ -10,7 +10,7 @@
     <string name="dont_have_an_account">Don't have an account? Sign up</string>
     <string name="sign_out">Sign out</string>
     <string name="invalid_credentials">Invalid login credentials</string>
-    <string name="sign_up_success">You successfully signed up, please check your inbox for a verification link!</string>
+    <string name="sign_up_success">You successfully signed up, please check your inbox for a code!</string>
 
     <string name="create_user_profile">Create User Profile</string>
     <string name="username">Username</string>
@@ -89,6 +89,22 @@
     <string name="account">Account</string>
     <string name="change">Change</string>
     <string name="change_password">Change Password</string>
+    <string name="new_password">New Password</string>
+    <string name="change_password_text">Please enter your new password.</string>
+    <string name="password_changed">Password changed</string>
+    <string name="password_changed_message">Your password has been changed successfully.</string>
+    <string name="change_profile">Change Name</string>
+    <string name="change_profile_text">Please enter your new name.</string>
+    <string name="new_name">New Name</string>
+    <string name="profile_changed">Name changed</string>
+    <string name="profile_changed_message">Your name has been changed successfully.</string>
+    <string name="forgot_password_q">Forgot Password?</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="password_reset_success">Password reset email sent to ${email}. Please enter the code you receive below.</string>
+    <string name="code">Code</string>
+    <string name="enter_code">Enter Code</string>
+    <string name="forgot_password_message">Enter your email address and we will send you a link to reset your password.</string>
+    <string name="send">Send</string>
     <string name="logout">Logout</string>
     <string name="yes">Yes</string>
     <string name="logout_confirmation">Are you sure you want to log out?</string>

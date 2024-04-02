@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="email">E-Mail</string>
+    <string name="password">Passwort</string>
+    <string name="sign_in">Anmelden</string>
+    <string name="sign_up">Account erstellen</string>
+    <string name="sign_in_with_google">Mit Google anmelden</string>
+    <string name="sign_up_with_google">Account mit Google erstellen</string>
+    <string name="already_have_an_account">Sie haben bereits ein Konto? Anmelden</string>
+    <string name="dont_have_an_account">Sie haben noch kein Konto? Account erstellen</string>
+    <string name="sign_out">Ausloggen</string>
+    <string name="invalid_credentials">Ungültige Anmeldedaten</string>
+    <string name="sign_up_success">Sie haben sich erfolgreich registriert, bitte überprüfen Sie Ihr Postfach auf einen Code!</string>
+
+    <string name="create_user_profile">Profil erstellen</string>
+    <string name="username">Benutzername</string>
+    <string name="user_id">Nutzer-ID</string>
+    <string name="unknown">Unbekannt</string>
+    <string name="by">von</string>
+    <string name="create">Erstellen</string>
+    <string name="save">Speicher</string>
+    <string name="add_image">Bild hinzufügen</string>
+
+    <string name="create_product">Produkt erstellen</string>
+    <string name="edit_product">Produkt bearbeiten</string>
+    <string name="product">Produkt</string>
+
+    <string name="authorized_users">Authorisierte Nutzer</string>
+    <string name="add_user">Nutzer hinzufügen</string>
+    <string name="user_not_found">Nutzer nicht gefunden</string>
+    <string name="add">Hinzufügen</string>
+    <string name="create_list">Neue Liste erstellen</string>
+    <string name="edit_list">Liste bearbeiten</string>
+    <string name="delete_list">Liste löschen</string>
+    <string name="empty_list">Keine Einträge gefunden</string>
+    <string name="list_edited">Liste bearbeitet</string>
+    <string name="list_edited_message">Ihre Liste wurde erfolgreich bearbeitet.</string>
+    <string name="list_created">Liste erstellt</string>
+    <string name="list_created_message">Ihre Liste wurde erfolgreich erstellt.</string>
+    <string name="delete_list_text">Sind Sie sicher, dass Sie diese Liste löschen möchten? Dies löscht auch alle zugehörigen Produkte.</string>
+    <string name="name">Name</string>
+
+    <string name="instructions">Anleitung</string>
+    <string name="create_recipe">Rezept erstellen</string>
+
+    <string name="steps">Anleitung</string>
+    <string name="empty_steps">Keine Anleitung gegeben</string>
+    <string name="ingredients">Zutaten</string>
+    <string name="no_ingredients">Keine Zutaten hinzugefügt</string>
+    <string name="add_ingredient">Zutat hinzufügen</string>
+    <string name="ingredient">Zutat</string>
+    <string name="recipe_created">Rezept erstellt</string>
+    <string name="recipe_created_message">Ihr Rezept wurde erfolgreich erstellt.</string>
+    <string name="delete_recipe">Rezept löschen</string>
+    <string name="delete_recipe_text">Sind Sie sicher, dass Sie dieses Rezept löschen möchten?</string>
+    <string name="recipe_deleted">Rezept gelöscht</string>
+    <string name="recipe_edited">Rezept bearbeitet</string>
+    <string name="recipe_edited_message">Ihr Rezept wurde erfolgreich bearbeitet.</string>
+    <string name="recipe_deleted_message">Ihr Rezept wurde erfolgreich gelöscht.</string>
+
+    <string name="create_card">Karte erstellen</string>
+    <string name="edit_card">Karte bearbeiten</string>
+    <string name="delete_card">Karte löschen</string>
+    <string name="delete_card_text">Sind Sie sicher, dass Sie diese Karte löschen möchten?</string>
+    <string name="description">Beschreibung</string>
+    <string name="card_created">Karte erstellt</string>
+    <string name="card_created_message">Ihre Karte wurde erfolgreich erstellt.</string>
+    <string name="card_deleted">Karte gelöscht</string>
+    <string name="card_deleted_message">Ihre Karte wurde erfolgreich gelöscht.</string>
+    <string name="card_edited">Karte bearbeitet</string>
+    <string name="card_edited_message">Ihre Karte wurde erfolgreich bearbeitet.</string>
+
+    <string name="home">Startseite</string>
+    <string name="shops">Listen</string>
+    <string name="recipes">Rezepte</string>
+    <string name="cards">Karten</string>
+    <string name="settings">Einstellungen</string>
+    <string name="search">Suche</string>
+
+    <string name="edit">Bearbeiten</string>
+    <string name="delete">Löschen</string>
+    <string name="cancel">Abbrechen</string>
+
+    <string name="app_update">App-Update</string>
+    <string name="app_update_message">Es ist ein Update verfügbar. Möchten Sie es jetzt herunterladen?</string>
+    <string name="downloading">Lade herunter...</string>
+    <string name="update_downloaded">Update heruntergeladen. Installiere...</string>
+
+    <string name="account">Konto</string>
+    <string name="change">Ändern</string>
+    <string name="change_password">Passwort ändern</string>
+    <string name="new_password">Neues Passwort</string>
+    <string name="change_password_text">Bitte geben Sie Ihr neues Passwort ein.</string>
+    <string name="password_changed">Passwort geändert</string>
+    <string name="password_changed_message">Ihr Passwort wurde erfolgreich geändert.</string>
+    <string name="change_profile">Namen ändern</string>
+    <string name="change_profile_text">Bitte geben Sie Ihren neuen Namen ein.</string>
+    <string name="new_name">Neuer Name</string>
+    <string name="profile_changed">Name geändert</string>
+    <string name="profile_changed_message">Ihr Name wurde erfolgreich geändert.</string>
+    <string name="forgot_password_q">Passwort vergessen?</string>
+    <string name="forgot_password">Passwort vergessen</string>
+    <string name="password_reset_success">Passwort zurücksetzen E-Mail an ${email} gesendet. Bitte geben Sie unten den Code ein, den Sie erhalten haben.</string>
+    <string name="code">Code</string>
+    <string name="enter_code">Code eingeben</string>
+    <string name="forgot_password_message">Bitte geben Sie Ihre E-Mail-Adresse ein. Wir senden Ihnen einen Code, um Ihr Passwort zurückzusetzen.</string>
+    <string name="send">Senden</string>
+    <string name="logout">Ausloggen</string>
+    <string name="yes">Ja</string>
+    <string name="logout_confirmation">Sind Sie sicher, dass Sie sich ausloggen möchten?</string>
+    <string name="error">Fehler</string>
+    <string name="unknown_error">Unbekannter Fehler: ${message}</string>
+    <string name="network_error">Netzwerkfehler. Bitte überprüfen Sie ihre Internetverbindung</string>
+</resources>

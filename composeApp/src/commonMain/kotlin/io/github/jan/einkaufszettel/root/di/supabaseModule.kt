@@ -38,6 +38,8 @@ val supabaseModule = module {
             defaultLogLevel = LogLevel.DEBUG
             install(Auth) {
                 flowType = FlowType.PKCE
+                scheme = "https"
+                host = "jan-tennert.github.io/EinkaufszettelNext"
             }
             install(Storage)
             install(Postgrest)
