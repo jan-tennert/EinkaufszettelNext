@@ -13,11 +13,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import cafe.adriel.voyager.core.annotation.ExperimentalVoyagerApi
-import cafe.adriel.voyager.koin.getNavigatorScreenModel
 import cafe.adriel.voyager.navigator.Navigator
 import io.github.jan.einkaufszettel.Res
 import io.github.jan.einkaufszettel.app.ui.AppScreenModel
 import io.github.jan.einkaufszettel.collectAsStateWithLifecycle
+import io.github.jan.einkaufszettel.getNavigatorScreenModel
 import io.github.jan.einkaufszettel.root.ui.dialog.ErrorDialog
 import io.github.jan.supabase.CurrentPlatformTarget
 import io.github.jan.supabase.PlatformTarget

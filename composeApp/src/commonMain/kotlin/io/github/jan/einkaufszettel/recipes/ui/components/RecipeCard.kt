@@ -1,7 +1,6 @@
 package io.github.jan.einkaufszettel.recipes.ui.components
 
 import androidx.compose.foundation.LocalIndication
-import androidx.compose.foundation.background
 import androidx.compose.foundation.indication
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,7 +14,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
@@ -96,7 +94,7 @@ private fun RecipeCardImage(imagePath: String?, text: String, modifier: Modifier
         } else {
             Icon(Icons.Default.QuestionMark, contentDescription = null, tint = Color.Gray, modifier = Modifier.fillMaxSize())
         }
-        Box(Modifier.fillMaxSize().background(Brush.verticalGradient(colors = listOf(Color.Transparent, Color.Black), 250f)))
+    //    Box(Modifier.fillMaxSize().background(Brush.verticalGradient(colors = listOf(Color.Transparent, Color.Black), 250f)))
         Box(modifier = Modifier.fillMaxSize().padding(vertical = 12.dp, horizontal = 4.dp), contentAlignment = Alignment.BottomCenter) {
             Text(text = text, style = TextStyle(color = Color.White), maxLines = 2, overflow = TextOverflow.Ellipsis, textAlign = TextAlign.Center)
         }

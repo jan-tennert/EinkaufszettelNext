@@ -4,22 +4,16 @@ import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
 import android.webkit.MimeTypeMap
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import io.github.vinceglb.filekit.core.PlatformFile
 import java.io.File
 
 
 actual class LocalImageReader(private val context: Context) {
-    actual suspend fun platformFileToLocalImage(file: Any): LocalImageData {
-        file as Uri
-        return withContext(Dispatchers.IO) {
-            context.contentResolver.openInputStream(file)?.use {
-                LocalImageData(
-                    data = it.readBytes(),
-                    extension = getMimeType(context, file)
-                )
-            } ?: error("Could not read file")
-        }
+    actual suspend fun platformFileToLocalImage(file: PlatformFile): LocalImageData {
+        return LocalImageData(
+            data = file.readBytes(),
+            extension = getMimeType(context, file.uri)
+        )
     }
 
     private fun getMimeType(context: Context, uri: Uri): String {

@@ -16,7 +16,7 @@ import einkaufszettel.GetAllCards
 import io.github.jan.einkaufszettel.app.ui.components.zoomable
 import io.github.jan.einkaufszettel.cards.data.remote.CardsApi
 import io.github.jan.einkaufszettel.collectAsStateWithLifecycle
-import io.github.jan.einkaufszettel.getScreenModel
+import io.github.jan.einkaufszettel.getScreenModelWT
 import io.github.jan.einkaufszettel.root.ui.component.LoadingCircle
 import io.github.jan.supabase.storage.authenticatedStorageItem
 import org.koin.core.parameter.parametersOf
@@ -27,7 +27,7 @@ class CardDetailScreen(
 
     @Composable
     override fun Content() {
-        val screenModel = getScreenModel<CardDetailScreenModel>(tag = id.toString(), parameters = { parametersOf(id) })
+        val screenModel = getScreenModelWT<CardDetailScreenModel>(tag = id.toString(), parameters = { parametersOf(id) })
         val card by screenModel.cardFlow.collectAsStateWithLifecycle()
         if(card == null) {
             LoadingCircle()

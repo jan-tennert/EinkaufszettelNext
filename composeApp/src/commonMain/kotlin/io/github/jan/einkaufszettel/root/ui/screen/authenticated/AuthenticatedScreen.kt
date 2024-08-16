@@ -3,10 +3,10 @@ package io.github.jan.einkaufszettel.root.ui.screen.authenticated
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.CurrentScreen
 import cafe.adriel.voyager.navigator.Navigator
 import io.github.jan.einkaufszettel.app.ui.AppScreen
+import io.github.jan.einkaufszettel.getScreenModel
 import io.github.jan.einkaufszettel.profile.ui.ProfileCreateScreen
 import io.github.jan.einkaufszettel.root.ui.screen.LoadingScreen
 import kotlinx.coroutines.launch

@@ -3,6 +3,7 @@ package io.github.jan.einkaufszettel.app.ui.components
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.material3.DropdownMenu
@@ -51,12 +52,12 @@ fun ContextMenuScope(
                                 pressOffset = DpOffset(offset.x.toDp(), offset.y.toDp())
                             },
                             onPress = { offset ->
-                                /*if(!isScrolling()) {
+                                if(!isScrolling()) {
                                     val press = PressInteraction.Press(offset)
                                     interactionSource.emit(press)
                                     tryAwaitRelease()
                                     interactionSource.emit(PressInteraction.Release(press))
-                                }*/
+                                }
                             },
                             onTap = {
                                 onItemClicked()
@@ -68,9 +69,11 @@ fun ContextMenuScope(
                         handleClicks(
                             interactionSource = interactionSource,
                             onLeftClick = {
+                                println("onLeftClick")
                                 onItemClicked()
                             },
                             onRightClick = { x, y ->
+                                println("onRightClick")
                                 isContextMenuVisible.value = true
                                 pressOffset = DpOffset(x.dp, y.dp)
                             }

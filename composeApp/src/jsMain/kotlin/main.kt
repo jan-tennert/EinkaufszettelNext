@@ -7,10 +7,10 @@ import org.koin.core.context.startKoin
 
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() {
+    startKoin {
+        installModules()
+    }
     onWasmReady {
-        startKoin {
-            installModules()
-        }
         CanvasBasedWindow("Einkaufszettel") {
             App()
         }

@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.buildConfig)
     alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.sqlDelight)
+    alias(libs.plugins.compose.compiler)
 }
 
 val localProperties = Properties()
@@ -58,8 +59,9 @@ kotlin {
             implementation(libs.windowsizeclass)
             implementation(libs.okio)
             implementation(libs.richeditor)
-            implementation(libs.filepicker)
+            //implementation(libs.filepicker)
             implementation(libs.bundles.coil)
+            implementation(libs.bundles.filekit)
         }
 
         commonTest.dependencies {
@@ -132,10 +134,19 @@ android {
     }
 }
 
+afterEvaluate {
+    tasks {
+        val configureJs: Task.() -> Unit = {
+            dependsOn(named("jsDevelopmentExecutableCompileSync"))
+            dependsOn(named("jsProductionExecutableCompileSync"))
+            dependsOn(named("jsTestTestDevelopmentExecutableCompileSync"))
 
-compose {
-    experimental {
-        web.application {}
+            /*dependsOn(named("wasmJsDevelopmentExecutableCompileSync"))
+            dependsOn(named("wasmJsProductionExecutableCompileSync"))
+            dependsOn(named("wasmJsTestTestDevelopmentExecutableCompileSync"))*/
+        }
+        named("jsBrowserProductionWebpack").configure(configureJs)
+       // named("wasmJsBrowserProductionWebpack").configure(configureJs)
     }
 }
 

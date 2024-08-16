@@ -123,7 +123,7 @@ internal class CardsApiImpl(
     }
 
     override suspend fun uploadImage(path: String, data: ByteArray): String {
-        return cardImages.upload(path, data)
+        return cardImages.upload(path, data).path
     }
 
     override suspend fun deleteImage(path: String) {

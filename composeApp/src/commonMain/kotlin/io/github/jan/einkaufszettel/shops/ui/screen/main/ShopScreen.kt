@@ -26,7 +26,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.core.annotation.ExperimentalVoyagerApi
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.koin.getNavigatorScreenModel
 import cafe.adriel.voyager.navigator.CurrentScreen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
@@ -38,6 +37,7 @@ import io.github.jan.einkaufszettel.app.ui.components.CreateButton
 import io.github.jan.einkaufszettel.app.ui.components.DeleteDialog
 import io.github.jan.einkaufszettel.app.ui.pullrefresh.RefreshScope
 import io.github.jan.einkaufszettel.collectAsStateWithLifecycle
+import io.github.jan.einkaufszettel.getNavigatorScreenModel
 import io.github.jan.einkaufszettel.shops.data.remote.ShopDto
 import io.github.jan.einkaufszettel.shops.ui.components.ShopCard
 import io.github.jan.einkaufszettel.shops.ui.components.ShopCardDefaults

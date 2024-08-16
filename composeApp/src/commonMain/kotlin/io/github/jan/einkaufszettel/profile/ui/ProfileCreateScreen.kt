@@ -19,12 +19,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import io.github.jan.einkaufszettel.Res
 import io.github.jan.einkaufszettel.app.ui.AppScreen
 import io.github.jan.einkaufszettel.collectAsStateWithLifecycle
+import io.github.jan.einkaufszettel.getScreenModel
 import io.github.jan.einkaufszettel.root.ui.dialog.ErrorDialog
 import io.github.jan.einkaufszettel.root.ui.dialog.LoadingDialog
 

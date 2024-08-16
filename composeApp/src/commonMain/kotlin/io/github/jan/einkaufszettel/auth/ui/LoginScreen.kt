@@ -23,10 +23,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.koin.getScreenModel
 import io.github.jan.einkaufszettel.Res
 import io.github.jan.einkaufszettel.auth.LoginScreenModel
 import io.github.jan.einkaufszettel.collectAsStateWithLifecycle
+import io.github.jan.einkaufszettel.getScreenModel
 import io.github.jan.einkaufszettel.root.ui.dialog.ErrorDialog
 import io.github.jan.einkaufszettel.root.ui.dialog.LoadingDialog
 import io.github.jan.supabase.annotations.SupabaseExperimental
@@ -36,6 +36,7 @@ import io.github.jan.supabase.compose.auth.composable.NativeSignInState
 import io.github.jan.supabase.compose.auth.ui.AuthForm
 import io.github.jan.supabase.compose.auth.ui.LocalAuthState
 import io.github.jan.supabase.compose.auth.ui.ProviderIcon
+import io.github.jan.supabase.compose.auth.ui.annotations.AuthUiExperimental
 import io.github.jan.supabase.compose.auth.ui.email.OutlinedEmailField
 import io.github.jan.supabase.compose.auth.ui.password.OutlinedPasswordField
 import io.github.jan.supabase.gotrue.providers.Google
@@ -43,7 +44,7 @@ import org.koin.compose.koinInject
 
 object LoginScreen : Screen {
 
-    @OptIn(SupabaseExperimental::class, ExperimentalMaterial3Api::class)
+    @OptIn(SupabaseExperimental::class, ExperimentalMaterial3Api::class, AuthUiExperimental::class)
     @Composable
     override fun Content() {
         val composeAuth = koinInject<ComposeAuth>()
@@ -190,7 +191,7 @@ object LoginScreen : Screen {
         }
     }
 
-    @OptIn(SupabaseExperimental::class, ExperimentalMaterial3Api::class)
+    @OptIn(SupabaseExperimental::class, ExperimentalMaterial3Api::class, AuthUiExperimental::class)
     @Composable
     private fun PasswordResetSuccess(
         code: String,
@@ -231,7 +232,7 @@ object LoginScreen : Screen {
         )
     }
 
-    @OptIn(SupabaseExperimental::class, ExperimentalMaterial3Api::class)
+    @OptIn(SupabaseExperimental::class, ExperimentalMaterial3Api::class, AuthUiExperimental::class)
     @Composable
     private fun PasswordResetDialog(
         onDismiss: () -> Unit,

@@ -9,12 +9,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.koin.getNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.mohamedrejeb.richeditor.ui.material3.OutlinedRichTextEditor
 import io.github.jan.einkaufszettel.Res
 import io.github.jan.einkaufszettel.collectAsStateWithLifecycle
+import io.github.jan.einkaufszettel.getNavigatorScreenModel
 import io.github.jan.einkaufszettel.getNavigatorScreenModelT
 import io.github.jan.einkaufszettel.recipes.ui.create.RecipeCreateScreenModel
 import io.github.jan.einkaufszettel.recipes.ui.create.components.RichTextStyleRow

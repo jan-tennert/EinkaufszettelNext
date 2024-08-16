@@ -111,7 +111,7 @@ internal class ShopApiImpl(
     }
 
     override suspend fun uploadIcon(path: String, data: ByteArray): String {
-        return bucket.upload(path, data)
+        return bucket.upload(path, data).path
     }
 
     override fun getIconUrl(path: String): String {

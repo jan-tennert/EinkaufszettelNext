@@ -12,12 +12,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.core.lifecycle.LifecycleEffect
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.tab.CurrentTab
 import cafe.adriel.voyager.navigator.tab.TabNavigator
 import io.github.jan.einkaufszettel.app.ui.navigation.AppNavigationBar
 import io.github.jan.einkaufszettel.app.ui.navigation.AppNavigationRail
 import io.github.jan.einkaufszettel.app.ui.navigation.AppNavigationTopBar
+import io.github.jan.einkaufszettel.getScreenModel
 import io.github.jan.einkaufszettel.home.ui.HomeTab
 import io.github.jan.supabase.CurrentPlatformTarget
 import io.github.jan.supabase.PlatformTarget

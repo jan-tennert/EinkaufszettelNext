@@ -30,7 +30,7 @@ import io.github.jan.einkaufszettel.app.ui.AppStateScreen
 import io.github.jan.einkaufszettel.app.ui.BlankScreen
 import io.github.jan.einkaufszettel.app.ui.components.ChildTopBar
 import io.github.jan.einkaufszettel.collectAsStateWithLifecycle
-import io.github.jan.einkaufszettel.getScreenModel
+import io.github.jan.einkaufszettel.getScreenModelWT
 import io.github.jan.einkaufszettel.root.ui.component.LoadingCircle
 import io.github.jan.einkaufszettel.root.ui.dialog.LoadingDialog
 import io.github.jan.einkaufszettel.shops.ui.components.UserProfileList
@@ -45,7 +45,7 @@ class ShopEditStateScreen(
 
     @Composable
     override fun createScreenModel(): ShopEditScreenModel {
-        return getScreenModel<ShopEditScreenModel>(tag = shopId.toString(), parameters = { parametersOf(shopId) })
+        return getScreenModelWT<ShopEditScreenModel>(tag = shopId.toString(), parameters = { parametersOf(shopId) })
     }
 
     @Composable

@@ -1,31 +1,31 @@
 [versions]
 
-kotlin = "1.9.23"
-agp = "8.2.2"
-compose = "1.6.1"
-androidx-appcompat = "1.6.1"
-androidx-activityCompose = "1.8.2"
-compose-uitooling = "1.6.4"
+kotlin = "2.0.10"
+agp = "8.5.2"
+compose = "1.6.10"
+androidx-appcompat = "1.7.0"
+androidx-activityCompose = "1.9.1"
+compose-uitooling = "1.6.8"
 libres = "1.2.0"
-voyager = "1.1.0-alpha03"
-composeImageLoader = "1.7.8"
+voyager = "1.1.0-beta02"
+composeImageLoader = "1.8.2"
 buildConfig = "4.1.1"
-kotlinx-coroutines = "1.8.0"
-kotlinx-serialization = "1.6.2"
-kotlinx-datetime = "0.5.0"
-koin = "3.6.0-alpha3"
-koin-compose = "1.1.0"
-ktor = "2.3.8"
+kotlinx-coroutines = "1.8.1"
+kotlinx-serialization = "1.7.1"
+kotlinx-datetime = "0.6.0"
+koin = "4.0.0-RC1"
+ktor = "2.3.12"
 sqlDelight = "2.0.1"
-supabase = "2.3.0-coil3d1"
-lifecycle = "2.7.0"
-windowsizeclass = "0.3.1"
+supabase = "2.6.0-coil3"
+lifecycle = "2.8.4"
+windowsizeclass = "0.5.0"
 okio = "3.9.0"
-richeditor = "1.0.0-rc01"
+richeditor = "1.0.0-rc05-k2"
 file-picker = "3.1.0"
-coil = "3.0.0-alpha06"
+coil = "3.0.0-alpha10"
 zoomable = "1.6.1"
 semver = "2.0.0"
+filekit = "0.8.0"
 
 [libraries]
 
@@ -38,6 +38,7 @@ voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.
 voyager-transitions = { module = "cafe.adriel.voyager:voyager-transitions", version.ref = "voyager" }
 voyager-koin = { module = "cafe.adriel.voyager:voyager-koin", version.ref = "voyager" }
 voyager-tab = { module = "cafe.adriel.voyager:voyager-tab-navigator", version.ref = "voyager" }
+voyager-screenmodel = { module = "cafe.adriel.voyager:voyager-screenmodel", version.ref = "voyager" }
 composeImageLoader = { module = "io.github.qdsfdhvh:image-loader", version.ref = "composeImageLoader" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
@@ -45,7 +46,7 @@ kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
-koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin-compose" }
+koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin" }
 sqlDelight-driver-sqlite = { module = "app.cash.sqldelight:sqlite-driver", version.ref = "sqlDelight" }
 sqlDelight-driver-android = { module = "app.cash.sqldelight:android-driver", version.ref = "sqlDelight" }
 sqlDelight-driver-native = { module = "app.cash.sqldelight:native-driver", version.ref = "sqlDelight" }
@@ -54,6 +55,7 @@ sqlDelight-coroutines = { module = "app.cash.sqldelight:coroutines-extensions", 
 gotrue-kt = { module = "io.github.jan-tennert.supabase:gotrue-kt", version.ref = "supabase" }
 storage-kt = { module = "io.github.jan-tennert.supabase:storage-kt", version.ref = "supabase" }
 postgrest-kt = { module = "io.github.jan-tennert.supabase:postgrest-kt", version.ref = "supabase" }
+realtime-kt = { module = "io.github.jan-tennert.supabase:realtime-kt", version.ref = "supabase" }
 compose-auth = { module = "io.github.jan-tennert.supabase:compose-auth", version.ref = "supabase" }
 compose-auth-ui = { module = "io.github.jan-tennert.supabase:compose-auth-ui", version.ref = "supabase" }
 coil-integration = { module = "io.github.jan-tennert.supabase:coil-integration", version.ref = "supabase" }
@@ -65,14 +67,17 @@ okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
 richeditor = { module = "com.mohamedrejeb.richeditor:richeditor-compose", version.ref = "richeditor" }
 filepicker = { module = "com.darkrockstudios:mpfilepicker", version.ref = "file-picker" }
 coil = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
-coil-ktor = { module = "io.coil-kt.coil3:coil-network-ktor", version.ref = "coil" }
+coil-ktor = { module = "io.coil-kt.coil3:coil-network-ktor2", version.ref = "coil" }
 zoomable = { module = "net.engawapg.lib:zoomable", version.ref = "zoomable" }
 semver = { module = "net.swiftzer.semver:semver", version.ref = "semver" }
+filekit = { module = "io.github.vinceglb:filekit-core", version.ref = "filekit" }
+filekit-compose = { module = "io.github.vinceglb:filekit-compose", version.ref = "filekit" }
 
 [plugins]
 
 multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 compose = { id = "org.jetbrains.compose", version.ref = "compose" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 android-application = { id = "com.android.application", version.ref = "agp" }
 libres = { id = "io.github.skeptick.libres", version.ref = "libres" }
 buildConfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildConfig" }
@@ -87,7 +92,8 @@ supabase = [
     "compose-auth",
     "compose-auth-ui",
    # "imageloader-integration",
-    "coil-integration"
+    "coil-integration",
+    "realtime-kt"
 ]
 koin = [
     "koin-core",
@@ -96,10 +102,15 @@ koin = [
 voyager = [
     "voyager-navigator",
     "voyager-transitions",
-    "voyager-koin",
+  #  "voyager-koin",
+    "voyager-screenmodel",
     "voyager-tab"
 ]
 coil = [
     "coil",
     "coil-ktor"
+]
+filekit = [
+    "filekit",
+    "filekit-compose"
 ]

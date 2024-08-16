@@ -1,11 +1,9 @@
-const ASSET_PATH = process.env.ASSET_PATH || '/';
-
 config.resolve = {
     fallback: {
         fs: false,
         path: false,
-        crypto: false,
-        os: false
+    //    crypto: false,
+    //    os: require.resolve("os-browserify/browser")
     }
 };
 

@@ -12,6 +12,7 @@ import io.github.jan.einkaufszettel.shops.data.local.ShopDataSource
 import io.github.jan.einkaufszettel.shops.data.remote.ShopApi
 import io.github.jan.supabase.exceptions.RestException
 import io.github.jan.supabase.gotrue.Auth
+import io.github.vinceglb.filekit.core.PlatformFile
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
@@ -63,7 +64,7 @@ class ShopCreateScreenModel(
         }
     }
 
-    fun importNativeFile(file: Any) {
+    fun importNativeFile(file: PlatformFile) {
         screenModelScope.launch {
             runCatching {
                 localImageReader.platformFileToLocalImage(file)

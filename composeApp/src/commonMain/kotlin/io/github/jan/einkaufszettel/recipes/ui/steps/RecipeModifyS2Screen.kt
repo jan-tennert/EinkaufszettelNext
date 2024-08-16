@@ -8,26 +8,25 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.koin.getNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import coil3.compose.AsyncImage
 import coil3.compose.LocalPlatformContext
 import coil3.request.ImageRequest
 import coil3.request.crossfade
-import com.darkrockstudios.libraries.mpfilepicker.FilePicker
 import io.github.jan.einkaufszettel.collectAsStateWithLifecycle
+import io.github.jan.einkaufszettel.getNavigatorScreenModel
 import io.github.jan.einkaufszettel.getNavigatorScreenModelT
 import io.github.jan.einkaufszettel.recipes.data.remote.RecipeApi
 import io.github.jan.einkaufszettel.recipes.ui.create.RecipeCreateScreenModel
 import io.github.jan.einkaufszettel.recipes.ui.edit.RecipeEditScreenModel
 import io.github.jan.einkaufszettel.root.ui.component.LocalImage
 import io.github.jan.supabase.storage.publicStorageItem
+import io.github.vinceglb.filekit.compose.rememberFilePickerLauncher
+import io.github.vinceglb.filekit.core.PickerMode
+import io.github.vinceglb.filekit.core.PickerType
 import org.koin.core.parameter.parametersOf
 
 class RecipeModifyS2Screen(
@@ -48,7 +47,9 @@ class RecipeModifyS2Screen(
             navigator.parent!!.getNavigatorScreenModel<RecipeCreateScreenModel>()
         }
         val imageData by model.imageData.collectAsStateWithLifecycle()
-        var showImageDialog by remember { mutableStateOf(false) }
+        val launcher = rememberFilePickerLauncher(mode = PickerMode.Single, type = PickerType.Image) {
+            it?.let { file -> model.importNativeFile(file) }
+        }
         Box(
             modifier = Modifier.padding(8.dp),
         ) {
@@ -63,7 +64,7 @@ class RecipeModifyS2Screen(
                     modifier = Modifier
                         .fillMaxSize()
                         .border(2.dp, MaterialTheme.colorScheme.onSurface)
-                        .clickable { showImageDialog = true }
+                        .clickable { launcher.launch() }
                 )
             } else {
                 LocalImage(
@@ -71,18 +72,10 @@ class RecipeModifyS2Screen(
                     modifier = Modifier
                         .fillMaxSize()
                         .border(2.dp, MaterialTheme.colorScheme.onSurface)
-                        .clickable { showImageDialog = true }
+                        .clickable { launcher.launch() }
                 )
             }
         }
-        FilePicker(
-            show = showImageDialog,
-            fileExtensions = listOf("png", "jpg", "jpeg"),
-            onFileSelected = {
-                showImageDialog = false
-                it?.platformFile?.let { file -> model.importNativeFile(file) }
-            }
-        )
     }
 
 }

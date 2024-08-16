@@ -11,6 +11,7 @@ import io.github.jan.einkaufszettel.profile.data.remote.ProfileApi
 import io.github.jan.einkaufszettel.root.data.local.image.LocalImageData
 import io.github.jan.einkaufszettel.root.data.local.image.LocalImageReader
 import io.github.jan.supabase.gotrue.Auth
+import io.github.vinceglb.filekit.core.PlatformFile
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
@@ -65,7 +66,7 @@ class CardsCreateScreenModel(
         }
     }
 
-    fun importNativeFile(file: Any) {
+    fun importNativeFile(file: PlatformFile) {
         screenModelScope.launch {
             runCatching {
                 localImageReader.platformFileToLocalImage(file)

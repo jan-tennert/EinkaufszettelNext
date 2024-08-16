@@ -27,11 +27,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.koin.getNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import io.github.jan.einkaufszettel.Res
 import io.github.jan.einkaufszettel.collectAsStateWithLifecycle
+import io.github.jan.einkaufszettel.getNavigatorScreenModel
 import io.github.jan.einkaufszettel.getNavigatorScreenModelT
 import io.github.jan.einkaufszettel.recipes.ui.create.RecipeCreateScreenModel
 import io.github.jan.einkaufszettel.recipes.ui.edit.RecipeEditScreenModel

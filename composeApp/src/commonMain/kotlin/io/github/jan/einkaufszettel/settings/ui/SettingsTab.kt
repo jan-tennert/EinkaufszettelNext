@@ -37,6 +37,7 @@ import io.github.jan.einkaufszettel.collectAsStateWithLifecycle
 import io.github.jan.einkaufszettel.getScreenModel
 import io.github.jan.einkaufszettel.root.ui.component.LoadingCircle
 import io.github.jan.supabase.annotations.SupabaseExperimental
+import io.github.jan.supabase.compose.auth.ui.annotations.AuthUiExperimental
 import io.github.jan.supabase.compose.auth.ui.password.OutlinedPasswordField
 
 data object SettingsTab: Tab {
@@ -187,7 +188,7 @@ data object SettingsTab: Tab {
         )
     }
 
-    @OptIn(SupabaseExperimental::class, ExperimentalMaterial3Api::class)
+    @OptIn(SupabaseExperimental::class, ExperimentalMaterial3Api::class, AuthUiExperimental::class)
     @Composable
     fun PasswordChangeDialog(
         onDismiss: () -> Unit,

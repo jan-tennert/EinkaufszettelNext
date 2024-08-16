@@ -20,16 +20,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import com.darkrockstudios.libraries.mpfilepicker.FilePicker
 import io.github.jan.einkaufszettel.Res
 import io.github.jan.einkaufszettel.app.ui.AppState
 import io.github.jan.einkaufszettel.app.ui.AppStateScreen
@@ -37,11 +32,15 @@ import io.github.jan.einkaufszettel.app.ui.BlankScreen
 import io.github.jan.einkaufszettel.app.ui.components.ChildTopBar
 import io.github.jan.einkaufszettel.cards.ui.screen.main.CardsScreen
 import io.github.jan.einkaufszettel.collectAsStateWithLifecycle
+import io.github.jan.einkaufszettel.getScreenModel
 import io.github.jan.einkaufszettel.root.ui.component.LocalImage
 import io.github.jan.einkaufszettel.root.ui.dialog.LoadingDialog
 import io.github.jan.einkaufszettel.shops.ui.components.UserProfileList
 import io.github.jan.supabase.CurrentPlatformTarget
 import io.github.jan.supabase.PlatformTarget
+import io.github.vinceglb.filekit.compose.rememberFilePickerLauncher
+import io.github.vinceglb.filekit.core.PickerMode
+import io.github.vinceglb.filekit.core.PickerType
 
 object CardsCreateScreen: AppStateScreen<CardsCreateScreenModel> {
 
@@ -54,9 +53,11 @@ object CardsCreateScreen: AppStateScreen<CardsCreateScreenModel> {
     override fun Content(screenModel: CardsCreateScreenModel, state: AppState) {
         val userProfiles by screenModel.userProfiles.collectAsStateWithLifecycle()
         val imageData by screenModel.imageData.collectAsStateWithLifecycle()
-        var showImageDialog by remember { mutableStateOf(false) }
         val description by screenModel.description.collectAsStateWithLifecycle()
         val navigator = LocalNavigator.currentOrThrow
+        val launcher = rememberFilePickerLauncher(mode = PickerMode.Single, type = PickerType.Image) {
+            it?.let { file -> screenModel.importNativeFile(file) }
+        }
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             topBar = {
@@ -89,7 +90,7 @@ object CardsCreateScreen: AppStateScreen<CardsCreateScreenModel> {
                         modifier = Modifier
                             .size(128.dp)
                             .border(2.dp, MaterialTheme.colorScheme.onSurface)
-                            .clickable { showImageDialog = true }
+                            .clickable { launcher.launch() }
                     )
                 }
                 UserProfileList(
@@ -102,14 +103,6 @@ object CardsCreateScreen: AppStateScreen<CardsCreateScreenModel> {
                 )
             }
         }
-        FilePicker(
-            show = showImageDialog,
-            fileExtensions = listOf("png", "jpg", "jpeg"),
-            onFileSelected = {
-                showImageDialog = false
-                it?.platformFile?.let { file -> screenModel.importNativeFile(file) }
-            }
-        )
 
        /* if(state is CardsCreateScreenModel.State.CreateSuccess) {
             SideEffect {

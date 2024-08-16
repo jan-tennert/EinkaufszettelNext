@@ -15,7 +15,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import cafe.adriel.voyager.koin.getNavigatorScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
@@ -24,6 +23,7 @@ import io.github.jan.einkaufszettel.Res
 import io.github.jan.einkaufszettel.app.ui.AppState
 import io.github.jan.einkaufszettel.app.ui.AppStateScreen
 import io.github.jan.einkaufszettel.app.ui.components.ChildTopBar
+import io.github.jan.einkaufszettel.getNavigatorScreenModel
 import io.github.jan.einkaufszettel.recipes.ui.detail.RecipeDetailScreen
 import io.github.jan.einkaufszettel.recipes.ui.steps.RecipeModifyS1Screen
 import io.github.jan.einkaufszettel.recipes.ui.steps.RecipeModifyStepScreen

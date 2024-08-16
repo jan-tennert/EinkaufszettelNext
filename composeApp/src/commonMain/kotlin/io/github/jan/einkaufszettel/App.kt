@@ -18,7 +18,7 @@ import coil3.ImageLoader
 import coil3.PlatformContext
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.setSingletonImageLoaderFactory
-import coil3.network.ktor.KtorNetworkFetcherFactory
+import coil3.network.ktor2.KtorNetworkFetcherFactory
 import io.github.jan.einkaufszettel.root.data.local.db.DatabaseProvider
 import io.github.jan.einkaufszettel.root.data.local.image.LocalImageFetcher
 import io.github.jan.einkaufszettel.root.ui.component.LoadingCircle

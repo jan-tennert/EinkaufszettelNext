@@ -29,7 +29,7 @@ import io.github.jan.einkaufszettel.app.ui.components.CreateButton
 import io.github.jan.einkaufszettel.app.ui.components.ProductCard
 import io.github.jan.einkaufszettel.app.ui.pullrefresh.RefreshScope
 import io.github.jan.einkaufszettel.collectAsStateWithLifecycle
-import io.github.jan.einkaufszettel.getScreenModel
+import io.github.jan.einkaufszettel.getScreenModelWT
 import io.github.jan.einkaufszettel.shops.ui.dialog.ProductDialog
 import org.koin.core.parameter.parametersOf
 
@@ -37,7 +37,7 @@ data class ShopDetailStateScreen(val id: Long): AppStateScreen<ShopDetailScreenM
 
     @Composable
     override fun createScreenModel(): ShopDetailScreenModel {
-        return getScreenModel<ShopDetailScreenModel>(parameters = { parametersOf(id) }, tag = id.toString())
+        return getScreenModelWT<ShopDetailScreenModel>(parameters = { parametersOf(id) }, tag = id.toString())
     }
 
     @OptIn(ExperimentalFoundationApi::class)

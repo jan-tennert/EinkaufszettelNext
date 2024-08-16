@@ -31,7 +31,7 @@ import io.github.jan.einkaufszettel.app.ui.BlankScreen
 import io.github.jan.einkaufszettel.app.ui.components.ChildTopBar
 import io.github.jan.einkaufszettel.cards.ui.screen.main.CardsScreen
 import io.github.jan.einkaufszettel.collectAsStateWithLifecycle
-import io.github.jan.einkaufszettel.getScreenModel
+import io.github.jan.einkaufszettel.getScreenModelWT
 import io.github.jan.einkaufszettel.root.ui.component.LoadingCircle
 import io.github.jan.einkaufszettel.root.ui.dialog.LoadingDialog
 import io.github.jan.einkaufszettel.shops.ui.components.UserProfileList
@@ -45,7 +45,7 @@ class CardEditScreen(
 
     @Composable
     override fun createScreenModel(): CardEditScreenModel {
-        return getScreenModel<CardEditScreenModel>(tag = cardId.toString(), parameters = { parametersOf(cardId) })
+        return getScreenModelWT<CardEditScreenModel>(tag = cardId.toString(), parameters = { parametersOf(cardId) })
     }
 
     @Composable

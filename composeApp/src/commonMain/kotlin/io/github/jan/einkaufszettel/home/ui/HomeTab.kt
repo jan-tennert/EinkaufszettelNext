@@ -32,7 +32,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import io.github.jan.einkaufszettel.Res
@@ -40,6 +39,7 @@ import io.github.jan.einkaufszettel.app.ui.AppState
 import io.github.jan.einkaufszettel.app.ui.AppStateScreen
 import io.github.jan.einkaufszettel.app.ui.components.ProductCard
 import io.github.jan.einkaufszettel.collectAsStateWithLifecycle
+import io.github.jan.einkaufszettel.getScreenModel
 
 data object HomeTab: Tab, AppStateScreen<HomeScreenModel> {
 

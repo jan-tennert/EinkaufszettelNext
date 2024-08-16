@@ -24,6 +24,7 @@ import einkaufszettel.GetAllRecipes
 import io.github.jan.einkaufszettel.app.ui.AppStateErrorHandler
 import io.github.jan.einkaufszettel.collectAsStateWithLifecycle
 import io.github.jan.einkaufszettel.getScreenModel
+import io.github.jan.einkaufszettel.getScreenModelWT
 import io.github.jan.einkaufszettel.recipes.ui.detail.components.IngredientDetailContent
 import io.github.jan.einkaufszettel.recipes.ui.detail.components.StepDetailContent
 import io.github.jan.einkaufszettel.root.ui.component.LoadingCircle
@@ -42,7 +43,7 @@ class RecipeDetailScreen(
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     @Composable
     override fun Content() {
-        val screenModel = getScreenModel<RecipeDetailScreenModel>(tag = recipeId.toString(), parameters = { parametersOf(recipeId) })
+        val screenModel = getScreenModelWT<RecipeDetailScreenModel>(tag = recipeId.toString(), parameters = { parametersOf(recipeId) })
         val shopScreenModel = getScreenModel<ShopScreenModel>()
         val shopProductScreenModel = getScreenModel<ShopProductScreenModel>()
         val shopProductState by shopProductScreenModel.state.collectAsStateWithLifecycle()
