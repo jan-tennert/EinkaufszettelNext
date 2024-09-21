@@ -67,7 +67,7 @@ okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
 richeditor = { module = "com.mohamedrejeb.richeditor:richeditor-compose", version.ref = "richeditor" }
 filepicker = { module = "com.darkrockstudios:mpfilepicker", version.ref = "file-picker" }
 coil = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
-coil-ktor = { module = "io.coil-kt.coil3:coil-network-ktor2", version.ref = "coil" }
+coil-ktor = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil" }
 zoomable = { module = "net.engawapg.lib:zoomable", version.ref = "zoomable" }
 semver = { module = "net.swiftzer.semver:semver", version.ref = "semver" }
 filekit = { module = "io.github.vinceglb:filekit-core", version.ref = "filekit" }
