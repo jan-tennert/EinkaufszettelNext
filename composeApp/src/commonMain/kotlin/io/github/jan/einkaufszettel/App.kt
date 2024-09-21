@@ -26,8 +26,8 @@ import io.github.jan.einkaufszettel.root.ui.screen.RootScreen
 import io.github.jan.einkaufszettel.root.ui.theme.AppTheme
 import io.github.jan.einkaufszettel.update.ui.CheckForUpdates
 import io.github.jan.supabase.annotations.SupabaseExperimental
-import io.github.jan.supabase.coil.CoilIntegration
-import io.github.jan.supabase.gotrue.Auth
+import io.github.jan.supabase.auth.Auth
+import io.github.jan.supabase.coil.Coil3Integration
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
@@ -35,7 +35,7 @@ import org.koin.compose.koinInject
 @OptIn(ExperimentalCoilApi::class)
 @Composable
 internal fun App() = AppTheme {
-    val coil = koinInject<CoilIntegration>()
+    val coil = koinInject<Coil3Integration>()
     setSingletonImageLoaderFactory {
         createImageLoader(it, coil)
     }
@@ -67,7 +67,7 @@ internal fun App() = AppTheme {
 }
 
 @OptIn(SupabaseExperimental::class)
-fun createImageLoader(context: PlatformContext, coilIntegration: CoilIntegration) = ImageLoader.Builder(context).apply {
+fun createImageLoader(context: PlatformContext, coilIntegration: Coil3Integration) = ImageLoader.Builder(context).apply {
     components {
         add(KtorNetworkFetcherFactory())
         add(coilIntegration)

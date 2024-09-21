@@ -9,7 +9,7 @@ import io.github.jan.einkaufszettel.profile.data.remote.ProfileApi
 import io.github.jan.einkaufszettel.recipes.data.local.RecipeDataSource
 import io.github.jan.einkaufszettel.shops.data.local.ProductDataSource
 import io.github.jan.einkaufszettel.shops.data.local.ShopDataSource
-import io.github.jan.supabase.gotrue.Auth
+import io.github.jan.supabase.auth.Auth
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -50,7 +50,7 @@ class SettingsScreenModel(
         mutableState.value = AppState.Loading
         screenModelScope.launch {
             runCatching {
-                auth.modifyUser {
+                auth.updateUser {
                     this.password = newPassword
                 }
             }.onFailure {

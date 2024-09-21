@@ -103,6 +103,7 @@ internal class CardsApiImpl(
         description: String,
         authorizedUsers: List<String>
     ): CardDto {
+        println("hallooooo: " + authorizedUsers)
         return table.update({
             CardDto::authorizedUsers setTo authorizedUsers
             CardDto::description setTo description

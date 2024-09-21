@@ -11,7 +11,7 @@ import io.github.jan.einkaufszettel.root.data.local.image.LocalImageReader
 import io.github.jan.einkaufszettel.shops.data.local.ShopDataSource
 import io.github.jan.einkaufszettel.shops.data.remote.ShopApi
 import io.github.jan.supabase.exceptions.RestException
-import io.github.jan.supabase.gotrue.Auth
+import io.github.jan.supabase.auth.Auth
 import io.github.vinceglb.filekit.core.PlatformFile
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted

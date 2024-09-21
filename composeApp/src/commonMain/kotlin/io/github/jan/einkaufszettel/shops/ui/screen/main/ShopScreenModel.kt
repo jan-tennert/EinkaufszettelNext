@@ -5,8 +5,8 @@ import io.github.jan.einkaufszettel.app.ui.AppStateModel
 import io.github.jan.einkaufszettel.shops.data.local.ProductDataSource
 import io.github.jan.einkaufszettel.shops.data.local.ShopDataSource
 import io.github.jan.einkaufszettel.shops.data.remote.ShopApi
-import io.github.jan.supabase.gotrue.Auth
-import io.github.jan.supabase.gotrue.SessionStatus
+import io.github.jan.supabase.auth.Auth
+import io.github.jan.supabase.auth.SessionStatus
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map

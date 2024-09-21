@@ -8,8 +8,8 @@ import cafe.adriel.voyager.navigator.Navigator
 import io.github.jan.einkaufszettel.app.ui.AppScreen
 import io.github.jan.einkaufszettel.auth.ui.LoginScreen
 import io.github.jan.einkaufszettel.root.ui.screen.authenticated.AuthenticatedScreen
-import io.github.jan.supabase.gotrue.Auth
-import io.github.jan.supabase.gotrue.SessionStatus
+import io.github.jan.supabase.auth.Auth
+import io.github.jan.supabase.auth.SessionStatus
 import org.koin.compose.koinInject
 
 object RootScreen: Screen {

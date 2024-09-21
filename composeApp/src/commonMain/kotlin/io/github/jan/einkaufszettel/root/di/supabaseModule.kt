@@ -3,15 +3,15 @@ package io.github.jan.einkaufszettel.root.di
 import io.github.jan.einkaufszettel.BuildConfig
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.annotations.SupabaseExperimental
-import io.github.jan.supabase.coil.CoilIntegration
-import io.github.jan.supabase.coil.coil
+import io.github.jan.supabase.coil.Coil3Integration
+import io.github.jan.supabase.coil.coil3
 import io.github.jan.supabase.compose.auth.ComposeAuth
 import io.github.jan.supabase.compose.auth.composeAuth
 import io.github.jan.supabase.compose.auth.googleNativeLogin
 import io.github.jan.supabase.createSupabaseClient
-import io.github.jan.supabase.gotrue.Auth
-import io.github.jan.supabase.gotrue.FlowType
-import io.github.jan.supabase.gotrue.auth
+import io.github.jan.supabase.auth.Auth
+import io.github.jan.supabase.auth.FlowType
+import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.logging.LogLevel
 import io.github.jan.supabase.postgrest.Postgrest
 import io.github.jan.supabase.postgrest.postgrest
@@ -32,7 +32,7 @@ val supabaseModule = module {
         }
     }
     single<SupabaseClient> {
-        CoilIntegration.setLogLevel(LogLevel.INFO)
+        Coil3Integration.setLogLevel(LogLevel.INFO)
         createSupabaseClient(BuildConfig.SUPABASE_URL, BuildConfig.SUPABASE_KEY) {
             defaultSerializer = KotlinXSerializer(get())
             defaultLogLevel = LogLevel.DEBUG
@@ -46,7 +46,7 @@ val supabaseModule = module {
             install(ComposeAuth) {
                 googleNativeLogin(BuildConfig.GOOGLE_CLIENT_ID)
             }
-            install(CoilIntegration)
+            install(Coil3Integration)
         }
     }
     single<Auth> {
@@ -62,6 +62,6 @@ val supabaseModule = module {
         get<SupabaseClient>().composeAuth
     }
     single {
-        get<SupabaseClient>().coil
+        get<SupabaseClient>().coil3
     }
 }

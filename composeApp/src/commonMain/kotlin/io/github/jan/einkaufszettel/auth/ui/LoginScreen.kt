@@ -39,7 +39,7 @@ import io.github.jan.supabase.compose.auth.ui.ProviderIcon
 import io.github.jan.supabase.compose.auth.ui.annotations.AuthUiExperimental
 import io.github.jan.supabase.compose.auth.ui.email.OutlinedEmailField
 import io.github.jan.supabase.compose.auth.ui.password.OutlinedPasswordField
-import io.github.jan.supabase.gotrue.providers.Google
+import io.github.jan.supabase.auth.providers.Google
 import org.koin.compose.koinInject
 
 object LoginScreen : Screen {

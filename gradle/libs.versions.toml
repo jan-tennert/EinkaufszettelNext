@@ -1,31 +1,31 @@
 [versions]
 
-kotlin = "2.0.10"
+kotlin = "2.0.20"
 agp = "8.5.2"
 compose = "1.6.10"
 androidx-appcompat = "1.7.0"
-androidx-activityCompose = "1.9.1"
-compose-uitooling = "1.6.8"
+androidx-activityCompose = "1.9.2"
+compose-uitooling = "1.7.2"
 libres = "1.2.0"
 voyager = "1.1.0-beta02"
-composeImageLoader = "1.8.2"
+composeImageLoader = "1.8.3"
 buildConfig = "4.1.1"
-kotlinx-coroutines = "1.8.1"
-kotlinx-serialization = "1.7.1"
-kotlinx-datetime = "0.6.0"
+kotlinx-coroutines = "1.9.0"
+kotlinx-serialization = "1.7.2"
+kotlinx-datetime = "0.6.1"
 koin = "4.0.0-RC1"
-ktor = "2.3.12"
-sqlDelight = "2.0.1"
-supabase = "2.6.0-coil3"
-lifecycle = "2.8.4"
+ktor = "3.0.0-rc-1"
+sqlDelight = "2.0.2"
+supabase = "3.0.0-beta-1"
+lifecycle = "2.8.6"
 windowsizeclass = "0.5.0"
-okio = "3.9.0"
-richeditor = "1.0.0-rc05-k2"
+okio = "3.9.1"
+richeditor = "1.0.0-rc06"
 file-picker = "3.1.0"
 coil = "3.0.0-alpha10"
 zoomable = "1.6.1"
 semver = "2.0.0"
-filekit = "0.8.0"
+filekit = "0.8.2"
 
 [libraries]
 
@@ -52,13 +52,13 @@ sqlDelight-driver-android = { module = "app.cash.sqldelight:android-driver", ver
 sqlDelight-driver-native = { module = "app.cash.sqldelight:native-driver", version.ref = "sqlDelight" }
 sqlDelight-driver-js = { module = "app.cash.sqldelight:web-worker-driver", version.ref = "sqlDelight" }
 sqlDelight-coroutines = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqlDelight" }
-gotrue-kt = { module = "io.github.jan-tennert.supabase:gotrue-kt", version.ref = "supabase" }
+gotrue-kt = { module = "io.github.jan-tennert.supabase:auth-kt", version.ref = "supabase" }
 storage-kt = { module = "io.github.jan-tennert.supabase:storage-kt", version.ref = "supabase" }
 postgrest-kt = { module = "io.github.jan-tennert.supabase:postgrest-kt", version.ref = "supabase" }
 realtime-kt = { module = "io.github.jan-tennert.supabase:realtime-kt", version.ref = "supabase" }
 compose-auth = { module = "io.github.jan-tennert.supabase:compose-auth", version.ref = "supabase" }
 compose-auth-ui = { module = "io.github.jan-tennert.supabase:compose-auth-ui", version.ref = "supabase" }
-coil-integration = { module = "io.github.jan-tennert.supabase:coil-integration", version.ref = "supabase" }
+coil-integration = { module = "io.github.jan-tennert.supabase:coil3-integration", version.ref = "supabase" }
 imageloader-integration = { module = "io.github.jan-tennert.supabase:imageloader-integration", version.ref = "supabase" }
 windowsizeclass = { module = "dev.chrisbanes.material3:material3-window-size-class-multiplatform", version.ref = "windowsizeclass" }
 ktor-client-js = { module = "io.ktor:ktor-client-js", version.ref = "ktor" }

@@ -5,8 +5,8 @@ import io.github.jan.supabase.annotations.SupabaseInternal
 import io.github.jan.supabase.compose.auth.ComposeAuth
 import io.github.jan.supabase.compose.auth.composable.NativeSignInResult
 import io.github.jan.supabase.compose.auth.defaultLoginBehavior
-import io.github.jan.supabase.gotrue.auth
-import io.github.jan.supabase.gotrue.providers.Google
+import io.github.jan.supabase.auth.auth
+import io.github.jan.supabase.auth.providers.Google
 import kotlinx.browser.document
 
 @OptIn(SupabaseInternal::class)

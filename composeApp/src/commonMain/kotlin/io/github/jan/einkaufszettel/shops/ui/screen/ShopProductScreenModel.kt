@@ -7,7 +7,7 @@ import io.github.jan.einkaufszettel.app.ui.AppStateModel
 import io.github.jan.einkaufszettel.shops.data.local.ProductDataSource
 import io.github.jan.einkaufszettel.shops.data.remote.ProductApi
 import io.github.jan.supabase.exceptions.RestException
-import io.github.jan.supabase.gotrue.Auth
+import io.github.jan.supabase.auth.Auth
 import kotlinx.coroutines.launch
 
 open class ShopProductScreenModel(

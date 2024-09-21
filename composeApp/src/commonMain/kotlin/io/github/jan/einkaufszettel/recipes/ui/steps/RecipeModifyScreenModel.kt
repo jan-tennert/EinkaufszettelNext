@@ -8,7 +8,7 @@ import io.github.jan.einkaufszettel.recipes.data.local.RecipeDataSource
 import io.github.jan.einkaufszettel.recipes.data.remote.RecipeApi
 import io.github.jan.einkaufszettel.root.data.local.image.LocalImageData
 import io.github.jan.einkaufszettel.root.data.local.image.LocalImageReader
-import io.github.jan.supabase.gotrue.Auth
+import io.github.jan.supabase.auth.Auth
 import io.github.vinceglb.filekit.core.PlatformFile
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

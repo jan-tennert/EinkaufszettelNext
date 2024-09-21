@@ -31,11 +31,12 @@ class CardEditScreenModel(
         screenModelScope.launch {
             mutableState.value = AppState.Loading
             runCatching {
-                cardsApi.editCard(cardId, description, authorizedUsers)
+                cardsApi.editCard(cardId, description, authorizedUsers.filter { it.isNotBlank() })
             }.onSuccess {
                 cardsDataSource.insertCard(it)
                 mutableState.value = State.Success
             }.onFailure {
+                it.printStackTrace()
                 when (it) {
                     is RestException -> mutableState.value = AppState.Error(it.message ?: "")
                     else -> mutableState.value = AppState.NetworkError

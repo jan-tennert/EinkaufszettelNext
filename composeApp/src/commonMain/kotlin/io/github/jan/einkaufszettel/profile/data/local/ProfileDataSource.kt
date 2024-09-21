@@ -8,7 +8,7 @@ import app.cash.sqldelight.coroutines.mapToList
 import einkaufszettel.ProfileTable
 import io.github.jan.einkaufszettel.profile.data.remote.ProfileDto
 import io.github.jan.einkaufszettel.root.data.local.db.DatabaseProvider
-import io.github.jan.supabase.gotrue.Auth
+import io.github.jan.supabase.auth.Auth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

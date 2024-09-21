@@ -1,6 +1,6 @@
 package io.github.jan.einkaufszettel.profile.data.remote
 
-import io.github.jan.supabase.gotrue.Auth
+import io.github.jan.supabase.auth.Auth
 import io.github.jan.supabase.postgrest.Postgrest
 import kotlinx.serialization.Serializable
 

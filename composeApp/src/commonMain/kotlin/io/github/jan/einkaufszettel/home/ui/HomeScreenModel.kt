@@ -7,7 +7,7 @@ import io.github.jan.einkaufszettel.shops.data.local.ShopDataSource
 import io.github.jan.einkaufszettel.shops.data.remote.ProductApi
 import io.github.jan.einkaufszettel.shops.data.remote.ShopDto
 import io.github.jan.einkaufszettel.shops.ui.screen.ShopProductScreenModel
-import io.github.jan.supabase.gotrue.Auth
+import io.github.jan.supabase.auth.Auth
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
