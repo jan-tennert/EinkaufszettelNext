@@ -129,7 +129,7 @@ jobs:
       - name: Verify Signature
         run: $ANDROID_SDK_ROOT/build-tools/33.0.1/apksigner verify --print-certs composeApp/build/outputs/apk/release/composeApp-release.apk
       - name: Upload APK
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           name: apk
           path: composeApp/build/outputs/apk/release/composeApp-release.apk
@@ -144,7 +144,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Download APK from build
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v4
         with:
           name: apk
       - if: github.event_name == 'workflow_dispatch'
@@ -162,4 +162,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create $TAG_NAME $PRERELEASE --title "$TAG_NAME" --target $GITHUB_SHA apk/composeApp-release.apk#Einkaufszettel.apk
+          gh release create $TAG_NAME $PRERELEASE --title "$TAG_NAME" --target $GITHUB_SHA composeApp-release.apk#Einkaufszettel.apk
