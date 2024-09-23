@@ -112,24 +112,24 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
     signingConfigs {
-        create("release") {
+       /* create("release") {
             storeFile = if(isCI) keystoreFile else rootProject.file("einkaufszettel.keystore")
             storePassword = localProperties.getProperty("SIGNING_STORE_PASSWORD") ?: System.getenv("SIGNING_STORE_PASSWORD")
             keyAlias = localProperties.getProperty("SIGNING_KEY_ALIAS") ?: System.getenv("SIGNING_KEY_ALIAS")
             keyPassword = localProperties.getProperty("SIGNING_KEY_PASSWORD") ?: System.getenv("SIGNING_KEY_PASSWORD")
-        }
+        }*/
     }
     buildTypes {
         release {
-            isMinifyEnabled = isCI
-            isDebuggable = !isCI
+            isMinifyEnabled = true
+            isDebuggable = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro")
-            signingConfig = signingConfigs.getByName("release")
+            signingConfig = signingConfigs.getByName("debug")
         }
         named("debug") {
-            signingConfig = signingConfigs.getByName("release")
+         //   signingConfig = signingConfigs.getByName("release")
         }
     }
 }
