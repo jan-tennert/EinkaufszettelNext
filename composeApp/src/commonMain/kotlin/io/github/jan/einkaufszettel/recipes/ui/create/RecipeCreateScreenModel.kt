@@ -10,7 +10,7 @@ import io.github.jan.einkaufszettel.root.data.local.image.LocalImageReader
 import io.github.jan.supabase.exceptions.RestException
 import io.github.jan.supabase.auth.Auth
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 
 class RecipeCreateScreenModel(
     recipeApi: RecipeApi,

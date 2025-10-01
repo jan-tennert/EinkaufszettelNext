@@ -1,6 +1,6 @@
 import kotlin.String;
 import kotlin.collections.List;
-import kotlinx.datetime.Instant;
+import kotlin.time.Instant;
 
 CREATE TABLE shopTable (
     id INTEGER NOT NULL PRIMARY KEY,

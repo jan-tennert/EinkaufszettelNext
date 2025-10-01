@@ -1,6 +1,6 @@
 package io.github.jan.einkaufszettel.root.data.local
 
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 import kotlinx.datetime.toJSDate
 
 actual object DateTimerFormatter {

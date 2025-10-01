@@ -1,8 +1,8 @@
 package io.github.jan.einkaufszettel.shops.data.remote
 
 import io.github.jan.supabase.postgrest.Postgrest
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
+import kotlin.time.Clock
+import kotlin.time.Instant
 import kotlinx.serialization.Serializable
 
 @Serializable

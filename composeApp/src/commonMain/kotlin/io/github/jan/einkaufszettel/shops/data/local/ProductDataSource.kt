@@ -8,7 +8,7 @@ import io.github.jan.einkaufszettel.root.data.local.db.DatabaseProvider
 import io.github.jan.einkaufszettel.shops.data.remote.ProductDto
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 
 interface ProductDataSource {
 

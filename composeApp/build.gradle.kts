@@ -1,3 +1,7 @@
+@file:OptIn(ExperimentalKotlinGradlePluginApi::class)
+
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.util.Properties
 
 plugins {
@@ -30,10 +34,8 @@ version = appVersionName
 
 kotlin {
     androidTarget {
-        compilations.all {
-            kotlinOptions {
-                jvmTarget = "11"
-            }
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_11)
         }
     }
     js(IR) {
@@ -41,6 +43,9 @@ kotlin {
         binaries.executable()
     }
     sourceSets {
+        all {
+            languageSettings.optIn("kotlin.time.ExperimentalTime")
+        }
         commonMain.dependencies {
             implementation(libs.semver)
             implementation(compose.runtime)
@@ -56,7 +61,7 @@ kotlin {
             implementation(libs.bundles.voyager)
             implementation(libs.bundles.supabase)
             implementation(libs.sqlDelight.coroutines)
-            implementation(libs.windowsizeclass)
+         //   implementation(libs.windowsizeclass)
             implementation(libs.okio)
             implementation(libs.richeditor)
             //implementation(libs.filepicker)
@@ -93,11 +98,11 @@ kotlin {
 
 android {
     namespace = appNamespace
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 36
 
         applicationId = "io.github.jan.einkaufszettel.androidApp"
         versionCode = appVersionCode
@@ -107,6 +112,7 @@ android {
         manifest.srcFile("src/androidMain/AndroidManifest.xml")
         res.srcDirs("src/androidMain/resources")
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11

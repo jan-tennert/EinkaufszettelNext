@@ -4,7 +4,9 @@ import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
 import android.webkit.MimeTypeMap
-import io.github.vinceglb.filekit.core.PlatformFile
+import io.github.vinceglb.filekit.PlatformFile
+import io.github.vinceglb.filekit.dialogs.toAndroidUri
+import io.github.vinceglb.filekit.readBytes
 import java.io.File
 
 
@@ -12,7 +14,7 @@ actual class LocalImageReader(private val context: Context) {
     actual suspend fun platformFileToLocalImage(file: PlatformFile): LocalImageData {
         return LocalImageData(
             data = file.readBytes(),
-            extension = getMimeType(context, file.uri)
+            extension = getMimeType(context, file.toAndroidUri("content"))
         )
     }
 

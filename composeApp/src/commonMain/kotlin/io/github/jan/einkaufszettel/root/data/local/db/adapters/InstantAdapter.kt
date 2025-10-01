@@ -1,7 +1,7 @@
 package io.github.jan.einkaufszettel.root.data.local.db.adapters
 
 import app.cash.sqldelight.ColumnAdapter
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 
 data object InstantAdapter: ColumnAdapter<Instant, Long> {
 

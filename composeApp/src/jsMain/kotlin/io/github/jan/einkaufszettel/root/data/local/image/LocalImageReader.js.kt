@@ -1,6 +1,8 @@
 package io.github.jan.einkaufszettel.root.data.local.image
 
-import io.github.vinceglb.filekit.core.PlatformFile
+import io.github.vinceglb.filekit.PlatformFile
+import io.github.vinceglb.filekit.name
+import io.github.vinceglb.filekit.readBytes
 
 actual class LocalImageReader {
 

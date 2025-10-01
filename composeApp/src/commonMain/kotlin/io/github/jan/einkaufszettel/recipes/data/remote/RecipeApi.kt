@@ -2,7 +2,7 @@ package io.github.jan.einkaufszettel.recipes.data.remote
 
 import io.github.jan.supabase.postgrest.Postgrest
 import io.github.jan.supabase.storage.Storage
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 import kotlinx.serialization.Serializable
 
 @Serializable

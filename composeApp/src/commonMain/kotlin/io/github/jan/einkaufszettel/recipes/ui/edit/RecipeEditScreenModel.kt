@@ -12,8 +12,10 @@ import io.github.jan.supabase.auth.Auth
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
+@OptIn(ExperimentalTime::class)
 class RecipeEditScreenModel(
     private val recipeId: Long,
     recipeApi: RecipeApi,

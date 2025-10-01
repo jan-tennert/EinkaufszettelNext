@@ -6,9 +6,9 @@ import io.github.jan.einkaufszettel.app.ui.AppState
 import io.github.jan.einkaufszettel.app.ui.AppStateModel
 import io.github.jan.einkaufszettel.recipes.data.local.RecipeDataSource
 import io.github.jan.einkaufszettel.recipes.data.remote.RecipeApi
-import io.github.jan.supabase.exceptions.RestException
 import io.github.jan.supabase.auth.Auth
-import io.github.jan.supabase.auth.SessionStatus
+import io.github.jan.supabase.auth.status.SessionStatus
+import io.github.jan.supabase.exceptions.RestException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
